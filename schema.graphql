@@ -13,3 +13,29 @@ type starterEntity @entity {
 
 }
 
+type assetsToken @entity {
+  id: ID!
+  symbol: String
+  precision: Int
+  total_supply: BigInt
+  token_type: String
+  # pair: String[]
+}
+
+type assetsTransferredCount @entity{
+  id: ID! # assetId + dailyTimestamp
+  transferredCount: BigInt
+  # token: [assetsToken] @deriveFrom(field: "id") 嵌套暂未实现 https://github.com/OnFinality-io/subql/issues/185
+}
+
+type vtokenPool @entity {
+  id: ID! # assetId + block hash
+  vtokenPool: BigInt
+  tokenPool: BigInt
+  mintPrice: BigInt
+}
+
+type dailyMintPrice @entity {
+  id: ID! # assetId + dailyTimestamp
+  mintPrice: BigInt
+}

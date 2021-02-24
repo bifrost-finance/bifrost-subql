@@ -4,6 +4,7 @@ repository: 'https://github.com/bifrost-finance/'
 schema: ./schema.graphql
 network:
   endpoint: 'ws://118.126.112.5:9941'
+  # endpoint: 'wss://rpc.polkadot.io'
   types: {
     "ParachainInherentData": "u128",
     "Address": "MultiAddress",
@@ -250,6 +251,7 @@ dataSources:
   - name: main
     kind: substrate/Runtime
     startBlock: 1
+    # startBlock: 3890000
     mapping:
       handlers:
         - handler: handleBlock
@@ -261,3 +263,37 @@ dataSources:
             method: Deposit
         - handler: handleCall
           kind: substrate/CallHandler
+        # - handler: handleAssets
+        #   kind: substrate/CallHandler
+        #   filter:
+        #     module: timestamp
+        #     method: set
+        # - handler: handleAssetsTransfer
+        #   kind: substrate/CallHandler
+        #   filter:
+        #     module: assets
+        #     method: transfer
+        - handler: handleBalances
+          kind: substrate/CallHandler
+          filter:
+            module: balances
+            method: transfer
+        - handler: eventBalancesTransfer
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Transfer
+        # mappingVtokenPool.ts:
+        - handler: vtokenPoolBlock
+          kind: substrate/BlockHandler
+        # mappingAssets.ts:
+        - handler: assetsCreatedEvent
+          kind: substrate/EventHandler
+          filter:
+            module: assets
+            method: Created
+        - handler: assetsTransferredEvent
+          kind: substrate/EventHandler
+          filter:
+            module: assets
+            method: Transferred
