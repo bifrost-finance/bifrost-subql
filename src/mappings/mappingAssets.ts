@@ -1,37 +1,22 @@
-import { SubstrateExtrinsic, SubstrateEvent } from "@subql/types";
-import { SignedBlock, Balance, Moment, AssetId, Token, u16, TokenType } from "@bifrost-finance/types/interfaces";
-import { SubstrateBlock } from "@subql/types";
-
+import { SubstrateExtrinsic, SubstrateEvent, SubstrateBlock } from "@subql/types";
+import { SignedBlock, Balance, Moment, AssetId, Token, u16, TokenType, Price, AccountId } from "@bifrost-finance/types/interfaces";
 import { VtokenPool, Compact } from '@bifrost-finance/types';
-import { assetsTransferredCount } from "../types/models/assetsTransferredCount";
+import { getDayStartUnix } from '../common';
+
+import { assetsTransferred } from "../types/models/assetsTransferred";
 import { dailyMintPrice } from "../types/models/dailyMintPrice";
 import { assetsToken } from "../types/models/assetsToken";
-
-function createSumassetsTransferredCount(index: string): assetsTransferredCount {
-  const entity = new assetsTransferredCount(index);
-  entity.transferredCount = BigInt(0);
-  return entity;
-}
+import { assetsTransferredPrice } from "../types/models/assetsTransferredPrice";
+import { assetsIssued } from "../types/models/assetsIssued";
 
 const ONE_BI = BigInt(1);
 
-// export async function eventBalancesTransfer(event: SubstrateEvent): Promise<void> {
-//   let timestamp = event.block.timestamp.getTime() / 1000
-//   let dayIndex = Math.floor(timestamp / 3600 / 24) // get unique hour within unix history
-//   let dayStartUnix = dayIndex * 3600 * 24 // want the rounded effect
-//   const { event: { data: [accountFrom, accountTo, balance] } } = event;
-//   let record = await assets.get(dayStartUnix.toString());
-//   console.log('test4-----')
-//   if (record === undefined) {
-//     await createSumAssets(dayStartUnix.toString()).save();
-//   } else {
-//     // const record = await starterEntity.get(event.extrinsic.block.block.header.hash.toString());
-//     record.transferredCount = record.transferredCount + ONE_BI;
-//     // record.field4 = (balance as Balance).toBigInt();
-//     // record.field5 = dayStartUnix.toString()
-//     await record.save();
-//   }
-// }
+function createSumassetsTransferred(index: string, balance: bigint): assetsTransferred {
+  const entity = new assetsTransferred(index);
+  entity.count = BigInt(0);
+  entity.amount = balance;
+  return entity;
+}
 
 export async function assetsCreatedEvent(event: SubstrateEvent): Promise<void> {
   const { event: { data: [id, token1] } } = event;
@@ -46,16 +31,44 @@ export async function assetsCreatedEvent(event: SubstrateEvent): Promise<void> {
 }
 
 export async function assetsTransferredEvent(event: SubstrateEvent): Promise<void> {
-  let timestamp = event.block.timestamp.getTime() / 1000
-  let dayIndex = Math.floor(timestamp / 3600 / 24) // get unique hour within unix history
-  let dayStartUnix = dayIndex * 3600 * 24 // want the rounded effect
-  const { event: { data: [asset_id, account_from, account_to, balance] } } = event;
-  const asset_id_str = (asset_id as AssetId).toString();
-  let record = await assetsTransferredCount.get(asset_id_str + dayStartUnix.toString());
+  const dayStartUnix = getDayStartUnix(event.block);
+  const { event: { data: [asset_id_origin, account_from, account_to, balance_origin] } } = event;
+  const asset_id_str = (asset_id_origin as AssetId).toString();
+  const balance = (balance_origin as Balance).toBigInt();
+  let record = await assetsTransferred.get(asset_id_str + '@' + dayStartUnix);
   if (record === undefined) {
-    await createSumassetsTransferredCount(asset_id_str + dayStartUnix.toString()).save();
+    await createSumassetsTransferred(asset_id_str + '@' + dayStartUnix, balance).save();
   } else {
-    record.transferredCount = record.transferredCount + ONE_BI;
+    record.count = record.count + ONE_BI;
+    record.amount = record.amount + balance;
+    await record.save();
+  }
+
+  // let price = ((await api.query.assets.prices(asset_id_origin as AssetId)) as Price).toBigInt();
+  // let recordPrice = await assetsTransferredPrice.get(asset_id_str + '@' + dayStartUnix);
+  // if (recordPrice === undefined) {
+  //   const entity = new assetsTransferredPrice(asset_id_str + '@' + dayStartUnix);
+  //   entity.price = price;
+  //   await entity.save();
+  // } else {
+  //   recordPrice.price = price;
+  //   await recordPrice.save();
+  // }
+}
+
+export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
+  const { event: { data: [asset_id, account_to, balance] } } = event;
+  const asset_id_str = (asset_id as AssetId).toString();
+  const dayStartUnix = getDayStartUnix(event.block)
+
+  let record = await assetsIssued.get(asset_id_str + '@' + dayStartUnix);
+  if (record === undefined) {
+    let record = new assetsIssued(asset_id_str + '@' + dayStartUnix);
+    // record.account = (account_to as AccountId).toString();
+    record.amount = (balance as Balance).toBigInt();
+    await record.save();
+  } else {
+    record.amount = record.amount + (balance as Balance).toBigInt();
     await record.save();
   }
 }

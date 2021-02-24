@@ -6,6 +6,7 @@ network:
   endpoint: 'ws://118.126.112.5:9941'
   # endpoint: 'wss://rpc.polkadot.io'
   types: {
+    "TAssetBalance": "Balance",
     "ParachainInherentData": "u128",
     "Address": "MultiAddress",
     "LookupSource": "MultiAddress",
@@ -250,39 +251,19 @@ network:
 dataSources:
   - name: main
     kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 1470
     # startBlock: 3890000
     mapping:
       handlers:
-        - handler: handleBlock
-          kind: substrate/BlockHandler
-        - handler: handleEvent
-          kind: substrate/EventHandler
-          filter:
-            module: balances
-            method: Deposit
-        - handler: handleCall
-          kind: substrate/CallHandler
-        # - handler: handleAssets
-        #   kind: substrate/CallHandler
+        # - handler: handleBlock
+        #   kind: substrate/BlockHandler
+        # - handler: handleEvent
+        #   kind: substrate/EventHandler
         #   filter:
-        #     module: timestamp
-        #     method: set
-        # - handler: handleAssetsTransfer
+        #     module: balances
+        #     method: Deposit
+        # - handler: handleCall
         #   kind: substrate/CallHandler
-        #   filter:
-        #     module: assets
-        #     method: transfer
-        - handler: handleBalances
-          kind: substrate/CallHandler
-          filter:
-            module: balances
-            method: transfer
-        - handler: eventBalancesTransfer
-          kind: substrate/EventHandler
-          filter:
-            module: balances
-            method: Transfer
         # mappingVtokenPool.ts:
         - handler: vtokenPoolBlock
           kind: substrate/BlockHandler
@@ -297,3 +278,13 @@ dataSources:
           filter:
             module: assets
             method: Transferred
+        - handler: assetsIssuedEvent
+          kind: substrate/EventHandler
+          filter:
+            module: assets
+            method: Issued
+        # - handler: assetsIssuedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: assets
+        #     method: Issued

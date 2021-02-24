@@ -22,20 +22,32 @@ type assetsToken @entity {
   # pair: String[]
 }
 
-type assetsTransferredCount @entity{
-  id: ID! # assetId + dailyTimestamp
-  transferredCount: BigInt
+type assetsTransferred @entity{
+  id: ID! # assetId + '@' + dailyTimestamp
+  count: BigInt # 每日交易总次数
+  amount: BigInt # 每日交易总金额，每日该assetId所有交易的balance相加
   # token: [assetsToken] @deriveFrom(field: "id") 嵌套暂未实现 https://github.com/OnFinality-io/subql/issues/185
 }
 
+type assetsTransferredPrice @entity{
+  id: ID! # assetId + '@' + dailyTimestamp
+  price: BigInt # 每日最新价格，每出一个块都会更新，最终停止更新于当日最后一个块出块时的price
+}
+
+type assetsIssued @entity{
+  id: ID! # assetId + '@' + dailyTimestamp
+  # account: String
+  amount: BigInt # 每日该assetId累计issue的balance
+}
+
 type vtokenPool @entity {
-  id: ID! # assetId + block hash
+  id: ID! # assetId + '@' + block hash
   vtokenPool: BigInt
   tokenPool: BigInt
   mintPrice: BigInt
 }
 
 type dailyMintPrice @entity {
-  id: ID! # assetId + dailyTimestamp
+  id: ID! # assetId + '@' + dailyTimestamp
   mintPrice: BigInt
 }
