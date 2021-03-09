@@ -7,9 +7,9 @@ function getDayStartUnix(block: SubstrateBlock): string {
   return dayStartUnix.toString()
 }
 
-function getUnix(block: SubstrateBlock): string {
-  let timestamp = block.timestamp.getTime()
-  return timestamp.toString()
-}
+// function getUnix(block: SubstrateBlock): string {
+//   let timestamp = block.timestamp.getTime()
+//   return timestamp.toString()
+// }
 
-export { getDayStartUnix, getUnix };
+export { getDayStartUnix };

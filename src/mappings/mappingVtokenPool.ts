@@ -36,22 +36,3 @@ export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
   //   }
   // });
 }
-
-function makeEnum(enumObject) {
-  var all = [];
-  for (var key in enumObject) {
-    all.push(enumObject[key]);
-  }
-  enumObject.all = all;
-  console.log('-----', all)
-}
-
-// Helper
-// const StringIsNumber = value => isNaN(Number(value)) === false;
-
-// // Turn enum into array
-// function ToArray(enumme) {
-//     return Object.keys(enumme)
-//         .filter(StringIsNumber)
-//         .map(key => enumme[key]);
-// }

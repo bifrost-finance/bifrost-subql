@@ -1,12 +1,11 @@
 import { SubstrateExtrinsic, SubstrateEvent, SubstrateBlock } from "@subql/types";
 import { BlockNumber, Balance, Moment, AssetId, Token, u16, TokenType, Price, AccountId, CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
 import { VtokenPool, Compact } from '@bifrost-finance/types';
-import { getDayStartUnix, getUnix } from '../common';
+import { getDayStartUnix } from '../common';
 
 import { Transaction } from "../types/models/Transaction";
 import { assetsToken } from "../types/models/assetsToken";
 import { TransactionDayData } from "../types/models/TransactionDayData";
-// import { assetsIssued } from "../types/models/assetsIssued";
 
 const ONE_BI = BigInt(1);
 
@@ -31,7 +30,6 @@ export async function assetsCreatedEvent(event: SubstrateEvent): Promise<void> {
 
 export async function assetsTransferredEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
-  // const timestamp = getUnix(event.block);
   const { event: { data: [currency_id_origin, account_from_origin, account_to_origin, balance_origin] } } = event;
   const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
   const balance = (balance_origin as Balance).toBigInt();
@@ -59,23 +57,10 @@ export async function assetsTransferredEvent(event: SubstrateEvent): Promise<voi
     record.transferAmount = record.transferAmount + balance;
     await record.save();
   }
-
-  // let price = ((await api.query.assets.prices(asset_id_origin as AssetId)) as Price).toBigInt();
-  // let recordPrice = await assetsTransferredPrice.get(asset_id_str + '@' + dayStartUnix);
-  // if (recordPrice === undefined) {
-  //   const entity = new assetsTransferredPrice(asset_id_str + '@' + dayStartUnix);
-  //   entity.price = price;
-  //   await entity.save();
-  // } else {
-  //   recordPrice.price = price;
-  //   await recordPrice.save();
-  // }
 }
 
 export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
-  // const timestamp = getUnix(event.block);
-
   const { event: { data: [currency_id_origin, account_to_origin, balance_origin] } } = event;
   const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
   const balance = (balance_origin as Balance).toBigInt();
@@ -98,7 +83,6 @@ export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
   let record = await TransactionDayData.get(tokenSymbol + '@' + dayStartUnix);
   if (record === undefined || record.issueCount === null) {
     let record = new TransactionDayData(tokenSymbol + '@' + dayStartUnix);
-    // record.account = (account_to as AccountId).toString();
     record.tokenSymbol = tokenSymbol;
     record.date = new Date(Number(dayStartUnix) * 1000);
     record.issueCount = ONE_BI;
