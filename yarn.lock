@@ -470,10 +470,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bifrost-finance/types@^1.0.92":
-  version "1.0.92"
-  resolved "https://registry.npm.taobao.org/@bifrost-finance/types/download/@bifrost-finance/types-1.0.92.tgz#7d02e4ac2281d623946fde6267c4326a7c06edad"
-  integrity sha1-fQLkrCKB1iOUb95iZ8QyanwG7a0=
+"@bifrost-finance/types@^1.0.93":
+  version "1.0.93"
+  resolved "https://registry.npm.taobao.org/@bifrost-finance/types/download/@bifrost-finance/types-1.0.93.tgz#01b9edbced64f4ae91e97b258f341b4f9bc3d642"
+  integrity sha1-AbntvO1k9K6R6XsljzQbT5vD1kI=
 
 "@graphql-tools/batch-delegate@^7.0.0":
   version "7.0.1"

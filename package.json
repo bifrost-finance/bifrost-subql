@@ -23,6 +23,6 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "@bifrost-finance/types": "^1.0.92"
+    "@bifrost-finance/types": "^1.0.93"
   }
 }

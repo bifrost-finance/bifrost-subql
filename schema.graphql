@@ -22,32 +22,38 @@ type assetsToken @entity {
   # pair: String[]
 }
 
-type assetsTransferred @entity{
-  id: ID! # assetId + '@' + dailyTimestamp
-  count: BigInt # 每日交易总次数
-  amount: BigInt # 每日交易总金额，每日该assetId所有交易的balance相加
+type TransactionDayData @entity{
+  id: ID! # tokenSymbol + '@' + dailyTimestamp
+  tokenSymbol: String
+  date: Date
+  transferCount: BigInt # 每日transfer总次数
+  transferAmount: BigInt # 每日交易总金额，每日该tokenSymbol所有transfer的balance相加
+  issueCount: BigInt
+  issueAmount: BigInt
   # token: [assetsToken] @deriveFrom(field: "id") 嵌套暂未实现 https://github.com/OnFinality-io/subql/issues/185
 }
 
-type assetsTransferredPrice @entity{
-  id: ID! # assetId + '@' + dailyTimestamp
-  price: BigInt # 每日最新价格，每出一个块都会更新，最终停止更新于当日最后一个块出块时的price
+type Transaction @entity{
+  id: ID! # blockHeight + '-' + eventId
+  blockHeight: BigInt
+  eventId: Int
+  extrinsicId: Int # Extrinsic Id 即 txId
+  tokenSymbol: String
+  date: Date
+  accountFrom: String
+  accountTo: String
+  balance: BigInt
+  type: String
 }
 
-type assetsIssued @entity{
-  id: ID! # assetId + '@' + dailyTimestamp
-  # account: String
-  amount: BigInt # 每日该assetId累计issue的balance
-}
+# type assetsTransferredPrice @entity{
+#   id: ID! # tokenSymbol + '@' + dailyTimestamp
+#   price: BigInt # 每日最新价格，每出一个块都会更新，最终停止更新于当日最后一个块出块时的price
+# }
 
-type vtokenPool @entity {
-  id: ID! # assetId + '@' + block hash
-  vtokenPool: BigInt
-  tokenPool: BigInt
-  mintPrice: BigInt
-}
-
-type dailyMintPrice @entity {
-  id: ID! # assetId + '@' + dailyTimestamp
-  mintPrice: BigInt
-}
+# type dailyMintPrice @entity {
+#   id: ID! # assetId + '@' + dailyTimestamp
+#   mintPrice: BigInt
+#   vtokenPool: BigInt
+#   tokenPool: BigInt
+# }
