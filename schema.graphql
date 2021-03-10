@@ -25,7 +25,7 @@ type assetsToken @entity {
 type TransactionDayData @entity{
   id: ID! # tokenSymbol + '@' + dailyTimestamp
   tokenSymbol: String
-  date: Date
+  time: Date
   transferCount: BigInt # 每日transfer总次数
   transferAmount: BigInt # 每日交易总金额，每日该tokenSymbol所有transfer的balance相加
   issueCount: BigInt
@@ -39,10 +39,10 @@ type Transaction @entity{
   eventId: Int
   extrinsicId: Int # Extrinsic Id 即 txId
   tokenSymbol: String
-  date: Date
-  accountFrom: String
-  accountTo: String
-  balance: BigInt
+  time: Date
+  from: String
+  to: String
+  amount: BigInt
   type: String
 }
 

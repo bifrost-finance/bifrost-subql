@@ -42,10 +42,10 @@ export async function assetsTransferredEvent(event: SubstrateEvent): Promise<voi
   entity.eventId = event.idx;
   entity.extrinsicId = event.extrinsic.idx;
   entity.tokenSymbol = tokenSymbol;
-  entity.date = event.block.timestamp;
-  entity.accountFrom = account_from;
-  entity.accountTo = account_to;
-  entity.balance = balance;
+  entity.time = event.block.timestamp;
+  entity.from = account_from;
+  entity.to = account_to;
+  entity.amount = balance;
   entity.type = 'transfer';
   await entity.save();
 
@@ -72,9 +72,9 @@ export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
   entity.eventId = event.idx;
   entity.extrinsicId = event.extrinsic.idx;
   entity.tokenSymbol = tokenSymbol;
-  entity.date = event.block.timestamp;
-  entity.accountTo = account_to;
-  entity.balance = balance;
+  entity.time = event.block.timestamp;
+  entity.to = account_to;
+  entity.amount = balance;
   entity.type = 'issue';
   await entity.save();
 
@@ -84,7 +84,7 @@ export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
   if (record === undefined || record.issueCount === null) {
     let record = new TransactionDayData(tokenSymbol + '@' + dayStartUnix);
     record.tokenSymbol = tokenSymbol;
-    record.date = new Date(Number(dayStartUnix) * 1000);
+    record.time = new Date(Number(dayStartUnix) * 1000);
     record.issueCount = ONE_BI;
     record.issueAmount = balance;
     await record.save();
