@@ -30,6 +30,8 @@ type TransactionDayData @entity{
   transferAmount: BigInt # 每日交易总金额，每日该tokenSymbol所有transfer的balance相加
   issueCount: BigInt
   issueAmount: BigInt
+  burnCount: BigInt
+  burnAmount: BigInt
   # token: [assetsToken] @deriveFrom(field: "id") 嵌套暂未实现 https://github.com/OnFinality-io/subql/issues/185
 }
 

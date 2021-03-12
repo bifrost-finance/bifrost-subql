@@ -298,12 +298,17 @@ dataSources:
         - handler: assetsTransferredEvent
           kind: substrate/EventHandler
           filter:
-            module: assets
+            module: currencies
             method: Transferred
         - handler: assetsIssuedEvent
           kind: substrate/EventHandler
           filter:
-            module: assets
+            module: brmlAssets
             method: Issued
+        - handler: assetsBurnedEvent
+          kind: substrate/EventHandler
+          filter:
+            module: brmlAssets
+            method: Burned
         - handler: assetsBlock
           kind: substrate/BlockHandler
