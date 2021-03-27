@@ -59,3 +59,20 @@ type Transaction @entity{
 #   vtokenPool: BigInt
 #   tokenPool: BigInt
 # }
+
+type mktPriceDayData @entity{
+  id: ID!
+  blockHeight: BigInt
+  currencyId: String
+  time: Date
+  price: String
+}
+
+type mintPriceDayData @entity{
+  id: ID!
+  blockHeight: BigInt
+  currencyId1: String
+  currencyId2: String
+  time: Date
+  price: String
+}
