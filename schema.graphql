@@ -71,8 +71,8 @@ type mktPriceDayData @entity{
 type mintPriceDayData @entity{
   id: ID!
   blockHeight: BigInt
-  currencyId1: String
-  currencyId2: String
+  currencyId: String
+  pool: BigInt
   time: Date
   price: String
 }

@@ -1,38 +1,24 @@
 import { SubstrateBlock } from "@subql/types";
-import { TokenSymbol } from "@bifrost-finance/types/interfaces";
+import { CurrencyId, Balance } from "@bifrost-finance/types/interfaces";
 import { VtokenPool, Compact } from '@bifrost-finance/types';
 import { getDayStartUnix } from '../common';
-// import { dailyMintPrice } from "../types/models/dailyMintPrice";
+import { mintPriceDayData } from "../types/models/mintPriceDayData";
 
 export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
-  // const token_type = ((await api.query.assets.tokens(asset_id)
-  //   .catch(e => { console.log(e) })) as TokenSymbol).token_type.toString();
-  // const a = new TokenSymbol();
-  // makeEnum(a);
-  // console.log(ToArray(TokenSymbol));
-
-  // const asset_ids = ((await api.query.assets.nextAssetId()) as AssetId).toNumber();
-
-  // [...Array(asset_ids).keys()].forEach(async (asset_id) => {
-  //   const token_type = ((await api.query.assets.tokens(asset_id)
-  //     .catch(e => { console.log(e) })) as Token).token_type.toString();
-  //   if (token_type == 'VToken') { // 如果是vtoken则跳过
-  //     return;
-  //   }
-
-  //   let recordDailyMintPrice = await dailyMintPrice.get(asset_id.toString() + '@' + getDayStartUnix(block))
-  //     .catch(e => { console.log(e) });
-  //   if (recordDailyMintPrice === undefined) { // 如果此块所处当日还未记录mintprice（说明此块是当日第一个块），则记录一下
-  //     let recordDailyMintPrice = new dailyMintPrice(asset_id.toString() + '@' + getDayStartUnix(block));
-  //     let pool = (await api.query.vtokenMint.pool(asset_id).catch(e => { console.log(e) })) as VtokenPool;
-  //     recordDailyMintPrice.vtokenPool = BigInt(pool.vtoken_pool * Math.pow(10, 12));
-  //     recordDailyMintPrice.tokenPool = BigInt(pool.token_pool * Math.pow(10, 12));
-  //     if (recordDailyMintPrice.tokenPool == BigInt(0)) {
-  //       recordDailyMintPrice.mintPrice = BigInt(0);
-  //     } else {
-  //       recordDailyMintPrice.mintPrice = BigInt((pool.vtoken_pool / pool.token_pool) * Math.pow(10, 12));
-  //     }
-  //     await recordDailyMintPrice.save().catch(e => { console.log(e) });
-  //   }
-  // });
+  const tokens = ["BNC", "aUSD", "DOT", "vDOT", "KSM", "vKSM", "ETH", "vETH", "EOS", "vEOS", "IOST", "vIOST"];
+  tokens.forEach(async (currency_id) => {
+    let recordDailyMintPrice = await mintPriceDayData.get(currency_id + '@' + getDayStartUnix(block))
+      .catch(e => { console.log(e) });
+    if (recordDailyMintPrice === undefined) { // 如果此块所处当日还未记录mintprice（说明此块是当日第一个块），则记录一下
+      const token_pool = ((await api.query.assets.totalIssuance(({
+        "Token": currency_id
+      }) as CurrencyId).catch(e => { console.log(e) })) as Balance).toBigInt();
+      let recordDailyMintPrice = new mintPriceDayData(currency_id + '@' + getDayStartUnix(block));
+      recordDailyMintPrice.pool = token_pool;
+      recordDailyMintPrice.currencyId = currency_id;
+      recordDailyMintPrice.time = block.timestamp;
+      recordDailyMintPrice.blockHeight = block.block.header.number.toBigInt();
+      await recordDailyMintPrice.save().catch(e => { console.log(e) });
+    }
+  });
 }
