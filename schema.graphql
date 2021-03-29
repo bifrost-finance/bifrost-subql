@@ -76,3 +76,17 @@ type mintPriceDayData @entity{
   time: Date
   price: String
 }
+
+type apr @entity{
+  id: ID!  # currencyId
+  blockHeight: BigInt
+  apr: String
+  time: Date
+}
+
+type revenue @entity{
+  id: ID!  # currencyId
+  blockHeight: BigInt
+  revenue: String
+  time: Date
+}

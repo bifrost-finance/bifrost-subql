@@ -3,8 +3,7 @@ description: ''
 repository: 'https://github.com/bifrost-finance/'
 schema: ./schema.graphql
 network:
-  endpoint: 'ws://118.126.112.5:9917'
-  # endpoint: 'ws://118.126.112.5:9941'
+  endpoint: 'ws://118.126.112.5:9941'
   # endpoint: 'wss://rpc.polkadot.io'
   types: {
     "TAssetBalance": "Balance",
@@ -323,3 +322,7 @@ dataSources:
           filter:
             module: vtokenMint
             method: RedeemedPointsSuccess
+        - handler: aprBlock
+          kind: substrate/BlockHandler
+        - handler: revenueBlock
+          kind: substrate/BlockHandler
