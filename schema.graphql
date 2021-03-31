@@ -74,19 +74,19 @@ type mintPriceDayData @entity{
   currencyId: String
   pool: BigInt
   time: Date
-  price: String
+  price: BigInt
 }
 
 type apr @entity{
   id: ID!  # currencyId
   blockHeight: BigInt
-  apr: String
+  apr: BigInt
   time: Date
 }
 
 type revenue @entity{
   id: ID!  # currencyId
   blockHeight: BigInt
-  revenue: String
+  revenue: BigInt
   time: Date
 }

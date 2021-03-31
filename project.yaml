@@ -268,7 +268,8 @@ network:
         "Token": "TokenSymbol"
       }
     },
-    "CurrencyIdOf": "CurrencyId"
+    "CurrencyIdOf": "CurrencyId",
+    "BlockNumberFor": "BlockNumber"
   }
 dataSources:
   - name: main
