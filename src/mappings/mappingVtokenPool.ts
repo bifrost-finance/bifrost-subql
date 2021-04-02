@@ -1,14 +1,15 @@
 import { SubstrateBlock } from "@subql/types";
-import { CurrencyId, Balance } from "@bifrost-finance/types/interfaces";
+import { CurrencyId, Balance, AccountData, AccountId } from "@bifrost-finance/types/interfaces";
 import { VtokenPool, Compact } from '@bifrost-finance/types';
 import { getDayStartUnix, get7DayStartUnix, tokenSplit } from '../common';
 import { mintPriceDayData } from "../types/models/mintPriceDayData";
 import { apr } from "../types/models/apr";
 import { revenue } from "../types/models/revenue";
+import { mktPriceDayData } from "../types/models/mktPriceDayData";
 
-const tokens = ["BNC", "aUSD", "DOT", "vDOT", "KSM", "vKSM", "ETH", "vETH", "EOS", "vEOS", "IOST", "vIOST"];
-const vTokens = ["vDOT", "vKSM", "vETH", "vEOS", "vIOST"];
-const unit = BigInt(1000000000000)
+const tokens = ["BNC", "aUSD", "DOT", "vDOT", "KSM", "vKSM", "ETH", "vETH"]; // , "EOS", "vEOS", "IOST", "vIOST"
+const vTokens = ["vDOT", "vKSM", "vETH"]; // "vEOS", "vIOST"
+const unit = BigInt(1000000000000);
 
 export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
   for (let i = 0; i < tokens.length; i++) {
@@ -103,6 +104,31 @@ export async function revenueBlock(block: SubstrateBlock): Promise<void> {
       revenueResult.time = block.timestamp;
       revenueResult.blockHeight = block.block.header.number.toBigInt();
       await revenueResult.save().catch(e => { console.log(e) });
+    }
+  }
+}
+
+export async function mktPriceBlock(block: SubstrateBlock): Promise<void> {
+  console.log(block.timestamp.getTime())
+  for (let i = 0; i < tokens.length; i++) {
+    const currency_id = tokens[i];
+    const assets_to_pair = await api.query.zenlinkProtocol.assetsToPair([{ "ParaCurrency": i }, { "ParaCurrency": 3 }]).catch(e => { console.log(e) });
+    if (JSON.stringify(assets_to_pair) === 'null') { continue }
+    else {
+      const address = JSON.parse(JSON.stringify(assets_to_pair)).account;
+      console.log(address)
+      const currency_id_pool = await api.query.assets.accounts([address, { "Token": currency_id }]).catch(e => { console.log(e) });
+      const aUSD_pool = await api.query.assets.accounts([address, { "Token": "aUSD" }]).catch(e => { console.log(e) });
+      console.log(JSON.stringify(currency_id_pool), JSON.parse(JSON.stringify(currency_id_pool)).free)
+
+      let recordMktPrice = new mktPriceDayData(currency_id);
+      if (BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free) === BigInt(0)) { recordMktPrice.price = BigInt(0) }
+      else {
+        recordMktPrice.price = BigInt(JSON.parse(JSON.stringify(currency_id_pool)).free) * unit / BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free);
+      }
+      recordMktPrice.time = block.timestamp;
+      recordMktPrice.blockHeight = block.block.header.number.toBigInt();
+      await recordMktPrice.save().catch(e => { console.log(e) });
     }
   }
 }

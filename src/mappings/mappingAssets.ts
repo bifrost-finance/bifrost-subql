@@ -133,7 +133,7 @@ export async function assetsBurnedEvent(event: SubstrateEvent): Promise<void> {
   }
 }
 
-export async function vtokenMintMintedVTokenEvent(event: SubstrateEvent): Promise<void> {
+export async function vtokenMintMintedEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
   const { event: { data: [account_id_origin, currency_id_origin, balance_origin] } } = event;
   const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
@@ -149,7 +149,41 @@ export async function vtokenMintMintedVTokenEvent(event: SubstrateEvent): Promis
   entity.time = event.block.timestamp;
   entity.to = account_id;
   entity.amount = balance;
-  entity.type = 'MintedVToken';
+  entity.type = 'minted';
+  await entity.save();
+
+  let record = await TransactionDayData.get(tokenSymbol + '@' + dayStartUnix);
+  if (record === undefined || record.burnCount === null) {
+    let record = new TransactionDayData(tokenSymbol + '@' + dayStartUnix);
+    record.tokenSymbol = tokenSymbol;
+    record.time = new Date(Number(dayStartUnix) * 1000);
+    record.burnCount = ONE_BI;
+    record.burnAmount = balance;
+    await record.save();
+  } else {
+    record.burnCount = record.burnCount + ONE_BI;
+    record.burnAmount = record.burnAmount + balance;
+    await record.save();
+  }
+}
+
+export async function vtokenMintRedeemStartedEvent(event: SubstrateEvent): Promise<void> {
+  const dayStartUnix = getDayStartUnix(event.block);
+  const { event: { data: [account_id_origin, currency_id_origin, balance_origin] } } = event;
+  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
+  const balance = (balance_origin as Balance).toBigInt();
+  const account_id = (account_id_origin as AccountId).toString();
+  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
+
+  const entity = new Transaction(blockNumber.toString() + '-' + event.idx.toString());
+  entity.blockHeight = blockNumber;
+  entity.eventId = event.idx;
+  entity.extrinsicId = event.extrinsic.idx;
+  entity.tokenSymbol = tokenSymbol;
+  entity.time = event.block.timestamp;
+  entity.to = account_id;
+  entity.amount = balance;
+  entity.type = 'redeem';
   await entity.save();
 
   let record = await TransactionDayData.get(tokenSymbol + '@' + dayStartUnix);
