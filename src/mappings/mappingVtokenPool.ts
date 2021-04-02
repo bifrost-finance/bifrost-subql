@@ -110,9 +110,9 @@ export async function revenueBlock(block: SubstrateBlock): Promise<void> {
 
 export async function mktPriceBlock(block: SubstrateBlock): Promise<void> {
   console.log(block.timestamp.getTime())
-  for (let i = 0; i < tokens.length; i++) {
+  for (let i = 2; i < tokens.length; i++) {
     const currency_id = tokens[i];
-    const assets_to_pair = await api.query.zenlinkProtocol.assetsToPair([{ "ParaCurrency": i }, { "ParaCurrency": 3 }]).catch(e => { console.log(e) });
+    const assets_to_pair = await api.query.zenlinkProtocol.assetsToPair([{ "ParaCurrency": 1 }, { "ParaCurrency": i }]).catch(e => { console.log(e) });
     if (JSON.stringify(assets_to_pair) === 'null') { continue }
     else {
       const address = JSON.parse(JSON.stringify(assets_to_pair)).account;
