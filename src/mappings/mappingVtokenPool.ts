@@ -7,11 +7,12 @@ import { apr } from "../types/models/apr";
 import { revenue } from "../types/models/revenue";
 import { mktPriceDayData } from "../types/models/mktPriceDayData";
 
-const tokens = ["BNC", "aUSD", "DOT", "vDOT", "KSM", "vKSM", "ETH", "vETH"]; // , "EOS", "vEOS", "IOST", "vIOST"
+const tokens = ["ASG", "aUSD", "DOT", "vDOT", "KSM", "vKSM", "ETH", "vETH"]; // , "EOS", "vEOS", "IOST", "vIOST"
 const vTokens = ["vDOT", "vKSM", "vETH"]; // "vEOS", "vIOST"
 const unit = BigInt(1000000000000);
 
 export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
+  if (block.block.header.number.toNumber() % 10 !== 0) { return }
   for (let i = 0; i < tokens.length; i++) {
     const currency_id = tokens[i];
     const [currency_id_token, currency_id_vtoken, token_type] = tokenSplit(currency_id);
@@ -59,6 +60,7 @@ export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
 }
 
 export async function aprBlock(block: SubstrateBlock): Promise<void> {
+  if (block.block.header.number.toNumber() % 10 !== 0) { return }
   for (let i = 0; i < vTokens.length; i++) {
     const currency_id = vTokens[i];
     let aprResult = await apr.get(currency_id);
@@ -83,6 +85,7 @@ export async function aprBlock(block: SubstrateBlock): Promise<void> {
 }
 
 export async function revenueBlock(block: SubstrateBlock): Promise<void> {
+  if (block.block.header.number.toNumber() % 10 !== 0) { return }
   for (let i = 0; i < vTokens.length; i++) {
     const currency_id = vTokens[i];
     const [currency_id_token, currency_id_vtoken] = tokenSplit(currency_id);
@@ -109,6 +112,7 @@ export async function revenueBlock(block: SubstrateBlock): Promise<void> {
 }
 
 export async function mktPriceBlock(block: SubstrateBlock): Promise<void> {
+  if (block.block.header.number.toNumber() % 10 !== 0) { return }
   for (let i = 0; i < tokens.length; i++) {
     const currency_id = tokens[i];
     let assets_to_pair = await api.query.zenlinkProtocol.assetsToPair([{ "ParaCurrency": 1 }, { "ParaCurrency": i }]).catch(e => { console.log(e) });

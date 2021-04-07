@@ -21,7 +21,7 @@ network:
     "EraId": "u32",
     "TokenSymbol": {
       "_enum": [
-        "BNC",
+        "ASG",
         "aUSD",
         "DOT",
         "vDOT",
@@ -66,7 +66,6 @@ dataSources:
   - name: main
     kind: substrate/Runtime
     startBlock: 1
-    # startBlock: 3890000
     mapping:
       handlers:
         # - handler: handleBlock
@@ -81,12 +80,6 @@ dataSources:
         # mappingVtokenPool.ts:
         - handler: vtokenPoolBlock
           kind: substrate/BlockHandler
-        # mappingAssets.ts:
-        # - handler: assetsCreatedEvent
-        #   kind: substrate/EventHandler
-        #   filter:
-        #     module: assets
-        #     method: Created
         - handler: assetsTransferredEvent
           kind: substrate/EventHandler
           filter:
