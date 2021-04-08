@@ -18,7 +18,7 @@ export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
     const [currency_id_token, currency_id_vtoken, token_type] = tokenSplit(currency_id);
     let recordDailyMintPrice = await mintPriceDayData.get(currency_id + '@' + getDayStartUnix(block));
     if (recordDailyMintPrice === undefined) { // 如果此块所处当日还未记录mintprice（说明此块是当日第一个块），则记录一下
-      const token_pool = ((await api.query.assets.totalIssuance(({
+      const token_pool = ((await api.query.vtokenMint.mintPool(({
         "Token": currency_id
       }) as CurrencyId).catch(e => { console.log(e) })) as Balance).toBigInt();
       let recordmintPriceDayData = new mintPriceDayData(currency_id + '@' + getDayStartUnix(block));
@@ -37,7 +37,7 @@ export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
       }
       await recordmintPriceDayData.save().catch(e => { console.log(e) });
     } else if (recordDailyMintPrice.time.getTime() < block.timestamp.getTime()) {
-      const token_pool = ((await api.query.assets.totalIssuance(({
+      const token_pool = ((await api.query.vtokenMint.mintPool(({
         "Token": currency_id
       }) as CurrencyId).catch(e => { console.log(e) })) as Balance).toBigInt();
       const recordDailyMintPrice = await mintPriceDayData.get(currency_id + '@' + getDayStartUnix(block));
