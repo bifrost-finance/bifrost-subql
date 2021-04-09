@@ -1,6 +1,5 @@
 import { SubstrateBlock } from "@subql/types";
 import { CurrencyId, Balance, AccountData, AccountId } from "@bifrost-finance/types/interfaces";
-import { VtokenPool, Compact } from '@bifrost-finance/types';
 import { getDayStartUnix, get7DayStartUnix, tokenSplit } from '../common';
 import { mintPriceDayData } from "../types/models/mintPriceDayData";
 import { apr } from "../types/models/apr";

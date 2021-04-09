@@ -10,7 +10,42 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
 
+  subquery-node:
+    image: onfinality/subql-node:latest
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_DATABASE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+    volumes:
+      - ./:/app
+    command:
+      - -f=/app
+      - --local
+
   graphql-engine:
+    image: onfinality/subql-query:latest
+    ports:
+      - 13000:3000
+    depends_on:
+      - "postgres"
+    restart: always
+    environment:
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_DATABASE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+    command:
+      - --name=app
+      - --playground
+
+
+  graphql-engine-hasura:
     image: hasura/graphql-engine:v1.3.3
     ports:
       - "18080:8080"
@@ -26,22 +61,3 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
-
-  subquery-node:
-    image: onfinality/subql-node:v0.7.0
-    depends_on:
-      - "postgres"
-    restart: always
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_POST: 5432
-    volumes:
-      - ./:/app
-    command:
-      - '-f'
-      - '/app'
-      - '--local'
-
