@@ -130,7 +130,7 @@ export async function mktPriceBlock(block: SubstrateBlock): Promise<void> {
       let recordMktPrice = new mktPriceDayData(currency_id + '@' + getDayStartUnix(block));
       if (BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free) === BigInt(0)) { recordMktPrice.price = BigInt(0) }
       else {
-        recordMktPrice.price = BigInt(JSON.parse(JSON.stringify(currency_id_pool)).free) * unit / BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free);
+        recordMktPrice.price = BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free) * unit / BigInt(JSON.parse(JSON.stringify(currency_id_pool)).free);
       }
       recordMktPrice.currencyId = currency_id;
       recordMktPrice.time = block.timestamp;
