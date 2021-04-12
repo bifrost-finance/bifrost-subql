@@ -31,7 +31,7 @@ export async function assetsCreatedEvent(event: SubstrateEvent): Promise<void> {
 export async function assetsTransferredEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
   const { event: { data: [currency_id_origin, account_from_origin, account_to_origin, balance_origin] } } = event;
-  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
+  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_from = (account_from_origin as AccountId).toString();
   const account_to = (account_to_origin as AccountId).toString();
@@ -62,7 +62,7 @@ export async function assetsTransferredEvent(event: SubstrateEvent): Promise<voi
 export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
   const { event: { data: [account_to_origin, currency_id_origin, balance_origin] } } = event;
-  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
+  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_to = (account_to_origin as AccountId).toString();
   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
@@ -73,6 +73,7 @@ export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
   entity.extrinsicId = event.extrinsic.idx;
   entity.tokenSymbol = tokenSymbol;
   entity.time = event.block.timestamp;
+  entity.from = 'Issue';
   entity.to = account_to;
   entity.amount = balance;
   entity.type = 'issue';
@@ -102,7 +103,7 @@ export async function assetsBlock(block: SubstrateBlock): Promise<void> {
 export async function assetsBurnedEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
   const { event: { data: [account_to_origin, currency_id_origin, balance_origin] } } = event;
-  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
+  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_to = (account_to_origin as AccountId).toString();
   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
@@ -113,7 +114,8 @@ export async function assetsBurnedEvent(event: SubstrateEvent): Promise<void> {
   entity.extrinsicId = event.extrinsic.idx;
   entity.tokenSymbol = tokenSymbol;
   entity.time = event.block.timestamp;
-  entity.to = account_to;
+  entity.from = account_to;
+  entity.to = 'Burn';
   entity.amount = balance;
   entity.type = 'burn';
   await entity.save();
@@ -136,7 +138,7 @@ export async function assetsBurnedEvent(event: SubstrateEvent): Promise<void> {
 export async function vtokenMintMintedEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
   const { event: { data: [account_id_origin, currency_id_origin, balance_origin] } } = event;
-  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
+  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_id = (account_id_origin as AccountId).toString();
   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
@@ -147,6 +149,7 @@ export async function vtokenMintMintedEvent(event: SubstrateEvent): Promise<void
   entity.extrinsicId = event.extrinsic.idx;
   entity.tokenSymbol = tokenSymbol;
   entity.time = event.block.timestamp;
+  entity.from = 'Mint';
   entity.to = account_id;
   entity.amount = balance;
   entity.type = 'minted';
@@ -170,7 +173,7 @@ export async function vtokenMintMintedEvent(event: SubstrateEvent): Promise<void
 export async function vtokenMintRedeemStartedEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
   const { event: { data: [account_id_origin, currency_id_origin, balance_origin] } } = event;
-  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).Token;
+  const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_id = (account_id_origin as AccountId).toString();
   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
@@ -181,6 +184,7 @@ export async function vtokenMintRedeemStartedEvent(event: SubstrateEvent): Promi
   entity.extrinsicId = event.extrinsic.idx;
   entity.tokenSymbol = tokenSymbol;
   entity.time = event.block.timestamp;
+  entity.from = 'Redeem';
   entity.to = account_id;
   entity.amount = balance;
   entity.type = 'redeem';

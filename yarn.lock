@@ -477,19 +477,19 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@bifrost-finance/api@1.1.3":
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/@bifrost-finance/api/-/api-1.1.3.tgz#7a0bb23462370e84039de5bcbc93435893cc6fbf"
-  integrity sha512-zUlGlIfzM+CPQtB+Zaotl2Gre08+CiEoqDXeokZ5GIc3prgJtCrsbqGKUTTfqe8lCALHnOeONbrRCBvpdqOteg==
+"@bifrost-finance/api@1.1.4":
+  version "1.1.4"
+  resolved "https://registry.npmjs.org/@bifrost-finance/api/-/api-1.1.4.tgz#5a7d41c072ec2740fa13024878d2c9a7339228d3"
+  integrity sha512-5i7CvO6k7Vt+CSdqe72gTMUY733xg1QrzamMkUf1zGA7U3FFuwdbijxEl083rT8XqJJ9OvCF3XJweBjl1C5eJQ==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@bifrost-finance/types" "^1.1.3"
+    "@bifrost-finance/types" "^1.1.4"
     "@polkadot/api" "^4.2.1"
 
-"@bifrost-finance/types@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/@bifrost-finance/types/-/types-1.1.3.tgz#0158afd7a047c0b03a5556454dd45828e0674d4c"
-  integrity sha512-pqY939CjBJeWbLD+9joQBUn34yMFnC90yj426OAkk8/L+JsEUFWxwYoSZM5oHCSUdn8Jf709ISguOFrASHoLpA==
+"@bifrost-finance/types@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.npmjs.org/@bifrost-finance/types/-/types-1.1.4.tgz#582658f7a682da4803d97182e89637e1c2e4f9ee"
+  integrity sha512-67r8cF8P4hY1Go7QKiGQ8SexHZIhVeGusYn5uMGZnkCWTgc04sRllt0Ek0w2tCRQ36LeGbhgzkFBi36f6MCM/w==
   dependencies:
     "@open-web3/orml-type-definitions" "^0.9.1"
 
