@@ -124,8 +124,8 @@ export async function mktPriceBlock(block: SubstrateBlock): Promise<void> {
     if (JSON.stringify(assets_to_pair) === 'null') { continue }
     else {
       const address = JSON.parse(JSON.stringify(assets_to_pair)).account;
-      const currency_id_pool = await api.query.assets.accounts([address, { "Token": currency_id }]).catch(e => { console.log(e) });
-      const aUSD_pool = await api.query.assets.accounts([address, { "Token": "aUSD" }]).catch(e => { console.log(e) });
+      const currency_id_pool = await api.query.assets.accounts([address, { "token": currency_id }]).catch(e => { console.log(e) });
+      const aUSD_pool = await api.query.assets.accounts([address, { "token": "aUSD" }]).catch(e => { console.log(e) });
 
       let recordMktPrice = new mktPriceDayData(currency_id + '@' + getDayStartUnix(block));
       if (BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free) === BigInt(0)) { recordMktPrice.price = BigInt(0) }
