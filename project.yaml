@@ -3,8 +3,8 @@ description: ''
 repository: 'https://github.com/bifrost-finance/'
 schema: ./schema.graphql
 network:
-  endpoint: 'wss://bifrost-rpc.testnet.liebi.com'
-  # endpoint: 'wss://rpc.polkadot.io'
+  # endpoint: 'wss://bifrost-rpc.testnet.liebi.com'
+  endpoint: 'wss://n1.testnet.liebi.com'
   types: {
     "TAssetBalance": "Balance",
     "ParachainInherentData": "u128",
