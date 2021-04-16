@@ -4,7 +4,7 @@ import { VtokenPool, Compact } from '@bifrost-finance/types';
 import { getDayStartUnix } from '../common';
 
 import { Transaction } from "../types/models/Transaction";
-import { AssetsToken } from "../types/models/assetsToken";
+import { AssetsToken } from "../types/models/AssetsToken";
 import { TransactionDayData } from "../types/models/TransactionDayData";
 
 const ONE_BI = BigInt(1);

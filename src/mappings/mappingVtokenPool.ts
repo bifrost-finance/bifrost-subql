@@ -2,9 +2,9 @@ import { SubstrateBlock } from "@subql/types";
 import { CurrencyId, Balance, AccountData, AccountId } from "@bifrost-finance/types/interfaces";
 import { getDayStartUnix, get7DayStartUnix, tokenSplit } from '../common';
 import { MintPriceDayData } from "../types/models/MintPriceDayData";
-import { Apr } from "../types/models/apr";
-import { Revenue } from "../types/models/revenue";
-import { MktPriceDayData } from "../types/models/mktPriceDayData";
+import { Apr } from "../types/models/Apr";
+import { Revenue } from "../types/models/Revenue";
+import { MktPriceDayData } from "../types/models/MktPriceDayData";
 
 const tokens = ["ASG", "aUSD", "DOT", "vDOT", "KSM", "vKSM", "ETH", "vETH"]; // , "EOS", "vEOS", "IOST", "vIOST"
 const vTokens = ["vDOT", "vKSM", "vETH"]; // "vEOS", "vIOST"

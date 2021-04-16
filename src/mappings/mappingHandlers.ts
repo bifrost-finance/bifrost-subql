@@ -1,6 +1,6 @@
 import {SignedBlock} from "@polkadot/types/interfaces";
 import {SubstrateExtrinsic,SubstrateEvent} from "@subql/types";
-import {StarterEntity} from "../types/models/starterEntity";
+import {StarterEntity} from "../types/models/StarterEntity";
 import {Balance, Moment} from "@polkadot/types/interfaces";
 import {SubstrateBlock} from "@subql/types";
 
