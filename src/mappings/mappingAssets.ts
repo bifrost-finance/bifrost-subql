@@ -4,7 +4,7 @@ import { VtokenPool, Compact } from '@bifrost-finance/types';
 import { getDayStartUnix } from '../common';
 
 import { Transaction } from "../types/models/Transaction";
-import { assetsToken } from "../types/models/assetsToken";
+import { AssetsToken } from "../types/models/assetsToken";
 import { TransactionDayData } from "../types/models/TransactionDayData";
 
 const ONE_BI = BigInt(1);
@@ -18,7 +18,7 @@ function createTransactionDayData(index: string, balance: bigint): TransactionDa
 
 export async function assetsCreatedEvent(event: SubstrateEvent): Promise<void> {
   const { event: { data: [id, token1] } } = event;
-  let record = new assetsToken(event.extrinsic.block.block.header.hash.toString());
+  let record = new AssetsToken(event.extrinsic.block.block.header.hash.toString());
 
   let token = (await api.query.assets.tokens(id as AssetId)) as Token;
   record.symbol = (token.symbol as AssetId).toString();

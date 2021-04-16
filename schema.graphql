@@ -1,4 +1,4 @@
-type starterEntity @entity {
+type StarterEntity @entity {
 
   id: ID! #id is a required field
 
@@ -13,7 +13,7 @@ type starterEntity @entity {
 
 }
 
-type assetsToken @entity {
+type AssetsToken @entity {
   id: ID!
   symbol: String
   precision: Int
@@ -60,7 +60,7 @@ type Transaction @entity{
 #   tokenPool: BigInt
 # }
 
-type mktPriceDayData @entity{
+type MktPriceDayData @entity{
   id: ID!
   blockHeight: BigInt
   currencyId: String
@@ -68,7 +68,7 @@ type mktPriceDayData @entity{
   price: BigInt
 }
 
-type mintPriceDayData @entity{
+type MintPriceDayData @entity{
   id: ID!
   blockHeight: BigInt
   currencyId: String
@@ -77,14 +77,14 @@ type mintPriceDayData @entity{
   price: BigInt
 }
 
-type apr @entity{
+type Apr @entity{
   id: ID!  # currencyId
   blockHeight: BigInt
   apr: BigInt
   time: Date
 }
 
-type revenue @entity{
+type Revenue @entity{
   id: ID!  # currencyId
   blockHeight: BigInt
   revenue: BigInt

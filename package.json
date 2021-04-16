@@ -17,12 +17,12 @@
   "author": "Bifrost",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@polkadot/api": "^4",
-    "@subql/cli": "^0.8.0",
-    "@subql/types": "^0.6.1",
+    "@polkadot/api": "^4.5.1",
+    "@subql/cli": "^0.8.1-0",
+    "@subql/types": "^0.6.2-2",
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "@bifrost-finance/api": "1.1.4"
+    "@bifrost-finance/api": "1.1.9"
   }
 }
