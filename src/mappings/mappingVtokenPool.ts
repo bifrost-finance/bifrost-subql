@@ -71,7 +71,7 @@ export async function aprBlock(block: SubstrateBlock): Promise<void> {
       await recordApr.save().catch(e => { console.log(e) });
     } else if (aprResult.time.getTime() < block.timestamp.getTime()) {
       const recordDailyMintPrice = await MintPriceDayData.get(currency_id + '@' + get7DayStartUnix(block));
-      if (recordDailyMintPrice === undefined) {
+      if (recordDailyMintPrice === undefined || recordDailyMintPrice.price === BigInt(0)) {
         if (currency_id === "vETH") { aprResult.apr = BigInt(80000000000); }
         if (currency_id === "vDOT") { aprResult.apr = BigInt(139000000000); }
         if (currency_id === "vKSM") { aprResult.apr = BigInt(150000000000); }
