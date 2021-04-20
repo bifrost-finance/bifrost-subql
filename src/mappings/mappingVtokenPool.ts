@@ -115,24 +115,26 @@ export async function revenueBlock(block: SubstrateBlock): Promise<void> {
 
 export async function mktPriceBlock(block: SubstrateBlock): Promise<void> {
   if (block.block.header.number.toNumber() % 10 !== 0) { return }
-  for (let i = 0; i < tokens.length; i++) {
-    const currency_id = tokens[i];
-    let assets_to_pair = await api.query.zenlinkProtocol.assetsToPair([{ "ParaCurrency": 1 }, { "ParaCurrency": i }]).catch(e => { console.log(e) });
-    if (i === 0) {
-      assets_to_pair = await api.query.zenlinkProtocol.assetsToPair([{ "ParaCurrency": 0 }, { "ParaCurrency": 1 }]).catch(e => { console.log(e) });
-    }
+  let zenlink_pairs = await api.query.zenlinkProtocol.pairs().catch(e => { console.log(e) });
+  const pairs = JSON.parse(JSON.stringify(zenlink_pairs))
+  for (let i = 0; i < pairs.length; i++) {
+    const token0_index = pairs[i][0].asset_index;
+    const token1_index = pairs[i][1].asset_index;
+    const token0 = tokens[token0_index];
+    const token1 = tokens[token1_index];
+    let assets_to_pair = await api.query.zenlinkProtocol.assetsToPair(pairs[i]).catch(e => { console.log(e) });
     if (JSON.stringify(assets_to_pair) === 'null') { continue }
     else {
       const address = JSON.parse(JSON.stringify(assets_to_pair)).account;
-      const currency_id_pool = await api.query.assets.accounts([address, { "token": currency_id }]).catch(e => { console.log(e) });
-      const aUSD_pool = await api.query.assets.accounts([address, { "token": "aUSD" }]).catch(e => { console.log(e) });
-
-      let recordMktPrice = new MktPriceDayData(currency_id + '@' + getDayStartUnix(block));
-      if (BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free) === BigInt(0)) { recordMktPrice.price = BigInt(0) }
+      const token0_pool = await api.query.assets.accounts([address, { "Token": token0 }]).catch(e => { console.log(e) });
+      const token1_pool = await api.query.assets.accounts([address, { "Token": token1 }]).catch(e => { console.log(e) });
+      let recordMktPrice = new MktPriceDayData(token1 + '-' + token0 + '@' + getDayStartUnix(block));
+      if (BigInt(JSON.parse(JSON.stringify(token1_pool)).free) === BigInt(0)) { recordMktPrice.price = BigInt(0) }
       else {
-        recordMktPrice.price = BigInt(JSON.parse(JSON.stringify(aUSD_pool)).free) * unit / BigInt(JSON.parse(JSON.stringify(currency_id_pool)).free);
+        recordMktPrice.price = BigInt(JSON.parse(JSON.stringify(token0_pool)).free) * unit / BigInt(JSON.parse(JSON.stringify(token1_pool)).free);
       }
-      recordMktPrice.currencyId = currency_id;
+      recordMktPrice.currencyId = token1;
+      recordMktPrice.baseCurrencyId = token0;
       recordMktPrice.time = block.timestamp;
       recordMktPrice.blockHeight = block.block.header.number.toBigInt();
       await recordMktPrice.save().catch(e => { console.log(e) });

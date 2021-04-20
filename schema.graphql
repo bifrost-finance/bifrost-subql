@@ -64,6 +64,7 @@ type MktPriceDayData @entity{
   id: ID!
   blockHeight: BigInt
   currencyId: String
+  baseCurrencyId: String
   time: Date
   price: BigInt
 }
