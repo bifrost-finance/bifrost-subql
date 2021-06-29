@@ -9,17 +9,16 @@ import { MktPriceDayData } from "../types/models/MktPriceDayData";
 const tokens = ["ASG", "aUSD", "DOT", "vDOT", "KSM", "vKSM", "ETH", "vETH"]; // , "EOS", "vEOS", "IOST", "vIOST"
 const vTokens = ["vDOT", "vKSM", "vETH"]; // "vEOS", "vIOST"
 const unit = BigInt(1000000000000);
+// const native_tokens = ["ASG", "aUSD", "DOT", "KSM", "ETH"];
 
 export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
   if (block.block.header.number.toNumber() % 10 !== 0) { return }
   for (let i = 0; i < tokens.length; i++) {
     const currency_id = tokens[i];
-    const [currency_id_token, currency_id_vtoken, token_type] = tokenSplit(currency_id);
+    const [currency_id_token, currency_id_vtoken, token_type, native_currency_id] = tokenSplit(currency_id);
     let recordDailyMintPrice = await MintPriceDayData.get(currency_id + '@' + getDayStartUnix(block));
     if (recordDailyMintPrice === undefined) { // 如果此块所处当日还未记录mintprice（说明此块是当日第一个块），则记录一下
-      const token_pool = ((await api.query.vtokenMint.mintPool(({
-        "Token": currency_id
-      }) as CurrencyId).catch(e => { console.log(e) })) as Balance).toBigInt();
+      const token_pool = ((await api.query.vtokenMint.mintPool((JSON.parse(native_currency_id)) as CurrencyId).catch(e => { console.log(e) })) as Balance).toBigInt();
       let recordMintPriceDayData = new MintPriceDayData(currency_id + '@' + getDayStartUnix(block));
       recordMintPriceDayData.pool = token_pool;
       recordMintPriceDayData.currencyId = currency_id;
@@ -36,9 +35,7 @@ export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
       }
       await recordMintPriceDayData.save().catch(e => { console.log(e) });
     } else if (recordDailyMintPrice.time.getTime() < block.timestamp.getTime()) {
-      const token_pool = ((await api.query.vtokenMint.mintPool(({
-        "Token": currency_id
-      }) as CurrencyId).catch(e => { console.log(e) })) as Balance).toBigInt();
+      const token_pool = ((await api.query.vtokenMint.mintPool((JSON.parse(native_currency_id)) as CurrencyId).catch(e => { console.log(e) })) as Balance).toBigInt();
       const recordDailyMintPrice = await MintPriceDayData.get(currency_id + '@' + getDayStartUnix(block));
       recordDailyMintPrice.pool = token_pool;
       recordDailyMintPrice.currencyId = currency_id;
@@ -115,19 +112,21 @@ export async function revenueBlock(block: SubstrateBlock): Promise<void> {
 
 export async function mktPriceBlock(block: SubstrateBlock): Promise<void> {
   if (block.block.header.number.toNumber() % 10 !== 0) { return }
-  let zenlink_pairs = await api.query.zenlinkProtocol.pairs().catch(e => { console.log(e) });
+  let zenlink_pairs = await api.rpc.zenlinkProtocol.getAllPairs().catch(e => { console.log(e) });
   const pairs = JSON.parse(JSON.stringify(zenlink_pairs))
   for (let i = 0; i < pairs.length; i++) {
     const token0_index = pairs[i][0].asset_index;
     const token1_index = pairs[i][1].asset_index;
     const token0 = tokens[token0_index];
     const token1 = tokens[token1_index];
-    let assets_to_pair = await api.query.zenlinkProtocol.assetsToPair(pairs[i]).catch(e => { console.log(e) });
+    let assets_to_pair = await api.query.zenlinkProtocol.getPairByAssetId(pairs[i]).catch(e => { console.log(e) });
     if (JSON.stringify(assets_to_pair) === 'null') { continue }
     else {
       const address = JSON.parse(JSON.stringify(assets_to_pair)).account;
       const token0_pool = await api.query.assets.accounts([address, { "Token": token0 }]).catch(e => { console.log(e) });
       const token1_pool = await api.query.assets.accounts([address, { "Token": token1 }]).catch(e => { console.log(e) });
+      // console.log(token0_pool);
+      // console.log(token1_pool);
       let recordMktPrice = new MktPriceDayData(token1 + '-' + token0 + '@' + getDayStartUnix(block));
       if (BigInt(JSON.parse(JSON.stringify(token1_pool)).free) === BigInt(0)) { recordMktPrice.price = BigInt(0) }
       else {

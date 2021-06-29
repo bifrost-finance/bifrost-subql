@@ -19,13 +19,13 @@ function get7DayStartUnix(block: SubstrateBlock): string {
 //   return timestamp.toString()
 // }
 
-function tokenSplit(tokenName: string): String[] {
+function tokenSplit(tokenName: string): string[] {
   const substring = "v";
   if (tokenName.includes(substring)) {
     const words = tokenName.split(substring);
-    return [words[1], tokenName, 'vToken']
+    return [words[1], tokenName, 'vToken', JSON.stringify({ VToken: words[1] })]
   } else {
-    return [tokenName, "v" + tokenName, 'token']
+    return [tokenName, "v" + tokenName, 'token', JSON.stringify({ Token: tokenName })]
   }
 }
 

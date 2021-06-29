@@ -1,0 +1,1 @@
+export { default as zenlinkProtocol } from './zenlinkProtocol/definitions';
