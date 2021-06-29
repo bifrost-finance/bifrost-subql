@@ -5,105 +5,117 @@ schema: ./schema.graphql
 network:
   endpoint: 'wss://asgard-rpc.liebi.com/ws'
   # endpoint: 'ws://10.115.26.113:9988'
-  typesBundle: {
-    spec: {
-      chainname: {
-        rpc: {
-    getAllPairs: {
-        description: 'Get the information of all the exchange pairs.',
-        params: [{
-            name: 'at',
-            type: 'BlockHash',
-            isHistoric: true,
-            isOptional: true
-        }],
-        type: 'Vec<PairInfo>'
-    }
-}
-      }
-    }
-  }
   types: {
-  "TokenSymbol": {
-    "_enum": {
-      "ASG": 0,
-      "aUSD": 2,
-      "DOT": 3,
-      "KSM": 4,
-      "ETH": 5
-    }
-  },
-  "CurrencyId": {
-    "_enum": {
-      "Token": "TokenSymbol",
-      "VToken": "TokenSymbol",
-      "Native": "TokenSymbol",
-      "Stable": "TokenSymbol",
-      "VSToken": "TokenSymbol",
-      "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)"
-    }
-  },
-  "CurrencyIdOf": "CurrencyId",
-  "TAssetBalance": "Balance",
-  "AccountData": {
-    "free": "Balance",
-    "reserved": "Balance",
-    "frozen": "Balance"
-  },
-  "PalletBalanceOf": "Balance",
-  "BlockNumberFor": "BlockNumber",
-  "NumberOrHex": {
-    "_enum": {
-      "Number": "u64",
-      "Hex": "U256"
-    }
-  },
-  "IsExtended": "bool",
-  "SystemPalletId": "PalletId",
-  "RewardRecord": {
-    "account_id": "AccountId",
-    "record_amount": "Balance"
-  },
-  "MaxLocksOf": "u32",
-  "VestingInfo": {
-    "locked": "Balance",
-    "per_block": "Balance",
-    "starting_block": "BlockNumber"
-  },
-  "OrderId": "u64",
-  "OrderInfo": {
-    "owner": "AccountIdOf",
-    "currency_sold": "CurrencyIdOf",
-    "amount_sold": "BalanceOf",
-    "currency_expected": "CurrencyIdOf",
-    "amount_expected": "BalanceOf",
-    "order_id": "OrderId",
-    "order_state": "OrderState"
-  },
-  "OrderState": {
-    "_enum": [
-      "InTrade",
-      "Revoked",
-      "Clinchd"
-    ]
-  },
-  "AssetId": {
-    "chain_id": "u32",
-    "asset_type": "u8",
-    "asset_index": "u32"
-  },
-  "AssetBalance": "u128",
-  "PairInfo": {
-    "asset_0": "AssetId",
-    "asset_1": "AssetId",
-    "account": "AccountId",
-    "total_liquidity": "AssetBalance",
-    "holding_liquidity": "AssetBalance",
-    "reserve_0": "AssetBalance",
-    "reserve_1": "AssetBalance",
-    "lp_asset_id": "AssetId"
+      "TokenSymbol": {
+          "_enum": {
+              "ASG": 0,
+              "aUSD": 2,
+              "DOT": 3,
+              "KSM": 4,
+              "ETH": 5
+          }
+      },
+      "CurrencyId": {
+          "_enum": {
+              "Token": "TokenSymbol",
+              "VToken": "TokenSymbol",
+              "Native": "TokenSymbol",
+              "Stable": "TokenSymbol",
+              "VSToken": "TokenSymbol",
+              "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)"
+          }
+      },
+      "CurrencyIdOf": "CurrencyId",
+      "TAssetBalance": "Balance",
+      "AmountOf": "i128",
+      "StorageVersion": "Releases",
+      "ShareWeight": "Balance",
+      "OrmlAccountData": {
+          "free": "Balance",
+          "reserved": "Balance",
+          "frozen": "Balance"
+      },
+      "PalletBalanceOf": "Balance",
+      "BlockNumberFor": "BlockNumber",
+      "NumberOrHex": {
+          "_enum": {
+              "Number": "u64",
+              "Hex": "U256"
+          }
+      },
+      "IsExtended": "bool",
+      "SystemPalletId": "PalletId",
+      "RewardRecord": {
+          "account_id": "AccountId",
+          "record_amount": "Balance"
+      },
+      "MaxLocksOf": "u32",
+      "VestingInfo": {
+          "locked": "Balance",
+          "per_block": "Balance",
+          "starting_block": "BlockNumber"
+      },
+      "OrderId": "u64",
+      "OrderInfo": {
+          "owner": "AccountIdOf",
+          "currency_sold": "CurrencyIdOf",
+          "amount_sold": "BalanceOf",
+          "currency_expected": "CurrencyIdOf",
+          "amount_expected": "BalanceOf",
+          "order_id": "OrderId",
+          "order_state": "OrderState"
+      },
+      "OrderState": {
+          "_enum": [
+              "InTrade",
+              "Revoked",
+              "Clinchd"
+          ]
+      },
+      "AssetId": {
+          "chain_id": "u32",
+          "asset_type": "u8",
+          "asset_index": "u32"
+      },
+      "AssetBalance": "u128",
+      "PairInfo": {
+          "asset0": "AssetId",
+          "asset1": "AssetId",
+          "account": "AccountId",
+          "totalLiquidity": "AssetBalance",
+          "holdingLiquidity": "AssetBalance",
+          "reserve0": "AssetBalance",
+          "reserve1": "AssetBalance",
+          "lpAssetId": "AssetId"
+      },
+      "BancorPool": {
+          "currency_id": "CurrencyId",
+          "token_pool": "Balance",
+          "vstoken_pool": "Balance",
+          "token_base_supply": "Balance",
+          "vstoken_base_supply": "Balance"
+      }
   }
-}
+  typesBundle: {
+      "spec": {
+          "bifrost": {
+              "types": [
+              {
+                  "minmax": [
+                      0,
+                      null
+                  ],
+                  "types": {
+                      "AccountInfo": "AccountInfoWithRefCount",
+                      "Address": "MultiAddress",
+                      "LookupSource": "MultiAddress",
+                      "TAssetBalance": "Balance"
+                  }
+              }
+              ]
+          }
+      }
+  }
 dataSources:
   - name: main
     kind: substrate/Runtime
