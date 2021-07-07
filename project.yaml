@@ -4,7 +4,6 @@ repository: 'git@github.com:bifrost-finance/bifrost-subql.git'
 schema: ./schema.graphql
 network:
   endpoint: 'wss://asgard-rpc.liebi.com/ws'
-  # endpoint: 'ws://10.115.26.113:9988'
   types: {
       "TokenSymbol": {
           "_enum": {
@@ -97,24 +96,24 @@ network:
       }
   }
   typesBundle: {
-      "spec": {
-          "bifrost": {
-              "types": [
-              {
-                  "minmax": [
-                      0,
-                      null
-                  ],
-                  "types": {
-                      "AccountInfo": "AccountInfoWithRefCount",
-                      "Address": "MultiAddress",
-                      "LookupSource": "MultiAddress",
-                      "TAssetBalance": "Balance"
-                  }
+    spec: {
+      chainname: {
+        rpc: {
+          zenlinkProtocol: {
+            getAllPairs: {
+              description: 'Get the information of all the exchange pairs.',
+              params: [{
+                name: 'at',
+                type: 'BlockHash',
+                isHistoric: true,
+                isOptional: true
+                }],
+                type: 'Vec<PairInfo>'
               }
-              ]
+            }
           }
       }
+    }
   }
 dataSources:
   - name: main
@@ -142,12 +141,12 @@ dataSources:
         - handler: assetsIssuedEvent
           kind: substrate/EventHandler
           filter:
-            module: brmlAssets
+            module: bifrostAssets
             method: Issued
         - handler: assetsBurnedEvent
           kind: substrate/EventHandler
           filter:
-            module: brmlAssets
+            module: bifrostAssets
             method: Burned
         - handler: assetsBlock
           kind: substrate/BlockHandler

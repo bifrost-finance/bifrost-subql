@@ -1,5 +1,6 @@
 import { SubstrateBlock } from "@subql/types";
-import { CurrencyId, Balance, AccountData, AccountId } from "@bifrost-finance/types/interfaces";
+import { Balance, AccountData, AccountId } from "@polkadot/types/interfaces";
+import { CurrencyId } from "@bifrost-finance/types/interfaces";
 import { getDayStartUnix, get7DayStartUnix, tokenSplit } from '../common';
 import { MintPriceDayData } from "../types/models/MintPriceDayData";
 import { Apr } from "../types/models/Apr";

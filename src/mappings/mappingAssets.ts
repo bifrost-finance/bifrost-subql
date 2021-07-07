@@ -1,6 +1,7 @@
 import { SubstrateExtrinsic, SubstrateEvent, SubstrateBlock } from "@subql/types";
-import { BlockNumber, Balance, Moment, AssetId, Token, u16, TokenType, Price, AccountId, CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
-import { VtokenPool, Compact } from '@bifrost-finance/types';
+import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
+import { BlockNumber, Balance, Moment, AssetId, AccountId, } from "@polkadot/types/interfaces";
+import { Compact } from '@polkadot/types';
 import { getDayStartUnix } from '../common';
 
 import { Transaction } from "../types/models/Transaction";
@@ -16,17 +17,17 @@ function createTransactionDayData(index: string, balance: bigint): TransactionDa
   return entity;
 }
 
-export async function assetsCreatedEvent(event: SubstrateEvent): Promise<void> {
-  const { event: { data: [id, token1] } } = event;
-  let record = new AssetsToken(event.extrinsic.block.block.header.hash.toString());
+// export async function assetsCreatedEvent(event: SubstrateEvent): Promise<void> {
+//   const { event: { data: [id, token1] } } = event;
+//   let record = new AssetsToken(event.extrinsic.block.block.header.hash.toString());
 
-  let token = (await api.query.assets.tokens(id as AssetId)) as Token;
-  record.symbol = (token.symbol as AssetId).toString();
-  record.precision = (token.precision as u16).toNumber();
-  record.total_supply = (token.total_supply as Balance).toBigInt();
-  record.token_type = (token.token_type as TokenType).toString();
-  await record.save();
-}
+//   let token = (await api.query.assets.tokens(id as AssetId)) as Token;
+//   record.symbol = (token.symbol as AssetId).toString();
+//   record.precision = token.precision.toNumber();
+//   record.total_supply = (token.total_supply as Balance).toBigInt();
+//   record.token_type = token.token_type.toString();
+//   await record.save();
+// }
 
 export async function assetsTransferredEvent(event: SubstrateEvent): Promise<void> {
   const dayStartUnix = getDayStartUnix(event.block);
@@ -35,7 +36,7 @@ export async function assetsTransferredEvent(event: SubstrateEvent): Promise<voi
   const balance = (balance_origin as Balance).toBigInt();
   const account_from = (account_from_origin as AccountId).toString();
   const account_to = (account_to_origin as AccountId).toString();
-  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
+  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
 
   const entity = new Transaction(blockNumber.toString() + '-' + event.idx.toString());
   entity.blockHeight = blockNumber;
@@ -65,7 +66,7 @@ export async function assetsIssuedEvent(event: SubstrateEvent): Promise<void> {
   const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_to = (account_to_origin as AccountId).toString();
-  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
+  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
 
   const entity = new Transaction(blockNumber.toString() + '-' + event.idx.toString());
   entity.blockHeight = blockNumber;
@@ -106,7 +107,7 @@ export async function assetsBurnedEvent(event: SubstrateEvent): Promise<void> {
   const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_to = (account_to_origin as AccountId).toString();
-  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
+  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
 
   const entity = new Transaction(blockNumber.toString() + '-' + event.idx.toString());
   entity.blockHeight = blockNumber;
@@ -141,7 +142,7 @@ export async function vtokenMintMintedEvent(event: SubstrateEvent): Promise<void
   const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_id = (account_id_origin as AccountId).toString();
-  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
+  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
 
   const entity = new Transaction(blockNumber.toString() + '-' + event.idx.toString());
   entity.blockHeight = blockNumber;
@@ -176,7 +177,7 @@ export async function vtokenMintRedeemStartedEvent(event: SubstrateEvent): Promi
   const tokenSymbol = JSON.parse((currency_id_origin as CurrencyId).toString()).token;
   const balance = (balance_origin as Balance).toBigInt();
   const account_id = (account_id_origin as AccountId).toString();
-  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toNumber();
+  const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
 
   const entity = new Transaction(blockNumber.toString() + '-' + event.idx.toString());
   entity.blockHeight = blockNumber;

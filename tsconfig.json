@@ -12,11 +12,10 @@
       "rootDir": "src",
       "target": "es2017",
       "paths": {
-        "kitty-birthinfo/*": ["src/*"],
+        "bifrost-subql/*": ["src/*"],
         "@polkadot/api/augment": ["src/api-interfaces/augment-api.ts"],
         "@polkadot/types/augment": ["src/api-interfaces/augment-types.ts"],
-        "@bifrost-finance/types/interfaces/bridgeEos": ["src/api-interfaces/bridgeEos/types.ts"],
-        "@bifrost-finance/types/interfaces/zenlinkProtocol": ["src/api-interfaces/zenlinkProtocol/types.ts"]
+        "@bifrost-finance/types/interfaces": ["src/api-interfaces/types.ts"],
       }
     },
     "include": [

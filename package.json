@@ -27,9 +27,5 @@
     "@polkadot/typegen": "^4.14.1",
     "ts-node": "^9.0.0",
     "@polkadot/types": "^4.14.1"
-  },
-  "dependencies": {
-    "@polkadot/api": "^4.14.1",
-    "@bifrost-finance/api": "^1.1.42"
   }
 }
