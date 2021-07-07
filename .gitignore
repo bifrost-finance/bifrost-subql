@@ -50,8 +50,3 @@ Thumbs.db
 
 .data
 src/types
-src/api-interfaces/augment*
-src/api-interfaces/index.ts
-src/api-interfaces/types.ts
-src/api-interfaces/zenlinkProtocol/index.ts
-src/api-interfaces/zenlinkProtocol/types.ts
