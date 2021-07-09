@@ -5,116 +5,170 @@ schema: ./schema.graphql
 network:
   endpoint: 'wss://asgard-rpc.liebi.com/ws'
   types: {
-      "TokenSymbol": {
-          "_enum": {
-              "ASG": 0,
-              "aUSD": 2,
-              "DOT": 3,
-              "KSM": 4,
-              "ETH": 5
-          }
-      },
-      "CurrencyId": {
-          "_enum": {
-              "Token": "TokenSymbol",
-              "VToken": "TokenSymbol",
-              "Native": "TokenSymbol",
-              "Stable": "TokenSymbol",
-              "VSToken": "TokenSymbol",
-              "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)"
-          }
-      },
-      "CurrencyIdOf": "CurrencyId",
-      "TAssetBalance": "Balance",
-      "AmountOf": "i128",
-      "StorageVersion": "Releases",
-      "ShareWeight": "Balance",
-      "OrmlAccountData": {
-          "free": "Balance",
-          "reserved": "Balance",
-          "frozen": "Balance"
-      },
-      "PalletBalanceOf": "Balance",
-      "BlockNumberFor": "BlockNumber",
-      "NumberOrHex": {
-          "_enum": {
-              "Number": "u64",
-              "Hex": "U256"
-          }
-      },
-      "IsExtended": "bool",
-      "SystemPalletId": "PalletId",
-      "RewardRecord": {
-          "account_id": "AccountId",
-          "record_amount": "Balance"
-      },
-      "MaxLocksOf": "u32",
-      "VestingInfo": {
-          "locked": "Balance",
-          "per_block": "Balance",
-          "starting_block": "BlockNumber"
-      },
-      "OrderId": "u64",
-      "OrderInfo": {
-          "owner": "AccountIdOf",
-          "currency_sold": "CurrencyIdOf",
-          "amount_sold": "BalanceOf",
-          "currency_expected": "CurrencyIdOf",
-          "amount_expected": "BalanceOf",
-          "order_id": "OrderId",
-          "order_state": "OrderState"
-      },
-      "OrderState": {
-          "_enum": [
-              "InTrade",
-              "Revoked",
-              "Clinchd"
-          ]
-      },
-      "AssetId": {
-          "chain_id": "u32",
-          "asset_type": "u8",
-          "asset_index": "u32"
-      },
-      "AssetBalance": "u128",
-      "PairInfo": {
-          "asset0": "AssetId",
-          "asset1": "AssetId",
-          "account": "AccountId",
-          "totalLiquidity": "AssetBalance",
-          "holdingLiquidity": "AssetBalance",
-          "reserve0": "AssetBalance",
-          "reserve1": "AssetBalance",
-          "lpAssetId": "AssetId"
-      },
-      "BancorPool": {
-          "currency_id": "CurrencyId",
-          "token_pool": "Balance",
-          "vstoken_pool": "Balance",
-          "token_base_supply": "Balance",
-          "vstoken_base_supply": "Balance"
-      }
+  "TokenSymbol": {
+    "_enum": {
+      "ASG": 0,
+      "AUSD": 2,
+      "DOT": 3,
+      "KSM": 4,
+      "ETH": 5
+    }
+  },
+  "CurrencyId": {
+    "_enum": {
+      "Token": "TokenSymbol",
+      "VToken": "TokenSymbol",
+      "Native": "TokenSymbol",
+      "Stable": "TokenSymbol",
+      "VSToken": "TokenSymbol",
+      "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)"
+    }
+  },
+  "CurrencyIdOf": "CurrencyId",
+  "TAssetBalance": "Balance",
+  "AmountOf": "Balance",
+  "StorageVersion": "Releases",
+  "ShareWeight": "Balance",
+  "OrmlAccountData": {
+    "free": "Balance",
+    "reserved": "Balance",
+    "frozen": "Balance"
+  },
+  "PalletBalanceOf": "Balance",
+  "BlockNumberFor": "BlockNumber",
+  "NumberOrHex": {
+    "_enum": {
+      "Number": "u64",
+      "Hex": "U256"
+    }
+  },
+  "IsExtended": "bool",
+  "SystemPalletId": "PalletId",
+  "TrieIndex": "u32",
+  "FundInfo": {
+    "depositor": "AccountId",
+    "deposit": "Balance",
+    "raised": "Balance",
+    "cap": "Balance",
+    "first_slot": "LeasePeriod",
+    "last_slot": "LeasePeriod",
+    "trie_index": "TrieIndex",
+    "status": "FundStatus"
+  },
+  "FundStatus": {
+    "_enum": [
+      "Ongoing",
+      "Retired",
+      "Success",
+      "Failed",
+      "Withdrew",
+      "End"
+    ]
+  },
+  "ContributionStatus": {
+    "_enum": [
+      "Contributing",
+      "Contributed",
+      "Redeeming",
+      "Redeemed"
+    ]
+  },
+  "CrowdloanContributeCall": {
+    "_enum": {
+      "CrowdloanContribute": "ContributeCall"
+    }
+  },
+  "ContributeCall": {
+    "_enum": {
+      "Contribute": "Contribution"
+    }
+  },
+  "Contribution": {
+    "index": "ParaId",
+    "value": "BalanceOf",
+    "signature": "Option<MultiSignature>"
+  },
+  "Withdraw": {
+    "who": "AccountIdOf",
+    "index": "ParaId"
+  },
+  "WithdrawCall": {
+    "_enum": {
+      "Withdraw": "Withdraw"
+    }
+  },
+  "RewardRecord": {
+    "account_id": "AccountId",
+    "record_amount": "Balance"
+  },
+  "MaxLocksOf": "u32",
+  "BifrostVestingInfo": {
+    "locked": "Balance",
+    "per_block": "Balance",
+    "starting_block": "BlockNumber"
+  },
+  "OrderId": "u64",
+  "OrderInfo": {
+    "owner": "AccountIdOf",
+    "vsbond": "CurrencyId",
+    "supply": "u128",
+    "remain": "u128",
+    "unit_price": "u128",
+    "order_id": "OrderId",
+    "order_state": "OrderState"
+  },
+  "OrderState": {
+    "_enum": [
+      "InTrade",
+      "Revoked",
+      "Clinchd"
+    ]
+  },
+  "ZenlinkAssetId": {
+    "chain_id": "u32",
+    "asset_type": "u8",
+    "asset_index": "u32"
+  },
+  "ZenlinkAssetBalance": "u128",
+  "PairInfo": {
+    "asset0": "ZenlinkAssetId",
+    "asset1": "ZenlinkAssetId",
+    "account": "AccountId",
+    "totalLiquidity": "ZenlinkAssetBalance",
+    "holdingLiquidity": "ZenlinkAssetBalance",
+    "reserve0": "ZenlinkAssetBalance",
+    "reserve1": "ZenlinkAssetBalance",
+    "lpAssetId": "ZenlinkAssetId"
+  },
+  "BancorPool": {
+    "currency_id": "CurrencyId",
+    "token_pool": "Balance",
+    "vstoken_pool": "Balance",
+    "token_base_supply": "Balance",
+    "vstoken_base_supply": "Balance"
   }
+}
   typesBundle: {
     spec: {
-      chainname: {
-        rpc: {
-          zenlinkProtocol: {
-            getAllPairs: {
-              description: 'Get the information of all the exchange pairs.',
-              params: [{
-                name: 'at',
-                type: 'BlockHash',
-                isHistoric: true,
-                isOptional: true
-                }],
-                type: 'Vec<PairInfo>'
-              }
+        asgard: {
+            rpc: {
+                zenlinkProtocol: {
+                    getAllPairs: {
+                        description: 'Get the information of all the exchange pairs.',
+                        params: [{
+                            name: 'at',
+                            type: 'BlockHash',
+                            isHistoric: true,
+                            isOptional: true
+                        }],
+                        type: 'Vec<PairInfo>'
+                    }
+                }
             }
-          }
-      }
+        }
     }
-  }
+}
+
 dataSources:
   - name: main
     kind: substrate/Runtime

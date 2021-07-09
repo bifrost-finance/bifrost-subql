@@ -682,22 +682,22 @@ declare module '@polkadot/api/types/storage' {
        * Foreign foreign storage
        * The number of units of assets held by any given account.
        **/
-      foreignLedger: AugmentedQuery<ApiType, (arg: ITuple<[AssetId, AccountId]> | [AssetId | { chain_id?: any; asset_type?: any; asset_index?: any } | string | Uint8Array, AccountId | string | Uint8Array]) => Observable<AssetBalance>, [ITuple<[AssetId, AccountId]>]> & QueryableStorageEntry<ApiType, [ITuple<[AssetId, AccountId]>]>;
+      foreignLedger: AugmentedQuery<ApiType, (arg: ITuple<[AssetId, AccountId]> | [AssetId | AnyNumber | Uint8Array, AccountId | string | Uint8Array]) => Observable<AssetBalance>, [ITuple<[AssetId, AccountId]>]> & QueryableStorageEntry<ApiType, [ITuple<[AssetId, AccountId]>]>;
       foreignList: AugmentedQuery<ApiType, () => Observable<Vec<AssetId>>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * TWOX-NOTE: `AssetId` is trusted, so this is safe.
        **/
-      foreignMeta: AugmentedQuery<ApiType, (arg: AssetId | { chain_id?: any; asset_type?: any; asset_index?: any } | string | Uint8Array) => Observable<AssetBalance>, [AssetId]> & QueryableStorageEntry<ApiType, [AssetId]>;
+      foreignMeta: AugmentedQuery<ApiType, (arg: AssetId | AnyNumber | Uint8Array) => Observable<AssetBalance>, [AssetId]> & QueryableStorageEntry<ApiType, [AssetId]>;
       /**
        * ((AssetId, AssetId), AccountId) -> AssetBalance
        **/
-      liquidityLedger: AugmentedQuery<ApiType, (arg: ITuple<[ITuple<[AssetId, AssetId]>, AccountId]> | [ITuple<[AssetId, AssetId]> | [AssetId | { chain_id?: any; asset_type?: any; asset_index?: any } | string | Uint8Array, AssetId | { chain_id?: any; asset_type?: any; asset_index?: any } | string | Uint8Array], AccountId | string | Uint8Array]) => Observable<AssetBalance>, [ITuple<[ITuple<[AssetId, AssetId]>, AccountId]>]> & QueryableStorageEntry<ApiType, [ITuple<[ITuple<[AssetId, AssetId]>, AccountId]>]>;
+      liquidityLedger: AugmentedQuery<ApiType, (arg: ITuple<[ITuple<[AssetId, AssetId]>, AccountId]> | [ITuple<[AssetId, AssetId]> | [AssetId | AnyNumber | Uint8Array, AssetId | AnyNumber | Uint8Array], AccountId | string | Uint8Array]) => Observable<AssetBalance>, [ITuple<[ITuple<[AssetId, AssetId]>, AccountId]>]> & QueryableStorageEntry<ApiType, [ITuple<[ITuple<[AssetId, AssetId]>, AccountId]>]>;
       /**
        * Swap liquidity storage
        * TWOX-NOTE: `AssetId` is trusted, so this is safe.
        * (AssetId, AssetId) -> (PairAccountId, TotalSupply)
        **/
-      liquidityMeta: AugmentedQuery<ApiType, (arg: ITuple<[AssetId, AssetId]> | [AssetId | { chain_id?: any; asset_type?: any; asset_index?: any } | string | Uint8Array, AssetId | { chain_id?: any; asset_type?: any; asset_index?: any } | string | Uint8Array]) => Observable<Option<ITuple<[AccountId, AssetBalance]>>>, [ITuple<[AssetId, AssetId]>]> & QueryableStorageEntry<ApiType, [ITuple<[AssetId, AssetId]>]>;
+      liquidityMeta: AugmentedQuery<ApiType, (arg: ITuple<[AssetId, AssetId]> | [AssetId | AnyNumber | Uint8Array, AssetId | AnyNumber | Uint8Array]) => Observable<Option<ITuple<[AccountId, AssetBalance]>>>, [ITuple<[AssetId, AssetId]>]> & QueryableStorageEntry<ApiType, [ITuple<[AssetId, AssetId]>]>;
       liquidityPairs: AugmentedQuery<ApiType, () => Observable<Vec<ITuple<[AssetId, AssetId]>>>, []> & QueryableStorageEntry<ApiType, []>;
       /**
        * Generic query
