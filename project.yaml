@@ -146,6 +146,13 @@ network:
     "vstoken_pool": "Balance",
     "token_base_supply": "Balance",
     "vstoken_base_supply": "Balance"
+  },
+  "TransferOriginType": {
+    "_enum": [
+      "FromSelf",
+      "FromRelayChain",
+      "FromSiblingParaChain"
+    ]
   }
 }
   typesBundle: {
@@ -185,38 +192,40 @@ dataSources:
         # - handler: handleCall
         #   kind: substrate/CallHandler
         # mappingVtokenPool.ts:
-        - handler: vtokenPoolBlock
-          kind: substrate/BlockHandler
-        - handler: assetsTransferredEvent
-          kind: substrate/EventHandler
-          filter:
-            module: currencies
-            method: Transferred
-        - handler: assetsIssuedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: bifrostAssets
-            method: Issued
-        - handler: assetsBurnedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: bifrostAssets
-            method: Burned
-        - handler: assetsBlock
-          kind: substrate/BlockHandler
-        - handler: vtokenMintMintedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMint
-            method: Minted
-        - handler: vtokenMintRedeemStartedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMint
-            method: RedeemStarted
-        - handler: aprBlock
-          kind: substrate/BlockHandler
-        - handler: revenueBlock
-          kind: substrate/BlockHandler
-        - handler: mktPriceBlock
+        # - handler: vtokenPoolBlock
+        #   kind: substrate/BlockHandler
+        # - handler: assetsTransferredEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: currencies
+        #     method: Transferred
+        # - handler: assetsIssuedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: bifrostAssets
+        #     method: Issued
+        # - handler: assetsBurnedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: bifrostAssets
+        #     method: Burned
+        # - handler: assetsBlock
+        #   kind: substrate/BlockHandler
+        # - handler: vtokenMintMintedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: vtokenMint
+        #     method: Minted
+        # - handler: vtokenMintRedeemStartedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: vtokenMint
+        #     method: RedeemStarted
+        # - handler: aprBlock
+        #   kind: substrate/BlockHandler
+        # - handler: revenueBlock
+        #   kind: substrate/BlockHandler
+        # - handler: mktPriceBlock
+        #   kind: substrate/BlockHandler
+        - handler: rpcTest
           kind: substrate/BlockHandler

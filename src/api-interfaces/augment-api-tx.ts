@@ -3,6 +3,7 @@
 
 import type { Bytes, Compact, Option, Vec, bool, u16, u32, u64 } from '@polkadot/types';
 import type { AnyNumber } from '@polkadot/types/types';
+import type { ZenlinkAssetBalance as AssetBalance } from 'bifrost-subql/api-interfaces/zenlinkProtocol';
 import type { TAssetBalance } from '@polkadot/types/interfaces/assets';
 import type { MemberCount, ProposalIndex } from '@polkadot/types/interfaces/collective';
 import type { OverweightIndex } from '@polkadot/types/interfaces/cumulus';
@@ -15,7 +16,6 @@ import type { Key } from '@polkadot/types/interfaces/system';
 import type { MultiAsset, MultiLocation, Xcm } from '@polkadot/types/interfaces/xcm';
 import type { AmountOf, CurrencyId, CurrencyIdOf } from 'bifrost-subql/api-interfaces/aSharePrimitives';
 import type { ApiTypes, SubmittableExtrinsic } from '@polkadot/api/types';
-import type { ZenlinkAssetBalance as AssetBalance } from 'bifrost-subql/api-interfaces/zenlinkProtocol';
 
 declare module '@polkadot/api/types/submittable' {
   export interface AugmentedSubmittables<ApiType> {
