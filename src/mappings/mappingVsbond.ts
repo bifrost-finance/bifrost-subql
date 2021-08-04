@@ -6,8 +6,8 @@ import { VsbondInfo } from "../types/models/VsbondInfo";
 export async function vsbond(block: SubstrateBlock): Promise<void> {
   const blockNumber = (block.block.header.number as Compact<BlockNumber>).toBigInt();
 
-  const vsbondEvent = block.events.find(e => e.event.section === 'vsbondAuction') as SubstrateEvent;
-  if (vsbondEvent !== undefined) {
+  const vsbondEvents = block.events.filter(e => e.event.section === 'vsBondAuction') as SubstrateEvent[];
+  for (let vsbondEvent of vsbondEvents) {
     const { event: { data, section, method } } = vsbondEvent;
     const record = new VsbondInfo(blockNumber.toString() + '-' + vsbondEvent.idx.toString());
     record.blockHeight = blockNumber;

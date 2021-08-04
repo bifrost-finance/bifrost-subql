@@ -6,8 +6,8 @@ import { ZenlinkInfo } from "../types/models/ZenlinkInfo";
 export async function zenlink(block: SubstrateBlock): Promise<void> {
   const blockNumber = (block.block.header.number as Compact<BlockNumber>).toBigInt();
 
-  const zenlinkEvent = block.events.find(e => e.event.section === 'zenlinkProtocol') as SubstrateEvent;
-  if (zenlinkEvent !== undefined) {
+  const zenlinkEvents = block.events.filter(e => e.event.section === 'zenlinkProtocol') as SubstrateEvent[];
+  for (let zenlinkEvent of zenlinkEvents) {
     const { event: { data, section, method } } = zenlinkEvent;
     const record = new ZenlinkInfo(blockNumber.toString() + '-' + zenlinkEvent.idx.toString());
     record.blockHeight = blockNumber;
@@ -15,5 +15,6 @@ export async function zenlink(block: SubstrateBlock): Promise<void> {
     record.data = data.toString();
     await record.save();
   }
+
   return;
 }

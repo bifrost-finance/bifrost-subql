@@ -14,8 +14,8 @@ import { SalpRedeemFailed } from '../types/models/SalpRedeemFailed';
 export async function salp(block: SubstrateBlock): Promise<void> {
   const blockNumber = (block.block.header.number as Compact<BlockNumber>).toBigInt();
 
-  const salpEvent = block.events.find(e => e.event.section === 'salp') as SubstrateEvent;
-  if (salpEvent !== undefined) {
+  const salpEvents = block.events.filter(e => e.event.section === 'salp') as SubstrateEvent[];
+  for (let salpEvent of salpEvents) {
     let accountIdOf, paraId, balanceOf = null;
     const { event: { data, section, method } } = salpEvent;
     if (method === 'Created' || 'Dissolved') { paraId = (data[0] as ParaId).toNumber() }
@@ -30,7 +30,7 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     }
     const record = new SalpInfo(blockNumber.toString() + '-' + salpEvent.idx.toString());
     record.blockHeight = blockNumber;
-    record.method = section.toString() + "." + method.toString();
+    record.method = method.toString();
     record.data = data.toString();
     record.accountIdOf = accountIdOf;
     record.paraId = paraId;
@@ -38,8 +38,8 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     await record.save();
   }
 
-  const salpContributed = block.events.find(e => e.event.section === 'salp' && e.event.method === 'Contributed') as SubstrateEvent;
-  if (salpContributed !== undefined) {
+  const salpContributeds = block.events.filter(e => e.event.section === 'salp' && e.event.method === 'Contributed') as SubstrateEvent[];
+  for (let salpContributed of salpContributeds) {
     const { event: { data: [accountIdOf, paraId, balanceOf], section, method } } = salpContributed;
     const record = new SalpContributed(blockNumber.toString() + '-' + salpContributed.idx.toString());
     record.blockHeight = blockNumber;
@@ -49,8 +49,8 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     await record.save();
   }
 
-  const salpContributeFailed = block.events.find(e => e.event.section === 'salp' && e.event.method === 'ContributeFailed') as SubstrateEvent;
-  if (salpContributeFailed !== undefined) {
+  const salpContributeFaileds = block.events.filter(e => e.event.section === 'salp' && e.event.method === 'ContributeFailed') as SubstrateEvent[];
+  for (let salpContributeFailed of salpContributeFaileds) {
     const { event: { data: [accountIdOf, paraId, balanceOf], section, method } } = salpContributeFailed;
     const record = new SalpContributeFailed(blockNumber.toString() + '-' + salpContributeFailed.idx.toString());
     record.blockHeight = blockNumber;
@@ -60,8 +60,8 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     await record.save();
   }
 
-  const salpWithdrew = block.events.find(e => e.event.section === 'salp' && e.event.method === 'Withdrew') as SubstrateEvent;
-  if (salpWithdrew !== undefined) {
+  const salpWithdrews = block.events.filter(e => e.event.section === 'salp' && e.event.method === 'Withdrew') as SubstrateEvent[];
+  for (let salpWithdrew of salpWithdrews) {
     const { event: { data: [accountIdOf, paraId, balanceOf], section, method } } = salpWithdrew;
     const record = new SalpWithdrew(blockNumber.toString() + '-' + salpWithdrew.idx.toString());
     record.blockHeight = blockNumber;
@@ -71,8 +71,8 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     await record.save();
   }
 
-  const salpRedeemed = block.events.find(e => e.event.section === 'salp' && e.event.method === 'Redeemed') as SubstrateEvent;
-  if (salpRedeemed !== undefined) {
+  const salpRedeemeds = block.events.filter(e => e.event.section === 'salp' && e.event.method === 'Redeemed') as SubstrateEvent[];
+  for (let salpRedeemed of salpRedeemeds) {
     const { event: { data: [accountIdOf, paraId, balanceOf], section, method } } = salpRedeemed;
     const record = new SalpRedeemed(blockNumber.toString() + '-' + salpRedeemed.idx.toString());
     record.blockHeight = block.block.header.number.toBigInt();
@@ -81,8 +81,8 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     await record.save();
   }
 
-  const salpRedeemFailed = block.events.find(e => e.event.section === 'salp' && e.event.method === 'RedeemFailed') as SubstrateEvent;
-  if (salpRedeemFailed !== undefined) {
+  const salpRedeemFaileds = block.events.filter(e => e.event.section === 'salp' && e.event.method === 'RedeemFailed') as SubstrateEvent[];
+  for (let salpRedeemFailed of salpRedeemFaileds) {
     const { event: { data: [accountIdOf, paraId, balanceOf], section, method } } = salpRedeemFailed;
     const record = new SalpRedeemFailed(blockNumber.toString() + '-' + salpRedeemFailed.idx.toString());
     record.blockHeight = block.block.header.number.toBigInt();
@@ -91,10 +91,10 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     await record.save();
   }
 
-  const salpWithdrawFailed = block.events.find(e => e.event.section === 'salp' && e.event.method === 'WithdrawFailed') as SubstrateEvent;
-  if (salpWithdrawFailed !== undefined) {
+  const salpWithdrawFaileds = block.events.filter(e => e.event.section === 'salp' && e.event.method === 'WithdrawFailed') as SubstrateEvent[];
+  for (let salpWithdrawFailed of salpWithdrawFaileds) {
     const { event: { data: [accountIdOf, paraId, balanceOf], section, method } } = salpWithdrawFailed;
-    const record = new SalpWithdrawFailed(blockNumber.toString() + '-' + salpWithdrew.idx.toString());
+    const record = new SalpWithdrawFailed(blockNumber.toString() + '-' + salpWithdrawFailed.idx.toString());
     record.blockHeight = block.block.header.number.toBigInt();
     record.accountIdOf = (accountIdOf as AccountIdOf).toString();
     record.balanceOf = BigInt(1);
