@@ -91,3 +91,73 @@ type Revenue @entity{
   revenue: BigInt
   time: Date
 }
+
+type ZenlinkInfo @entity {
+  id: ID!
+  blockHeight: BigInt!
+  method: String!
+  data: String!
+}
+
+type VsbondInfo @entity {
+  id: ID!
+  blockHeight: BigInt!
+  method: String!
+  data: String!
+}
+
+type SalpInfo @entity {
+  id: ID!
+  blockHeight: BigInt!
+  method: String!
+  accountIdOf: String
+  paraId: Int
+  balanceOf: BigInt
+  data: String!
+}
+
+type SalpContributed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpContributeFailed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpWithdrew @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpWithdrawFailed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpRedeemed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  balanceOf: BigInt!
+}
+
+type SalpRedeemFailed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  balanceOf: BigInt!
+}

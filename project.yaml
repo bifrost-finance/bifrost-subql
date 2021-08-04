@@ -3,137 +3,201 @@ description: ''
 repository: 'git@github.com:bifrost-finance/bifrost-subql.git'
 schema: ./schema.graphql
 network:
-  endpoint: 'wss://bifrost-rpc.testnet.liebi.com'
+  endpoint: 'wss://asgard-rpc.liebi.com/ws'
   types: {
-    "TokenSymbol": {
-        "_enum": {
-            "ASG": 0,
-            "aUSD": 1,
-            "DOT": 2,
-            "vDOT": 3,
-            "KSM": 4,
-            "vKSM": 5,
-            "ETH": 6,
-            "vETH": 7,
-            "EOS": 8,
-            "vEOS": 9,
-            "IOST": 10,
-            "vIOST": 11
-        }
-    },
-    "CurrencyId": {
-        "_enum": {
-            "Token": "TokenSymbol"
-        }
-    },
-    "AmountOf": "i128",
-    "ChainId": {
-        "_enum": {
-            "RelayChain": "Null",
-            "ParaChain": "ParaId"
-        }
-    },
-    "XCurrencyId": {
-        "chainId": "ChainId",
-        "currencyId": "Vec<u8>"
-    },
-    "CurrencyIdOf": "CurrencyId",
-    "IsExtended": "bool",
-    "StorageVersion": "Releases",
-    "ShareWeight": "Balance",
-    "PalletBalanceOf": "Balance",
-    "BlockNumberFor": "BlockNumber",
-    "NumberOrHex": {
-        "_enum": {
-            "Number": "u64",
-            "Hex": "U256"
-        }
-    },
-    "TokenBalance": "Balance",
-    "TokenId": "u32",
-    "PairId": "u32",
-    "Pair": {
-        "token_0": "AssetId",
-        "token_1": "AssetId",
-        "account": "AccountId",
-        "total_liquidity": "TokenBalance",
-        "lp_asset_id": "AssetId"
-    },
-    "PairInfo": {
-        "token_0": "AssetId",
-        "token_1": "AssetId",
-        "account": "AccountId",
-        "total_liquidity": "TokenBalance",
-        "holding_liquidity": "TokenBalance",
-        "reserve_0": "TokenBalance",
-        "reserve_1": "TokenBalance",
-        "lp_asset_id": "AssetId"
-    },
-    "AssetId": {
-        "chain_id": "u32",
-        "module_index": "u8",
-        "asset_index": "u32"
-    },
-    "AssetProperty": {
-        "_enum": {
-            "Foreign": null,
-            "Lp": "LpProperty"
-        }
-    },
-    "LpProperty": {
-        "token_0": "AssetId",
-        "token_1": "AssetId"
-    },
-    "PalletId": "u32"
+  "TokenSymbol": {
+    "_enum": {
+      "ASG": 0,
+      "AUSD": 2,
+      "DOT": 3,
+      "KSM": 4,
+      "ETH": 5
+    }
+  },
+  "CurrencyId": {
+    "_enum": {
+      "Token": "TokenSymbol",
+      "VToken": "TokenSymbol",
+      "Native": "TokenSymbol",
+      "Stable": "TokenSymbol",
+      "VSToken": "TokenSymbol",
+      "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)"
+    }
+  },
+  "CurrencyIdOf": "CurrencyId",
+  "TAssetBalance": "Balance",
+  "AmountOf": "Balance",
+  "StorageVersion": "Releases",
+  "ShareWeight": "Balance",
+  "OrmlAccountData": {
+    "free": "Balance",
+    "reserved": "Balance",
+    "frozen": "Balance"
+  },
+  "PalletBalanceOf": "Balance",
+  "BlockNumberFor": "BlockNumber",
+  "NumberOrHex": {
+    "_enum": {
+      "Number": "u64",
+      "Hex": "U256"
+    }
+  },
+  "IsExtended": "bool",
+  "SystemPalletId": "PalletId",
+  "TrieIndex": "u32",
+  "FundInfo": {
+    "depositor": "AccountId",
+    "deposit": "Balance",
+    "raised": "Balance",
+    "cap": "Balance",
+    "first_slot": "LeasePeriod",
+    "last_slot": "LeasePeriod",
+    "trie_index": "TrieIndex",
+    "status": "FundStatus"
+  },
+  "FundStatus": {
+    "_enum": [
+      "Ongoing",
+      "Retired",
+      "Success",
+      "Failed",
+      "Withdrew",
+      "End"
+    ]
+  },
+  "ContributionStatus": {
+    "_enum": [
+      "Contributing",
+      "Contributed",
+      "Redeeming",
+      "Redeemed"
+    ]
+  },
+  "CrowdloanContributeCall": {
+    "_enum": {
+      "CrowdloanContribute": "ContributeCall"
+    }
+  },
+  "ContributeCall": {
+    "_enum": {
+      "Contribute": "Contribution"
+    }
+  },
+  "Contribution": {
+    "index": "ParaId",
+    "value": "BalanceOf",
+    "signature": "Option<MultiSignature>"
+  },
+  "Withdraw": {
+    "who": "AccountIdOf",
+    "index": "ParaId"
+  },
+  "WithdrawCall": {
+    "_enum": {
+      "Withdraw": "Withdraw"
+    }
+  },
+  "RewardRecord": {
+    "account_id": "AccountId",
+    "record_amount": "Balance"
+  },
+  "MaxLocksOf": "u32",
+  "BifrostVestingInfo": {
+    "locked": "Balance",
+    "per_block": "Balance",
+    "starting_block": "BlockNumber"
+  },
+  "OrderId": "u64",
+  "OrderInfo": {
+    "owner": "AccountIdOf",
+    "vsbond": "CurrencyId",
+    "supply": "u128",
+    "remain": "u128",
+    "unit_price": "u128",
+    "order_id": "OrderId",
+    "order_state": "OrderState"
+  },
+  "OrderState": {
+    "_enum": [
+      "InTrade",
+      "Revoked",
+      "Clinchd"
+    ]
+  },
+  "AssetId": {
+    "chain_id": "u32",
+    "asset_type": "u8",
+    "asset_index": "u32"
+  },
+  "AssetBalance": "u128",
+  "PairInfo": {
+    "asset0": "AssetId",
+    "asset1": "AssetId",
+    "account": "AccountId",
+    "totalLiquidity": "AssetBalance",
+    "holdingLiquidity": "AssetBalance",
+    "reserve0": "AssetBalance",
+    "reserve1": "AssetBalance",
+    "lpAssetId": "AssetId"
+  },
+  "BancorPool": {
+    "currency_id": "CurrencyId",
+    "token_pool": "Balance",
+    "vstoken_pool": "Balance",
+    "token_base_supply": "Balance",
+    "vstoken_base_supply": "Balance"
+  },
+  "TransferOriginType": {
+    "_enum": [
+      "FromSelf",
+      "FromRelayChain",
+      "FromSiblingParaChain"
+    ]
+  }
 }
 dataSources:
   - name: main
     kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 30100
     mapping:
       handlers:
-        # - handler: handleBlock
+        # mappingVtokenPool.ts:
+        # - handler: vtokenPoolBlock
         #   kind: substrate/BlockHandler
-        # - handler: handleEvent
+        # - handler: assetsTransferredEvent
         #   kind: substrate/EventHandler
         #   filter:
-        #     module: balances
-        #     method: Deposit
-        # - handler: handleCall
-        #   kind: substrate/CallHandler
-        # mappingVtokenPool.ts:
-        - handler: vtokenPoolBlock
+        #     module: currencies
+        #     method: Transferred
+        # - handler: assetsIssuedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: brmlAssets
+        #     method: Issued
+        # - handler: assetsBurnedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: brmlAssets
+        #     method: Burned
+        # - handler: assetsBlock
+        #   kind: substrate/BlockHandler
+        # - handler: vtokenMintMintedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: vtokenMint
+        #     method: Minted
+        # - handler: vtokenMintRedeemStartedEvent
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: vtokenMint
+        #     method: RedeemStarted
+        # - handler: aprBlock
+        #   kind: substrate/BlockHandler
+        # - handler: revenueBlock
+        #   kind: substrate/BlockHandler
+        # - handler: mktPriceBlock
+        #   kind: substrate/BlockHandler
+        - handler: zenlink
           kind: substrate/BlockHandler
-        - handler: assetsTransferredEvent
-          kind: substrate/EventHandler
-          filter:
-            module: currencies
-            method: Transferred
-        - handler: assetsIssuedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: brmlAssets
-            method: Issued
-        - handler: assetsBurnedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: brmlAssets
-            method: Burned
-        - handler: assetsBlock
-          kind: substrate/BlockHandler
-        - handler: vtokenMintMintedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMint
-            method: Minted
-        - handler: vtokenMintRedeemStartedEvent
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMint
-            method: RedeemStarted
-        - handler: aprBlock
-          kind: substrate/BlockHandler
-        - handler: revenueBlock
-          kind: substrate/BlockHandler
-        - handler: mktPriceBlock
+        - handler: salp
           kind: substrate/BlockHandler
