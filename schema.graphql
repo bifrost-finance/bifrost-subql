@@ -91,3 +91,95 @@ type Revenue @entity{
   revenue: BigInt
   time: Date
 }
+
+type ZenlinkInfo @entity {
+  id: ID!
+  block_height: BigInt!
+  block_timestamp: Date!
+  method: String!
+  data: String!
+}
+
+type ZenlinkLiquidityCalculation @entity {
+  id: ID!
+  block_height: BigInt!
+  block_timestamp: Date!
+  event_id: Int
+  extrinsic_id: Int
+  owner: String
+  recipient: String
+  asset_0: String
+  asset_1: String
+  balance_in: BigInt
+  balance_out: BigInt
+  add_balance_0: BigInt
+  add_balance_1: BigInt
+  mint_balance_lp: BigInt
+  rm_balance_0: BigInt
+  rm_balance_1: BigInt
+  burn_balance_lp: BigInt
+}
+
+type VsbondInfo @entity {
+  id: ID!
+  block_height: BigInt!
+  block_timestamp: Date!
+  method: String!
+  data: String!
+}
+
+type SalpInfo @entity {
+  id: ID!
+  blockHeight: BigInt!
+  method: String!
+  accountIdOf: String
+  paraId: Int
+  balanceOf: BigInt
+  data: String!
+}
+
+type SalpContributed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpContributeFailed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpWithdrew @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpWithdrawFailed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  paraId: Int!
+  balanceOf: BigInt!
+}
+
+type SalpRedeemed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  balanceOf: BigInt!
+}
+
+type SalpRedeemFailed @entity {
+  id: ID!
+  blockHeight: BigInt!
+  accountIdOf: String!
+  balanceOf: BigInt!
+}
