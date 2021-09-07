@@ -18,14 +18,14 @@ export async function salp(block: SubstrateBlock): Promise<void> {
   for (let salpEvent of salpEvents) {
     let accountIdOf, paraId, balanceOf = null;
     const { event: { data, section, method } } = salpEvent;
-    if (method === 'Created' || 'Dissolved') { paraId = (data[0] as ParaId).toNumber() }
+    if (method === 'Created' || 'Dissolved') { paraId = (data[0] as ParaId).toString() }
     else if (method === 'Redeeming' || 'Redeemed' || 'RedeemFailed') {
       accountIdOf = data[0].toString();
       balanceOf = (data[1] as BalanceOf).toBigInt()
     }
     else {
       accountIdOf = data[0].toString();
-      paraId = (data[1] as ParaId).toNumber();
+      paraId = (data[1] as ParaId).toString();
       balanceOf = (data[2] as BalanceOf).toBigInt()
     }
     const record = new SalpInfo(blockNumber.toString() + '-' + salpEvent.idx.toString());
@@ -44,7 +44,7 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     const record = new SalpContributed(blockNumber.toString() + '-' + salpContributed.idx.toString());
     record.blockHeight = blockNumber;
     record.accountIdOf = (accountIdOf as AccountIdOf).toString();
-    record.paraId = (paraId as ParaId).toNumber();
+    record.paraId = (paraId as ParaId).toString();
     record.balanceOf = (balanceOf as BalanceOf).toBigInt();
     await record.save();
   }
@@ -55,7 +55,7 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     const record = new SalpContributeFailed(blockNumber.toString() + '-' + salpContributeFailed.idx.toString());
     record.blockHeight = blockNumber;
     record.accountIdOf = (accountIdOf as AccountIdOf).toString();
-    record.paraId = (paraId as ParaId).toNumber();
+    record.paraId = (paraId as ParaId).toString();
     record.balanceOf = (balanceOf as BalanceOf).toBigInt();
     await record.save();
   }
@@ -66,7 +66,7 @@ export async function salp(block: SubstrateBlock): Promise<void> {
     const record = new SalpWithdrew(blockNumber.toString() + '-' + salpWithdrew.idx.toString());
     record.blockHeight = blockNumber;
     record.accountIdOf = (accountIdOf as AccountIdOf).toString();
-    record.paraId = (paraId as ParaId).toNumber();
+    record.paraId = (paraId as ParaId).toString();
     record.balanceOf = (balanceOf as BalanceOf).toBigInt();
     await record.save();
   }
