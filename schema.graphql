@@ -140,46 +140,61 @@ type SalpInfo @entity {
 
 type SalpContributed @entity {
   id: ID!
-  blockHeight: BigInt!
-  accountIdOf: String!
-  paraId: String!
-  balanceOf: BigInt!
+  block_height: Int!
+  event_id: Int!
+  extrinsic_id: Int!
+  block_timestamp: Date!
+  account: String
+  para_id: Int
+  balance: BigInt
+  message_id: String
 }
 
-type SalpContributeFailed @entity {
-  id: ID!
-  blockHeight: BigInt!
-  accountIdOf: String!
-  paraId: String!
-  balanceOf: BigInt!
-}
+# type SalpContributeFailed @entity {
+#   id: ID!
+#   blockHeight: BigInt!
+#   accountIdOf: String!
+#   paraId: String!
+#   balanceOf: BigInt!
+# }
 
-type SalpWithdrew @entity {
-  id: ID!
-  blockHeight: BigInt!
-  accountIdOf: String!
-  paraId: String!
-  balanceOf: BigInt!
-}
+# type SalpWithdrew @entity {
+#   id: ID!
+#   blockHeight: BigInt!
+#   accountIdOf: String!
+#   paraId: String!
+#   balanceOf: BigInt!
+# }
 
-type SalpWithdrawFailed @entity {
-  id: ID!
-  blockHeight: BigInt!
-  accountIdOf: String!
-  paraId: String!
-  balanceOf: BigInt!
-}
+# type SalpWithdrawFailed @entity {
+#   id: ID!
+#   blockHeight: BigInt!
+#   accountIdOf: String!
+#   paraId: String!
+#   balanceOf: BigInt!
+# }
 
-type SalpRedeemed @entity {
-  id: ID!
-  blockHeight: BigInt!
-  accountIdOf: String!
-  balanceOf: BigInt!
-}
+# type SalpRedeemed @entity {
+#   id: ID!
+#   blockHeight: BigInt!
+#   accountIdOf: String!
+#   balanceOf: BigInt!
+# }
 
-type SalpRedeemFailed @entity {
+# type SalpRedeemFailed @entity {
+#   id: ID!
+#   blockHeight: BigInt!
+#   accountIdOf: String!
+#   balanceOf: BigInt!
+# }
+
+type SalpContribution @entity {
   id: ID!
-  blockHeight: BigInt!
-  accountIdOf: String!
-  balanceOf: BigInt!
+  block_height: Int!
+  block_timestamp: Date!
+  method: String!
+  account: String
+  para_id: Int
+  balance: BigInt
+  message_id: String
 }

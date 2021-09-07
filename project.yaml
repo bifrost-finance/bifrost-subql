@@ -542,3 +542,10 @@ dataSources:
           kind: substrate/BlockHandler
         - handler: vsbond
           kind: substrate/BlockHandler
+        - handler: salpContribution
+          kind: substrate/BlockHandler
+        - handler: handleSalpContributed
+          kind: substrate/EventHandler
+          filter:
+            module: salp
+            method: Contributed
