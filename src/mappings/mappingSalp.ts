@@ -1,5 +1,5 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
-import { BlockNumber, Balance } from "@polkadot/types/interfaces";
+import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import { Compact } from '@polkadot/types';
 import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
@@ -110,12 +110,13 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
 
   const salpEvents = block.events.filter(e => e.event.section === 'salp') as SubstrateEvent[];
   for (let salpEvent of salpEvents) {
-    let accountIdOf, paraId, balanceOf = null;
+    let accountIdOf, paraId, balanceOf, message_id = null;
     const { event: { data, section, method } } = salpEvent;
     if (method === 'Contributing' || method === 'Contributed' || method === 'ContributeFailed') {
       accountIdOf = data[0].toString();
       paraId = (data[1] as ParaId).toNumber();
       balanceOf = (data[2] as BalanceOf).toBigInt();
+      message_id = (data[3] as MessageId).toString();
       const record = new SalpContribution(blockNumber.toString() + '-' + salpEvent.idx.toString());
       record.block_height = blockNumber;
       record.block_timestamp = block.timestamp;
@@ -123,6 +124,7 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
       record.account = accountIdOf;
       record.para_id = paraId;
       record.balance = balanceOf;
+      record.message_id = message_id;
       await record.save();
     }
   }
@@ -140,6 +142,6 @@ export async function handleSalpContributed(event: SubstrateEvent): Promise<void
   record.account = account.toString();
   record.para_id = (para_id as ParaId).toNumber();
   record.balance = (balance as Balance).toBigInt();
-  // record.message_id = (message_id as MessageId).toString();
+  record.message_id = (message_id as MessageId).toString();
   await record.save();
 }
