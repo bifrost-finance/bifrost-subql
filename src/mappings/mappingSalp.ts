@@ -24,11 +24,11 @@ export async function salp(block: SubstrateBlock): Promise<void> {
       accountIdOf = data[0].toString();
       balanceOf = (data[1] as BalanceOf).toBigInt()
     }
-    else {
-      accountIdOf = data[0].toString();
-      paraId = (data[1] as ParaId).toString();
-      balanceOf = (data[2] as BalanceOf).toBigInt()
-    }
+    // else {
+    //   accountIdOf = data[0].toString();
+    //   paraId = (data[1] as ParaId).toString();
+    //   balanceOf = (data[2] as BalanceOf).toBigInt()
+    // }
     const record = new SalpInfo(blockNumber.toString() + '-' + salpEvent.idx.toString());
     record.blockHeight = blockNumber;
     record.method = method.toString();
