@@ -3,7 +3,7 @@ description: ''
 repository: 'git@github.com:bifrost-finance/bifrost-subql.git'
 schema: ./schema.graphql
 network:
-  endpoint: 'wss://bifrost-rpc.testnet.liebi.com/ws'
+  endpoint: 'wss://bifrost-rpc.liebi.com/ws'
   types: {
     "CallOf": "Call",
     "DispatchTime": {
@@ -489,7 +489,7 @@ network:
 dataSources:
   - name: main
     kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 372000
     mapping:
       handlers:
         # mappingVtokenPool.ts:
