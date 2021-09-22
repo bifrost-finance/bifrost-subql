@@ -65,17 +65,19 @@ network:
     "VestingScheduleOf": "OrmlVestingSchedule",
     "PoolInfo": {
         "pool_id": "PoolId",
-        "creator": "AccountId",
+        "keeper": "AccountId",
+        "investor": "Option<AccountId>",
         "trading_pair": "(CurrencyId, CurrencyId)",
-        "min_deposit_to_start": "Balance",
         "duration": "BlockNumber",
-        "after_block_to_start": "BlockNumber",
-        "update_b": "BlockNumber",
-        "deposit": "Balance",
-        "rewards": "(CurrencyId, RewardData)",
-        "state": "PoolState",
         "type": "PoolType",
-        "block_startup": "BlockNumber"
+        "min_deposit_to_start": "Balance",
+        "after_block_to_start": "BlockNumber",
+        "deposit": "Balance",
+        "rewards": "BTreeMap<CurrencyId, RewardData>",
+        "update_b": "BlockNumber",
+        "state": "PoolState",
+        "block_startup": "Option<BlockNumber>",
+        "block_retired": "Option<BlockNumber>"
     },
     "Share": "u128",
     "OracleValue": "Price",
@@ -460,31 +462,33 @@ network:
         }
     },
     "PoolType": {
-        "_enum": [
-            "Mining",
-            "Farming"
-        ]
+        "_enum": {
+            "Mining": 0,
+            "Farming": 1,
+            "EBFarming": 2
+        }
     },
     "PoolState": {
-        "_enum": [
-            "UnderAudit",
-            "Approved",
-            "Ongoing",
-            "Retired",
-            "Dead"
-        ]
+        "_enum": {
+            "UnCharged": 0,
+            "Charged": 1,
+            "Ongoing": 2,
+            "Retired": 3,
+            "Dead": 4
+        }
     },
     "DepositData": {
         "deposit": "Balance",
-        "gain_avgs": "(CurrencyId, FixedU128)",
+        "gain_avgs": "BTreeMap<CurrencyId, FixedU128>",
         "update_b": "BlockNumber"
     },
     "RewardData": {
-        "total": "BalanceOf",
-        "per_block": "BalanceOf",
-        "claimed": "BalanceOf",
+        "total": "Balance",
+        "per_block": "Balance",
+        "claimed": "Balance",
         "gain_avg": "FixedU128"
-    }
+    },
+    "MultiLocation": "MultiLocationV0"
 }
 dataSources:
   - name: main
