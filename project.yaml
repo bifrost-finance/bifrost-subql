@@ -560,3 +560,8 @@ dataSources:
           filter:
             module: salp
             method: Contributed
+        - handler: handleSalpRefunded
+          kind: substrate/EventHandler
+          filter:
+            module: salp
+            method: Refunded

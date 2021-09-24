@@ -11,6 +11,7 @@ import { SalpContributed } from '../types/models/SalpContributed';
 // import { SalpRedeemed } from '../types/models/SalpRedeemed';
 // import { SalpRedeemFailed } from '../types/models/SalpRedeemFailed';
 import { SalpContribution } from '../types/models/SalpContribution';
+import { SalpRefunded } from '../types/models/SalpRefunded';
 
 export async function salp(block: SubstrateBlock): Promise<void> {
   const blockNumber = (block.block.header.number as Compact<BlockNumber>).toBigInt();
@@ -143,5 +144,20 @@ export async function handleSalpContributed(event: SubstrateEvent): Promise<void
   record.para_id = (para_id as ParaId).toNumber();
   record.balance = (balance as Balance).toBigInt();
   record.message_id = (message_id as MessageId).toString();
+  await record.save();
+}
+
+export async function handleSalpRefunded(event: SubstrateEvent): Promise<void> {
+  const blockNumber = event.block.block.header.number.toNumber();
+
+  const { event: { data: [account, para_id, balance] } } = event;
+  const record = new SalpRefunded(blockNumber.toString() + '-' + event.idx.toString());
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.extrinsic_id = event.extrinsic.idx;
+  record.block_timestamp = event.block.timestamp;
+  record.account = account.toString();
+  record.para_id = (para_id as ParaId).toNumber();
+  record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
