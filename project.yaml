@@ -494,7 +494,7 @@ network:
 dataSources:
   - name: main
     kind: substrate/Runtime
-    startBlock: 372000
+    startBlock: 144500
     mapping:
       handlers:
         # mappingVtokenPool.ts:
@@ -566,3 +566,18 @@ dataSources:
           filter:
             module: salp
             method: Refunded
+        - handler: handleXtokensTransferred
+          kind: substrate/EventHandler
+          filter:
+            module: xTokens
+            method: Transferred
+        - handler: handleCurrenciesDeposited
+          kind: substrate/EventHandler
+          filter:
+            module: currencies
+            method: Deposited
+        - handler: handleBalancesTransfer
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Transfer
