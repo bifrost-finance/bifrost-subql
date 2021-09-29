@@ -1,0 +1,25 @@
+[
+  {
+    "database": "postgres",
+    "index": "salp_contributions",
+    "nodes": {
+      "table": "salp_contributions",
+      "transform": {
+        "mapping": {
+          "block_timestamp": {
+            "type": "date"
+          },
+          "account": {
+            "type": "keyword"
+          },
+          "message_id": {
+            "type": "keyword"
+          },
+          "id": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+]
