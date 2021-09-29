@@ -46,7 +46,7 @@ export async function handleBalancesTransfer(event: SubstrateEvent): Promise<voi
   const record = new BalancesTransfer(blockNumber.toString() + '-' + event.idx.toString());
   record.block_height = blockNumber;
   record.event_id = event.idx;
-  record.extrinsic_id = event.extrinsic.idx;
+  record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
   record.block_timestamp = event.block.timestamp;
   record.from = from.toString();
   record.to = to.toString();
