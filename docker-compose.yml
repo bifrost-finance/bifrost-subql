@@ -110,3 +110,10 @@ services:
       - ELASTICSEARCH_SCHEME=http
       - ELASTICSEARCH_HOST=elasticsearch
       - REDIS_HOST=redis
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 23000:3000
+    volumes:
+      - .data/grafana:/var/lib/grafana
