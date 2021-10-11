@@ -112,8 +112,14 @@ services:
       - REDIS_HOST=redis
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:8.2.0
     ports:
       - 23000:3000
+    links:
+      - postgres
+    user: 'root'
+    env_file:
+      - ./grafana/config.monitoring
     volumes:
       - .data/grafana:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
