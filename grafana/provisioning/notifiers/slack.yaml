@@ -1,0 +1,13 @@
+notifiers:
+  - name: slack-alarming-1
+    type: slack
+    uid: slack
+    org_id: 1
+    username: grafana
+    is_default: true
+    send_reminder: true
+    frequency: 1h
+    org_name: Bifrost
+    settings:
+      uploadImage: true
+      url: "https://hooks.slack.com/services/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"

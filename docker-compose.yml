@@ -34,7 +34,6 @@ services:
     image: onfinality/subql-node:latest
     depends_on:
       - "postgres"
-    restart: always
     environment:
       DB_USER: postgres
       DB_PASS: postgres
@@ -53,7 +52,6 @@ services:
       - 13000:3000
     depends_on:
       - "postgres"
-    restart: always
     environment:
       DB_USER: postgres
       DB_PASS: postgres
@@ -71,7 +69,6 @@ services:
       - "18080:8080"
     depends_on:
       - "postgres"
-    restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
       ## enable the console served by server
@@ -85,7 +82,7 @@ services:
   pgsync:
     image: govpf/pgsync:2.1.0
     volumes:
-      - ./schema:/schema
+      - ./pgsync/schema:/schema
     command: >
       sh -c "bootstrap --config /schema/salp.json &&
             pgsync --config /schema/salp.json --daemon"
@@ -115,6 +112,8 @@ services:
     image: grafana/grafana:8.2.0
     ports:
       - 23000:3000
+    depends_on:
+      - postgres
     links:
       - postgres
     user: 'root'
@@ -123,3 +122,24 @@ services:
     volumes:
       - .data/grafana:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
+
+  postgraphile:
+    image: graphile/postgraphile:v4.12.3
+    env_file:
+      - ./postgraphile/.env
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    ports:
+      - 5000:5000
+    command:
+      [
+          "--connection",
+          "postgres://postgres:postgres@postgres:5432/postgres",
+          "--port",
+          "5000",
+          "--schema",
+          "public",
+          "--watch"
+      ]

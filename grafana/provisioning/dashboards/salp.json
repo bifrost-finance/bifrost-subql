@@ -115,7 +115,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "select block_timestamp as time,account,para_id,balance from salp_contributions t where t.message_id in (\n    select message_id\n    from (\n             SELECT message_id, count(*) as cnt\n             FROM salp_contributions\n             group by message_id) contributions\n    where contributions.cnt = 1\n) and t.block_timestamp < NOW() - INTERVAL '1 HOURS'\n",
+                    "rawSql": "select block_timestamp as time,account,para_id,balance from unconfirmed_contributions\n",
                     "refId": "A",
                     "select": [
                         [
@@ -149,7 +149,7 @@
                 "y": 8
             },
             "id": 4,
-            "title": "Row title",
+            "title": "Top 2 contributors",
             "type": "row"
         },
         {
@@ -233,7 +233,7 @@
                     "group": [],
                     "metricColumn": "none",
                     "rawQuery": true,
-                    "rawSql": "select NOW() AS \"time\", para_id::text AS metric, contributed as value FROM ( \nselect * from(\nselect para_id,account,contributed,row_number() over (partition by para_id order by contributed desc) as contribution_rank from(\nSELECT\n  sum(balance) as contributed,\n  para_id,account\nFROM salp_contributions\nGROUP BY para_id,account\nORDER BY contributed desc) contributions) ranks_1\nwhere contribution_rank<=2) ranks_2",
+                    "rawSql": "select NOW() AS \"time\", para_id::text AS metric, contributed as value FROM topN_contributors",
                     "refId": "A",
                     "select": [
                         [
@@ -274,5 +274,5 @@
     "timezone": "",
     "title": "contribution",
     "uid": "3y1pN8D7k",
-    "version": 5
+    "version": 9
 }
