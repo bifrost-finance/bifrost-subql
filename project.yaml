@@ -1,4 +1,4 @@
-specVersion: 0.9.2
+specVersion: 0.0.1
 description: ''
 repository: 'git@github.com:bifrost-finance/bifrost-subql.git'
 schema: ./schema.graphql
