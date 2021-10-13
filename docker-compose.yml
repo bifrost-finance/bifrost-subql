@@ -145,6 +145,19 @@ services:
           "--watch"
       ]
 
+  substrate-node:
+    image: paritytech/ci-linux:002c04ad-20211013
+    working_dir: /var/www/node-template
+    ports:
+      - "9944:9944"
+      - "9933:9933"
+      - "9615:9615"
+    environment:
+      - CARGO_HOME=/var/www/node-template/.cargo
+    volumes:
+      - ../../myrust/substrate-node-template:/var/www/node-template
+    command: bash -c "cargo +nightly build --release && ./target/release/node-template --dev --ws-external --rpc-external --rpc-cors=all --unsafe-rpc-external --rpc-methods=unsafe"
+
   prometheus:
     image: prom/prometheus:v2.30.2
     user: 'root'

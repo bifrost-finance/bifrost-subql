@@ -10,7 +10,7 @@ receivers:
       - url: 'http://127.0.0.1:5001/'
   - name: 'slack'
     slack_configs:
-      - api_url: "https://hooks.slack.com/services/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"
+      - api_url: "https://hooks.slack.com/services/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"
         channel: "#alert"
         text: "{{ range .Alerts }} {{ .Annotations.description}}\n {{end}} {{ .CommonAnnotations.username}} <{{.CommonAnnotations.link}}| click here>"
         title: "{{.CommonAnnotations.summary}}"

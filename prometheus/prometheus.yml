@@ -5,6 +5,7 @@ global:
       monitor: 'bifrost-monitor'
 
 rule_files:
+  - "rule_node.yml"
   - "rule_para.yml"
 
 # alert
@@ -20,6 +21,11 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
          - targets: ['localhost:9090']
+
+  - job_name: 'substrate-node'
+    scrape_interval: 5s
+    static_configs:
+      - targets: [ 'substrate-node:9615' ]
 
   - job_name: 'cadvisor'
     scrape_interval: 5s
