@@ -1,0 +1,20 @@
+pg_database:
+  query: "SELECT pg_database.datname, pg_database_size(pg_database.datname) as size_bytes FROM pg_database"
+  master: true
+  cache_seconds: 30
+  metrics:
+    - datname:
+        usage: "LABEL"
+        description: "Name of the database"
+    - size_bytes:
+        usage: "GAUGE"
+        description: "Disk space used by the database"
+
+salp_unconfirmed_contributions:
+  query: "SELECT count(*) as unconfirmed_contributions_cnt from unconfirmed_contributions"
+  master: true
+  cache_seconds: 30
+  metrics:
+    - unconfirmed_contributions_cnt:
+        usage: "COUNT"
+        description: "Count of Salp Unconfirmed Contributions"

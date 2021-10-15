@@ -156,7 +156,7 @@ services:
       - CARGO_HOME=/var/www/node-template/.cargo
     volumes:
       - ../../myrust/substrate-node-template:/var/www/node-template
-    command: bash -c "cargo +nightly build --release && ./target/release/node-template --dev --ws-external --rpc-external --rpc-cors=all --unsafe-rpc-external --rpc-methods=unsafe"
+    command: bash -c "cargo +nightly build --release && ./target/release/node-template --dev --ws-external --rpc-external --prometheus-external --rpc-cors=all --unsafe-rpc-external --rpc-methods=unsafe"
 
   prometheus:
     image: prom/prometheus:v2.30.2
@@ -210,3 +210,18 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
     ports:
       - 8080:8080
+
+  postgres-exporter:
+    image: bitnami/postgres-exporter:0.10.0
+    volumes:
+      - ./postgres-exporter:/etc/postgres-exporter
+    environment:
+      - DATA_SOURCE_URI=postgres:5432/postgres?sslmode=disable
+      - DATA_SOURCE_USER=postgres
+      - DATA_SOURCE_PASS=postgres
+      - PG_EXPORTER_DISABLE_DEFAULT_METRICS=true
+      - PG_EXPORTER_EXTEND_QUERY_PATH=/etc/postgres-exporter/query.yaml
+    ports:
+      - "9187:9187"
+    depends_on:
+      - postgres
