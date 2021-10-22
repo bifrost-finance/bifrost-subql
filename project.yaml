@@ -3316,16 +3316,53 @@ dataSources:
           filter:
             module: xTokens
             method: Transferred
-        - handler: handleCurrenciesDeposited
-          kind: substrate/EventHandler
-          filter:
-            module: currencies
-            method: Deposited
+        # balances
         - handler: handleBalancesTransfer
           kind: substrate/EventHandler
           filter:
             module: balances
             method: Transfer
+        - handler: handleBalancesEndowed
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Endowed
+        - handler: handleBalancesDustLost
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: DustLost
+        - handler: handleBalancesReserved
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Reserved
+        - handler: handleBalancesUnreserved
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Unreserved
+        - handler: handleBalancesBalanceSet
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: BalanceSet
+        - handler: handleBalancesDeposit
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Deposit
+        - handler: handleBalancesReserveRepatriated
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: ReserveRepatriated
+        # currencies
+        - handler: handleCurrenciesDeposited
+          kind: substrate/EventHandler
+          filter:
+            module: currencies
+            method: Deposited
         - handler: handleCurrenciesWithdrawn
           kind: substrate/EventHandler
           filter:
@@ -3336,7 +3373,12 @@ dataSources:
           filter:
             module: currencies
             method: Transferred
-        # Tokens
+        - handler: handleCurrenciesBalanceUpdated
+          kind: substrate/EventHandler
+          filter:
+            module: currencies
+            method: BalanceUpdated
+        # tokens
         - handler: handleTokensTransfer
           kind: substrate/EventHandler
           filter:
@@ -3367,3 +3409,14 @@ dataSources:
           filter:
             module: tokens
             method: BalanceSet
+        # tokenIssuer
+        - handler: handleTokenIssuerTransferred
+          kind: substrate/EventHandler
+          filter:
+            module: tokenIssuer
+            method: Transferred
+        - handler: handleTokenIssuerIssued
+          kind: substrate/EventHandler
+          filter:
+            module: tokenIssuer
+            method: Issued
