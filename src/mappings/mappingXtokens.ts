@@ -64,7 +64,7 @@ export async function handleBalancesTransfer(event: SubstrateEvent): Promise<voi
   record.method = method.toString();
   record.from = from.toString();
   record.to = to.toString();
-  record.currency = { native: 'BNC' }.toString();
+  record.currency = JSON.stringify({ "native": "BNC" });
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
