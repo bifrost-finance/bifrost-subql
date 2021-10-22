@@ -51,24 +51,6 @@ export async function handleCurrenciesDeposited(event: SubstrateEvent): Promise<
   await record.save();
 }
 
-export async function handleBalancesTransfer(event: SubstrateEvent): Promise<void> {
-  const blockNumber = event.block.block.header.number.toNumber();
-
-  const { event: { section, method, data: [from, to, balance] } } = event;
-  const record = new TotalTransfer(blockNumber.toString() + '-' + event.idx.toString());
-  record.block_height = blockNumber;
-  record.event_id = event.idx;
-  record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
-  record.block_timestamp = event.block.timestamp;
-  record.section = section.toString();
-  record.method = method.toString();
-  record.from = from.toString();
-  record.to = to.toString();
-  record.currency = JSON.stringify({ "native": "BNC" });
-  record.balance = (balance as Balance).toBigInt();
-  await record.save();
-}
-
 export async function handleCurrenciesWithdrawn(event: SubstrateEvent): Promise<void> {
   const blockNumber = event.block.block.header.number.toNumber();
 
@@ -99,6 +81,23 @@ export async function handleCurrenciesTransferred(event: SubstrateEvent): Promis
   record.method = method.toString();
   record.from = from.toString();
   record.to = to.toString();
+  record.currency = (currency as CurrencyId).toString();
+  record.balance = (balance as Balance).toBigInt();
+  await record.save();
+}
+
+export async function handleCurrenciesBalanceUpdated(event: SubstrateEvent): Promise<void> {
+  const blockNumber = event.block.block.header.number.toNumber();
+
+  const { event: { section, method, data: [currency, account, balance] } } = event;
+  const record = new TotalTransfer(blockNumber.toString() + '-' + event.idx.toString());
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
+  record.block_timestamp = event.block.timestamp;
+  record.section = section.toString();
+  record.method = method.toString();
+  record.from = account.toString();
   record.currency = (currency as CurrencyId).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
@@ -209,5 +208,41 @@ export async function handleTokensBalanceSet(event: SubstrateEvent): Promise<voi
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
   record.balance = (free as Balance).toBigInt();
+  await record.save();
+}
+
+export async function handleTokenIssuerTransferred(event: SubstrateEvent): Promise<void> {
+  const blockNumber = event.block.block.header.number.toNumber();
+
+  const { event: { section, method, data: [from, to, currency, balance] } } = event;
+  const record = new TotalTransfer(blockNumber.toString() + '-' + event.idx.toString());
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
+  record.block_timestamp = event.block.timestamp;
+  record.section = section.toString();
+  record.method = method.toString();
+  record.from = from.toString();
+  record.to = to.toString();
+  record.currency = (currency as CurrencyId).toString();
+  record.balance = (balance as Balance).toBigInt();
+  await record.save();
+}
+
+export async function handleTokenIssuerIssued(event: SubstrateEvent): Promise<void> {
+  const blockNumber = event.block.block.header.number.toNumber();
+
+  const { event: { section, method, data: [to, currency, balance] } } = event;
+  const record = new TotalTransfer(blockNumber.toString() + '-' + event.idx.toString());
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
+  record.block_timestamp = event.block.timestamp;
+  record.section = section.toString();
+  record.method = method.toString();
+  // record.from = from.toString();
+  record.to = to.toString();
+  record.currency = (currency as CurrencyId).toString();
+  record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
