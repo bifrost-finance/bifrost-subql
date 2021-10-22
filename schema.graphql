@@ -214,7 +214,7 @@ type SalpRefunded @entity {
 type XtokensTransferred @entity {
   id: ID!
   event_id: Int!
-  extrinsic_id: Int!
+  extrinsic_id: Int
   block_height: Int!
   block_timestamp: Date!
   account: String
@@ -223,25 +223,39 @@ type XtokensTransferred @entity {
   multilocation: String
 }
 
-type CurrenciesDeposited @entity {
-  id: ID!
-  event_id: Int!
-  extrinsic_id: Int!
-  block_height: Int!
-  block_timestamp: Date!
-  account: String
-  currency: String
-  balance: BigInt
-}
+# type CurrenciesDeposited @entity {
+#   id: ID!
+#   event_id: Int!
+#   extrinsic_id: Int!
+#   block_height: Int!
+#   block_timestamp: Date!
+#   account: String
+#   currency: String
+#   balance: BigInt
+# }
 
-type BalancesTransfer @entity {
+# type BalancesTransfer @entity {
+#   id: ID!
+#   event_id: Int!
+#   extrinsic_id: Int
+#   block_height: Int!
+#   block_timestamp: Date!
+#   from: String
+#   to: String
+#   balance: BigInt
+# }
+
+type TotalTransfer @entity {
   id: ID!
   event_id: Int!
   extrinsic_id: Int
   block_height: Int!
   block_timestamp: Date!
+  section: String
+  method: String
   from: String
   to: String
+  currency: String
   balance: BigInt
 }
 
