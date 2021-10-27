@@ -258,3 +258,17 @@ type TotalTransfer @entity {
   currency: String
   balance: BigInt
 }
+
+
+type Vesting @entity {
+  id: ID!
+  event_id: Int!
+  extrinsic_id: Int
+  block_height: Int!
+  block_timestamp: Date!
+  section: String
+  method: String
+  account: String
+  currency: String
+  balance: BigInt
+}

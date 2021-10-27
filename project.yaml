@@ -3420,3 +3420,14 @@ dataSources:
           filter:
             module: tokenIssuer
             method: Issued
+        # vesting
+        - handler: handleVestingVestingUpdated
+          kind: substrate/EventHandler
+          filter:
+            module: vesting
+            method: VestingUpdated
+        - handler: handleVestingVestingCompleted
+          kind: substrate/EventHandler
+          filter:
+            module: vesting
+            method: VestingCompleted
