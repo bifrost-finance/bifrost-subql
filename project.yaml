@@ -3386,5 +3386,16 @@ dataSources:
         - handler: handleBalancesTransfer
           kind: substrate/EventHandler
           filter:
-            module: balances
-            method: Transfer
+            module: tokenIssuer
+            method: Issued
+        # vesting
+        - handler: handleVestingVestingUpdated
+          kind: substrate/EventHandler
+          filter:
+            module: vesting
+            method: VestingUpdated
+        - handler: handleVestingVestingCompleted
+          kind: substrate/EventHandler
+          filter:
+            module: vesting
+            method: VestingCompleted
