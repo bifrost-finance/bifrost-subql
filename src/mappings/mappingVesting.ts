@@ -1,10 +1,15 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import { Vesting } from '../types/models';
+// import axios from 'axios';
+const axios = require('axios');
 
 const NativeToken = JSON.stringify({ "native": "BNC" });
 
 export async function handleVestingVestingUpdated(event: SubstrateEvent): Promise<void> {
+  let data = await axios.get('https://api.github.com/users/github');
+  console.log(data);
+
   const blockNumber = event.block.block.header.number.toNumber();
 
   const { event: { section, method, data: [account, balance] } } = event;
