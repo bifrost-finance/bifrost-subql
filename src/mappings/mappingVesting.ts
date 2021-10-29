@@ -25,7 +25,7 @@ export async function handleVestingVestingUpdated(event: SubstrateEvent): Promis
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\naccount: ' + account.toString() +
-    '\nbalance: ' + balance.toHuman() + '```';
+    '\nbalance: ' + balance.toHuman();
   postSlack(account.toString(), text);
 }
 
@@ -46,8 +46,6 @@ export async function handleVestingVestingCompleted(event: SubstrateEvent): Prom
 
   const text =
     '```block_height: ' + blockNumber.toString() +
-    '\nevent: ' + section.toString() + '.' + method.toString() +
-    '\naccount: ' + account.toString() +
-    '```';
+    '\nevent: ' + section.toString() + '.' + method.toString();
   postSlack(account.toString(), text);
 }

@@ -42,10 +42,11 @@ function tokenSplit(tokenName: string): string[] {
   }
 }
 
-function isMonitorAddress(account: string): boolean {
+function isMonitorAddress(account: string): { address: string, mark: string } {
   const address = monitor_address.find(value => account = value.address)
-  if (address === undefined) { return false }
-  else { return true }
+  return address;
+  // if (address === undefined) { return false }
+  // else { return true }
 }
 
 function isCexAddress(account: string): boolean {
@@ -54,13 +55,27 @@ function isCexAddress(account: string): boolean {
   else { return true }
 }
 
-async function postSlack(account: string, text: string, to?: string, cex_text?: string) {
-  if (isMonitorAddress(account.toString()) === true) {
-    options.text = text;
+async function postSlack(account: string, text: string, to?: string) {
+  if (to === null) {
+    options.text = text +
+      '\naccount: ' + account.toString() + '```';
     await axios.post('https://slack.com/api/chat.postMessage', options);
   }
-  if (isCexAddress(to.toString()) === true) {
-    options.text = cex_text;
+  const monitor_address = isMonitorAddress(account.toString())
+  if (monitor_address !== undefined && isCexAddress(to.toString()) === true) {
+    options.text = text +
+      '\nfrom: ' + account.toString() + ' ' + monitor_address.mark +
+      '\nto: ' + to.toString() + ' CEX```';
+    await axios.post('https://slack.com/api/chat.postMessage', options);
+  } else if (monitor_address !== undefined && isCexAddress(to.toString()) === false) {
+    options.text = text +
+      '\nfrom: ' + account.toString() + ' ' + monitor_address.mark +
+      '\nto: ' + to.toString() + '```';
+    await axios.post('https://slack.com/api/chat.postMessage', options);
+  } else if (monitor_address === undefined && isCexAddress(to.toString()) === true) {
+    options.text = text +
+      '\nfrom: ' + account.toString() +
+      '\nto: ' + to.toString() + ' CEX```';
     await axios.post('https://slack.com/api/chat.postMessage', options);
   }
 }

@@ -89,18 +89,9 @@ export async function handleCurrenciesTransferred(event: SubstrateEvent): Promis
   const text =
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
-    '\nfrom: ' + from.toString() +
-    '\nto: ' + to.toString() +
     '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balance.toHuman() + '```';
-  const cex_text =
-    '```block_height: ' + blockNumber.toString() +
-    '\nevent: ' + section.toString() + '.' + method.toString() +
-    '\nfrom: ' + from.toString() +
-    '\nto: ' + to.toString() + ' CEX' +
-    '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balance.toHuman() + '```';
-  postSlack(from.toString(), text, to.toString(), cex_text);
+    '\nbalance: ' + balance.toHuman();
+  postSlack(from.toString(), text, to.toString());
 }
 
 export async function handleCurrenciesBalanceUpdated(event: SubstrateEvent): Promise<void> {
@@ -139,18 +130,9 @@ export async function handleTokensTransfer(event: SubstrateEvent): Promise<void>
   const text =
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
-    '\nfrom: ' + from.toString() +
-    '\nto: ' + to.toString() +
     '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balance.toHuman() + '```';
-  const cex_text =
-    '```block_height: ' + blockNumber.toString() +
-    '\nevent: ' + section.toString() + '.' + method.toString() +
-    '\nfrom: ' + from.toString() +
-    '\nto: ' + to.toString() + ' CEX' +
-    '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balance.toHuman() + '```';
-  postSlack(from.toString(), text, to.toString(), cex_text);
+    '\nbalance: ' + balance.toHuman();
+  postSlack(from.toString(), text, to.toString());
 }
 
 export async function handleTokensEndowed(event: SubstrateEvent): Promise<void> {

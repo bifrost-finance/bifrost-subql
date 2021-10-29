@@ -29,18 +29,9 @@ export async function handleBalancesTransfer(event: SubstrateEvent): Promise<voi
   const text =
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
-    '\nfrom: ' + from.toString() +
-    '\nto: ' + to.toString() +
     '\ncurrency: ' + NativeToken +
-    '\nbalance: ' + balance.toHuman() + '```';
-  const cex_text =
-    '```block_height: ' + blockNumber.toString() +
-    '\nevent: ' + section.toString() + '.' + method.toString() +
-    '\nfrom: ' + from.toString() +
-    '\nto: ' + to.toString() + ' CEX' +
-    '\ncurrency: ' + NativeToken +
-    '\nbalance: ' + balance.toHuman() + '```';
-  postSlack(from.toString(), text, to.toString(), cex_text);
+    '\nbalance: ' + balance.toHuman();
+  postSlack(from.toString(), text, to.toString());
 }
 
 export async function handleBalancesEndowed(event: SubstrateEvent): Promise<void> {
