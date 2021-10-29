@@ -5,6 +5,7 @@ import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
 import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
 import { TotalTransfer } from '../types/models';
+import { postSlack } from '../common';
 
 const NativeToken = JSON.stringify({ "native": "BNC" });
 
@@ -24,6 +25,22 @@ export async function handleBalancesTransfer(event: SubstrateEvent): Promise<voi
   record.currency = NativeToken;
   record.balance = (balance as Balance).toBigInt();
   await record.save();
+
+  const text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\nfrom: ' + from.toString() +
+    '\nto: ' + to.toString() +
+    '\ncurrency: ' + NativeToken +
+    '\nbalance: ' + balance.toHuman() + '```';
+  const cex_text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\nfrom: ' + from.toString() +
+    '\nto: ' + to.toString() + ' CEX' +
+    '\ncurrency: ' + NativeToken +
+    '\nbalance: ' + balance.toHuman() + '```';
+  postSlack(from.toString(), text, to.toString(), cex_text);
 }
 
 export async function handleBalancesEndowed(event: SubstrateEvent): Promise<void> {

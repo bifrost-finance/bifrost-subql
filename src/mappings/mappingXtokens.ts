@@ -5,6 +5,7 @@ import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
 import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
 import { XtokensTransferred, TotalTransfer } from '../types/models';
+import { postSlack } from '../common';
 
 export async function handleXtokensTransferred(event: SubstrateEvent): Promise<void> {
   const blockNumber = event.block.block.header.number.toNumber();
@@ -84,6 +85,22 @@ export async function handleCurrenciesTransferred(event: SubstrateEvent): Promis
   record.currency = (currency as CurrencyId).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
+
+  const text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\nfrom: ' + from.toString() +
+    '\nto: ' + to.toString() +
+    '\ncurrency: ' + (currency as CurrencyId).toString() +
+    '\nbalance: ' + balance.toHuman() + '```';
+  const cex_text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\nfrom: ' + from.toString() +
+    '\nto: ' + to.toString() + ' CEX' +
+    '\ncurrency: ' + (currency as CurrencyId).toString() +
+    '\nbalance: ' + balance.toHuman() + '```';
+  postSlack(from.toString(), text, to.toString(), cex_text);
 }
 
 export async function handleCurrenciesBalanceUpdated(event: SubstrateEvent): Promise<void> {
@@ -119,6 +136,21 @@ export async function handleTokensTransfer(event: SubstrateEvent): Promise<void>
   record.currency = (currency as CurrencyId).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
+  const text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\nfrom: ' + from.toString() +
+    '\nto: ' + to.toString() +
+    '\ncurrency: ' + (currency as CurrencyId).toString() +
+    '\nbalance: ' + balance.toHuman() + '```';
+  const cex_text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\nfrom: ' + from.toString() +
+    '\nto: ' + to.toString() + ' CEX' +
+    '\ncurrency: ' + (currency as CurrencyId).toString() +
+    '\nbalance: ' + balance.toHuman() + '```';
+  postSlack(from.toString(), text, to.toString(), cex_text);
 }
 
 export async function handleTokensEndowed(event: SubstrateEvent): Promise<void> {

@@ -1,15 +1,11 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import { Vesting } from '../types/models';
-// import axios from 'axios';
-const axios = require('axios');
+import { postSlack } from '../common';
 
 const NativeToken = JSON.stringify({ "native": "BNC" });
 
 export async function handleVestingVestingUpdated(event: SubstrateEvent): Promise<void> {
-  let data = await axios.get('https://api.github.com/users/github');
-  console.log(data);
-
   const blockNumber = event.block.block.header.number.toNumber();
 
   const { event: { section, method, data: [account, balance] } } = event;
@@ -24,6 +20,13 @@ export async function handleVestingVestingUpdated(event: SubstrateEvent): Promis
   record.currency = NativeToken;
   record.balance = (balance as Balance).toBigInt();
   await record.save();
+
+  const text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\naccount: ' + account.toString() +
+    '\nbalance: ' + balance.toHuman() + '```';
+  postSlack(account.toString(), text);
 }
 
 export async function handleVestingVestingCompleted(event: SubstrateEvent): Promise<void> {
@@ -40,4 +43,11 @@ export async function handleVestingVestingCompleted(event: SubstrateEvent): Prom
   record.account = account.toString();
   record.currency = NativeToken;
   await record.save();
+
+  const text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nevent: ' + section.toString() + '.' + method.toString() +
+    '\naccount: ' + account.toString() +
+    '```';
+  postSlack(account.toString(), text);
 }

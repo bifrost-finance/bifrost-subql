@@ -1,4 +1,17 @@
 import { SubstrateEvent, SubstrateBlock } from "@subql/types";
+import { monitor_address, cex_address } from './vestingAddress';
+import axiosOriginal from 'axios';
+import adapter from 'axios/lib/adapters/http';
+const axios = axiosOriginal.create({
+  adapter, headers: {
+    'Authorization': ''
+  }
+});
+
+const options = {
+  'channel': '',
+  'text': ''
+};
 
 function getDayStartUnix(block: SubstrateBlock): string {
   let timestamp = block.timestamp.getTime() / 1000
@@ -29,6 +42,27 @@ function tokenSplit(tokenName: string): string[] {
   }
 }
 
+function isMonitorAddress(account: string): boolean {
+  const address = monitor_address.find(value => account = value.address)
+  if (address === undefined) { return false }
+  else { return true }
+}
 
+function isCexAddress(account: string): boolean {
+  const address = cex_address.find(value => account = value.address)
+  if (address === undefined) { return false }
+  else { return true }
+}
 
-export { getDayStartUnix, get7DayStartUnix, tokenSplit };
+async function postSlack(account: string, text: string, to?: string, cex_text?: string) {
+  if (isMonitorAddress(account.toString()) === true) {
+    options.text = text;
+    await axios.post('https://slack.com/api/chat.postMessage', options);
+  }
+  if (isCexAddress(to.toString()) === true) {
+    options.text = cex_text;
+    await axios.post('https://slack.com/api/chat.postMessage', options);
+  }
+}
+
+export { getDayStartUnix, get7DayStartUnix, tokenSplit, postSlack };
