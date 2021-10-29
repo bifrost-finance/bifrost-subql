@@ -6,12 +6,13 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - .data/postgres:/var/lib/postgresql/data
+      - .data/postgres-v0.23.2-alpha.1:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
 
   subquery-node:
-    image: onfinality/subql-node:latest
+    image: ronyang/bifrost-subql-node:v0.23.2-alpha.1
+    # image: onfinality/subql-node:latest
     depends_on:
       - "postgres"
     restart: always
@@ -26,38 +27,3 @@ services:
     command:
       - -f=/app
       - --local
-
-  graphql-engine:
-    image: onfinality/subql-query:latest
-    ports:
-      - 13000:3000
-    depends_on:
-      - "postgres"
-    restart: always
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-    command:
-      - --name=app
-      - --playground
-
-
-  graphql-engine-hasura:
-    image: hasura/graphql-engine:v1.3.3
-    ports:
-      - "18080:8080"
-    depends_on:
-      - "postgres"
-    restart: always
-    environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
-      ## enable the console served by server
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-      ## enable debugging mode. It is recommended to disable this in production
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      ## uncomment next line to set an admin secret
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
