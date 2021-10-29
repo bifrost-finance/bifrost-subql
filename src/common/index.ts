@@ -42,37 +42,25 @@ function tokenSplit(tokenName: string): string[] {
   }
 }
 
-function isMonitorAddress(account: string): { address: string, mark: string } {
-  const address = monitor_address.find(value => account = value.address)
-  return address;
-  // if (address === undefined) { return false }
-  // else { return true }
-}
-
-function isCexAddress(account: string): boolean {
-  const address = cex_address.find(value => account = value.address)
-  if (address === undefined) { return false }
-  else { return true }
-}
-
 async function postSlack(account: string, text: string, to?: string) {
   if (to === null) {
     options.text = text +
       '\naccount: ' + account.toString() + '```';
     await axios.post('https://slack.com/api/chat.postMessage', options);
   }
-  const monitor_address = isMonitorAddress(account.toString())
-  if (monitor_address !== undefined && isCexAddress(to.toString()) === true) {
+  const monitor = monitor_address.find(value => account === value.address)
+  const cex = cex_address.find(value => to === value.address)
+  if (monitor !== undefined && cex !== undefined) {
     options.text = text +
-      '\nfrom: ' + account.toString() + ' ' + monitor_address.mark +
+      '\nfrom: ' + account.toString() + ' ' + monitor.mark +
       '\nto: ' + to.toString() + ' CEX```';
     await axios.post('https://slack.com/api/chat.postMessage', options);
-  } else if (monitor_address !== undefined && isCexAddress(to.toString()) === false) {
+  } else if (monitor !== undefined && cex === undefined) {
     options.text = text +
-      '\nfrom: ' + account.toString() + ' ' + monitor_address.mark +
+      '\nfrom: ' + account.toString() + ' ' + monitor.mark +
       '\nto: ' + to.toString() + '```';
     await axios.post('https://slack.com/api/chat.postMessage', options);
-  } else if (monitor_address === undefined && isCexAddress(to.toString()) === true) {
+  } else if (monitor === undefined && cex !== undefined) {
     options.text = text +
       '\nfrom: ' + account.toString() +
       '\nto: ' + to.toString() + ' CEX```';
