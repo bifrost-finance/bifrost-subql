@@ -1,6 +1,7 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import { Vesting } from '../types/models';
+import BigNumber from "bignumber.js";
 import { postSlack } from '../common';
 
 const NativeToken = JSON.stringify({ "native": "BNC" });
@@ -21,11 +22,12 @@ export async function handleVestingVestingUpdated(event: SubstrateEvent): Promis
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 
+  const balanceNum = new BigNumber(balance.toString());
   const text =
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\naccount: ' + account.toString() +
-    '\nbalance: ' + balance.toHuman();
+    '\nbalance: ' + balanceNum.div(10e+12).toFixed(2);
   postSlack(account.toString(), text);
 }
 

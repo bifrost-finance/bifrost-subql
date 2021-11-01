@@ -5,6 +5,7 @@ import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
 import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
 import { XtokensTransferred, TotalTransfer } from '../types/models';
+import BigNumber from "bignumber.js";
 import { postSlack } from '../common';
 
 export async function handleXtokensTransferred(event: SubstrateEvent): Promise<void> {
@@ -86,11 +87,12 @@ export async function handleCurrenciesTransferred(event: SubstrateEvent): Promis
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 
+  const balanceNum = new BigNumber(balance.toString());
   const text =
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balance.toHuman();
+    '\nbalance: ' + balanceNum.div(10e+12).toFixed(2);
   postSlack(from.toString(), text, to.toString());
 }
 
@@ -127,11 +129,13 @@ export async function handleTokensTransfer(event: SubstrateEvent): Promise<void>
   record.currency = (currency as CurrencyId).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
+
+  const balanceNum = new BigNumber(balance.toString());
   const text =
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balance.toHuman();
+    '\nbalance: ' + balanceNum.div(10e+12).toFixed(2);
   postSlack(from.toString(), text, to.toString());
 }
 
