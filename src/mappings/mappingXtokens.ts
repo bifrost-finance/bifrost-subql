@@ -92,7 +92,7 @@ export async function handleCurrenciesTransferred(event: SubstrateEvent): Promis
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balanceNum.div(10e+12).toFixed(2);
+    '\nbalance: ' + balanceNum.div(1e+12).toFixed(2);
   postSlack(from.toString(), text, to.toString());
 }
 
@@ -135,7 +135,7 @@ export async function handleTokensTransfer(event: SubstrateEvent): Promise<void>
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\ncurrency: ' + (currency as CurrencyId).toString() +
-    '\nbalance: ' + balanceNum.div(10e+12).toFixed(2);
+    '\nbalance: ' + balanceNum.div(1e+12).toFixed(2);
   postSlack(from.toString(), text, to.toString());
 }
 

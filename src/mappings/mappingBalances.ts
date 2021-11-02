@@ -32,7 +32,7 @@ export async function handleBalancesTransfer(event: SubstrateEvent): Promise<voi
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\ncurrency: ' + NativeToken +
-    '\nbalance: ' + balanceNum.div(10e+12).toFixed(2);
+    '\nbalance: ' + balanceNum.div(1e+12).toFixed(2);
   postSlack(from.toString(), text, to.toString());
 }
 

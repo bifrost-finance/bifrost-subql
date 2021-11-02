@@ -27,7 +27,7 @@ export async function handleVestingVestingUpdated(event: SubstrateEvent): Promis
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\naccount: ' + account.toString() +
-    '\nbalance: ' + balanceNum.div(10e+12).toFixed(2);
+    '\nbalance: ' + balanceNum.div(1e+12).toFixed(2);
   postSlack(account.toString(), text);
 }
 
