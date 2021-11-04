@@ -395,10 +395,16 @@ const monitor_address = [
 
 const cex_address = [
   {
-    "address": "c2TQGFWqK1WsKzWizpdf9V6uzCgnVqw7Yz9Va7G2wjQPHTY"
+    "address": "c2TQGFWqK1WsKzWizpdf9V6uzCgnVqw7Yz9Va7G2wjQPHTY",
+    "cex": "Gate"
   },
   {
-    "address": "dGReNVRc85t736VSz73hLWoxvuyohrNupgRrLtXTDZhRPCD"
+    "address": "dGReNVRc85t736VSz73hLWoxvuyohrNupgRrLtXTDZhRPCD",
+    "cex": "Kraken"
+  },
+  {
+    "address": "cmqnNjmoBSzZ7kNJAQHzj6KXBpAkGAwjwbAjZyvnzPk52yY",
+    "cex": "Mxec"
   }
 ]
 

@@ -53,7 +53,7 @@ async function postSlack(account: string, text: string, to?: string) {
   if (monitor !== undefined && cex !== undefined) {
     options.text = text +
       '\nfrom: ' + account.toString() + ' ' + monitor.mark +
-      '\nto: ' + to.toString() + ' CEX```';
+      '\nto: ' + to.toString() + ' ' + cex.cex + '```';
     await axios.post('https://slack.com/api/chat.postMessage', options);
   } else if (monitor !== undefined && cex === undefined) {
     options.text = text +
@@ -63,7 +63,7 @@ async function postSlack(account: string, text: string, to?: string) {
   } else if (monitor === undefined && cex !== undefined) {
     options.text = text +
       '\nfrom: ' + account.toString() +
-      '\nto: ' + to.toString() + ' CEX```';
+      '\nto: ' + to.toString() + ' ' + cex.cex + '```';
     await axios.post('https://slack.com/api/chat.postMessage', options);
   }
 }
