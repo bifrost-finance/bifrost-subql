@@ -27,3 +27,18 @@ services:
     command:
       - -f=/app
       - --local
+
+  grafana:
+    image: grafana/grafana:8.2.0
+    ports:
+      - 23000:3000
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    user: 'root'
+    env_file:
+      - ./grafana/config.monitoring
+    volumes:
+      - .data/grafana:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
