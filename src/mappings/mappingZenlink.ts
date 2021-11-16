@@ -21,8 +21,9 @@ export async function zenlink(block: SubstrateBlock): Promise<void> {
 }
 
 export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
-  const { event: { data: [owner, recipient, swap_path, balance_in, balance_out] } } = event;
+  const { event: { data: [owner, recipient, swap_path, balances] } } = event;
   const swap_path_obj = JSON.parse(swap_path.toString());
+  const balances_obj = JSON.parse(balances.toString());
   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
 
   const entity = new ZenlinkLiquidityCalculation(blockNumber.toString() + '-' + event.idx.toString());
@@ -34,8 +35,8 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
   entity.recipient = recipient.toString();
   entity.asset_0 = swap_path_obj.shift();
   entity.asset_1 = swap_path_obj.pop();
-  entity.balance_in = (balance_in as Compact<Balance>).toBigInt();
-  entity.balance_out = (balance_out as Compact<Balance>).toBigInt();
+  entity.balance_in = balances_obj.shift();
+  entity.balance_out = balances_obj.pop();
   await entity.save();
 }
 

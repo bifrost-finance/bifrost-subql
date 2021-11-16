@@ -271,8 +271,6 @@ network:
             "Fail": "Failed"
         }
     },
-    "Currency": "CurrencyIdOf",
-    "Amount": "AmountOf",
     "PalletBalanceOf": "Balance",
     "NumberOrHex": {
         "_enum": {
@@ -476,6 +474,8 @@ network:
     "AmountOf": "Balance",
     "StorageVersion": "Releases",
     "ShareWeight": "Balance",
+    "Currency": "CurrencyIdOf",
+    "Amount": "AmountOf",
     "TransferOriginType": {
         "_enum": {
             "FromSelf": 0,
@@ -511,7 +511,7 @@ network:
         "gain_avg": "FixedU128"
     },
     "AssetInstance": "AssetInstanceV1"
-  }
+     }
   typesBundle: {
     "spec": {
         "bifrost": {
@@ -687,42 +687,6 @@ network:
                         "isSubscription": false,
                         "jsonrpc": "zenlinkProtocol_getSovereignsInfo",
                         "method": "getSovereignsInfo",
-                        "section": "zenlinkProtocol"
-                    },
-                    "getAllPairs": {
-                        "description": "Get the information of all the exchange pairs.",
-                        "params": [
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Vec<PairInfo>",
-                        "isSubscription": false,
-                        "jsonrpc": "zenlinkProtocol_getAllPairs",
-                        "method": "getAllPairs",
-                        "section": "zenlinkProtocol"
-                    },
-                    "getOwnerPairs": {
-                        "description": "Get ownership of all exchange pairs for a particular account.",
-                        "params": [
-                            {
-                                "name": "owner",
-                                "type": "AccountId"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Vec<PairInfo>",
-                        "isSubscription": false,
-                        "jsonrpc": "zenlinkProtocol_getOwnerPairs",
-                        "method": "getOwnerPairs",
                         "section": "zenlinkProtocol"
                     },
                     "getPairByAssetId": {
@@ -1137,8 +1101,6 @@ network:
                                 "Fail": "Failed"
                             }
                         },
-                        "Currency": "CurrencyIdOf",
-                        "Amount": "AmountOf",
                         "PalletBalanceOf": "Balance",
                         "NumberOrHex": {
                             "_enum": {
@@ -1318,6 +1280,7 @@ network:
                             "_enum": {
                                 "BNC": 1,
                                 "KUSD": 2,
+                                "DOT": 3,
                                 "KSM": 4,
                                 "KAR": 6
                             }
@@ -1338,6 +1301,8 @@ network:
                         "AmountOf": "Balance",
                         "StorageVersion": "Releases",
                         "ShareWeight": "Balance",
+                        "Currency": "CurrencyIdOf",
+                        "Amount": "AmountOf",
                         "TransferOriginType": {
                             "_enum": {
                                 "FromSelf": 0,
@@ -1376,7 +1341,9 @@ network:
                         "MultiAsset": "MultiAssetV0",
                         "Xcm": "XcmV0",
                         "XcmOrder": "XcmOrderV0",
-                        "MultiLocation": "MultiLocationV0"
+                        "MultiLocation": "MultiLocationV0",
+                        "XcmError": "XcmErrorV0",
+                        "Response": "ResponseV0"
                     }
                 },
                 {
@@ -1651,8 +1618,6 @@ network:
                                 "Fail": "Failed"
                             }
                         },
-                        "Currency": "CurrencyIdOf",
-                        "Amount": "AmountOf",
                         "PalletBalanceOf": "Balance",
                         "NumberOrHex": {
                             "_enum": {
@@ -1832,6 +1797,7 @@ network:
                             "_enum": {
                                 "BNC": 1,
                                 "KUSD": 2,
+                                "DOT": 3,
                                 "KSM": 4,
                                 "KAR": 6
                             }
@@ -1852,6 +1818,8 @@ network:
                         "AmountOf": "Balance",
                         "StorageVersion": "Releases",
                         "ShareWeight": "Balance",
+                        "Currency": "CurrencyIdOf",
+                        "Amount": "AmountOf",
                         "TransferOriginType": {
                             "_enum": {
                                 "FromSelf": 0,
@@ -1890,7 +1858,9 @@ network:
                         "MultiAsset": "MultiAssetV1",
                         "Xcm": "XcmV1",
                         "XcmOrder": "XcmOrderV1",
-                        "MultiLocation": "MultiLocationV1"
+                        "MultiLocation": "MultiLocationV1",
+                        "XcmError": "XcmErrorV1",
+                        "Response": "ResponseV1"
                     }
                 }
             ],
@@ -2076,42 +2046,6 @@ network:
                         "method": "getSovereignsInfo",
                         "section": "zenlinkProtocol"
                     },
-                    "getAllPairs": {
-                        "description": "Get the information of all the exchange pairs.",
-                        "params": [
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Vec<PairInfo>",
-                        "isSubscription": false,
-                        "jsonrpc": "zenlinkProtocol_getAllPairs",
-                        "method": "getAllPairs",
-                        "section": "zenlinkProtocol"
-                    },
-                    "getOwnerPairs": {
-                        "description": "Get ownership of all exchange pairs for a particular account.",
-                        "params": [
-                            {
-                                "name": "owner",
-                                "type": "AccountId"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Vec<PairInfo>",
-                        "isSubscription": false,
-                        "jsonrpc": "zenlinkProtocol_getOwnerPairs",
-                        "method": "getOwnerPairs",
-                        "section": "zenlinkProtocol"
-                    },
                     "getPairByAssetId": {
                         "description": "Get the detailed information of a particular exchange pair.",
                         "params": [
@@ -2524,8 +2458,6 @@ network:
                                 "Fail": "Failed"
                             }
                         },
-                        "Currency": "CurrencyIdOf",
-                        "Amount": "AmountOf",
                         "PalletBalanceOf": "Balance",
                         "NumberOrHex": {
                             "_enum": {
@@ -2729,6 +2661,8 @@ network:
                         "AmountOf": "Balance",
                         "StorageVersion": "Releases",
                         "ShareWeight": "Balance",
+                        "Currency": "CurrencyIdOf",
+                        "Amount": "AmountOf",
                         "TransferOriginType": {
                             "_enum": {
                                 "FromSelf": 0,
@@ -2767,7 +2701,9 @@ network:
                         "MultiAsset": "MultiAssetV0",
                         "Xcm": "XcmV0",
                         "XcmOrder": "XcmOrderV0",
-                        "MultiLocation": "MultiLocationV0"
+                        "MultiLocation": "MultiLocationV0",
+                        "XcmError": "XcmErrorV0",
+                        "Response": "ResponseV0"
                     }
                 },
                 {
@@ -3042,8 +2978,6 @@ network:
                                 "Fail": "Failed"
                             }
                         },
-                        "Currency": "CurrencyIdOf",
-                        "Amount": "AmountOf",
                         "PalletBalanceOf": "Balance",
                         "NumberOrHex": {
                             "_enum": {
@@ -3247,6 +3181,8 @@ network:
                         "AmountOf": "Balance",
                         "StorageVersion": "Releases",
                         "ShareWeight": "Balance",
+                        "Currency": "CurrencyIdOf",
+                        "Amount": "AmountOf",
                         "TransferOriginType": {
                             "_enum": {
                                 "FromSelf": 0,
@@ -3285,7 +3221,9 @@ network:
                         "MultiAsset": "MultiAssetV1",
                         "Xcm": "XcmV1",
                         "XcmOrder": "XcmOrderV1",
-                        "MultiLocation": "MultiLocationV1"
+                        "MultiLocation": "MultiLocationV1",
+                        "XcmError": "XcmErrorV1",
+                        "Response": "ResponseV1"
                     }
                 }
             ],
@@ -3297,7 +3235,7 @@ network:
             }
         }
     }
-  }
+   }
 dataSources:
   - name: main
     kind: substrate/Runtime
@@ -3378,12 +3316,106 @@ dataSources:
           filter:
             module: xTokens
             method: Transferred
+        # balances
+        - handler: handleBalancesTransfer
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Transfer
+        - handler: handleBalancesEndowed
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Endowed
+        - handler: handleBalancesDustLost
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: DustLost
+        - handler: handleBalancesReserved
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Reserved
+        - handler: handleBalancesUnreserved
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Unreserved
+        - handler: handleBalancesBalanceSet
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: BalanceSet
+        - handler: handleBalancesDeposit
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: Deposit
+        - handler: handleBalancesReserveRepatriated
+          kind: substrate/EventHandler
+          filter:
+            module: balances
+            method: ReserveRepatriated
+        # currencies
         - handler: handleCurrenciesDeposited
           kind: substrate/EventHandler
           filter:
             module: currencies
             method: Deposited
-        - handler: handleBalancesTransfer
+        - handler: handleCurrenciesWithdrawn
+          kind: substrate/EventHandler
+          filter:
+            module: currencies
+            method: Withdrawn
+        - handler: handleCurrenciesTransferred
+          kind: substrate/EventHandler
+          filter:
+            module: currencies
+            method: Transferred
+        - handler: handleCurrenciesBalanceUpdated
+          kind: substrate/EventHandler
+          filter:
+            module: currencies
+            method: BalanceUpdated
+        # tokens
+        - handler: handleTokensTransfer
+          kind: substrate/EventHandler
+          filter:
+            module: tokens
+            method: Transfer
+        - handler: handleTokensEndowed
+          kind: substrate/EventHandler
+          filter:
+            module: tokens
+            method: Endowed
+        - handler: handleTokensDustLost
+          kind: substrate/EventHandler
+          filter:
+            module: tokens
+            method: DustLost
+        - handler: handleTokensReserved
+          kind: substrate/EventHandler
+          filter:
+            module: tokens
+            method: Reserved
+        - handler: handleTokensUnreserved
+          kind: substrate/EventHandler
+          filter:
+            module: tokens
+            method: Unreserved
+        - handler: handleTokensBalanceSet
+          kind: substrate/EventHandler
+          filter:
+            module: tokens
+            method: BalanceSet
+        # tokenIssuer
+        - handler: handleTokenIssuerTransferred
+          kind: substrate/EventHandler
+          filter:
+            module: tokenIssuer
+            method: Transferred
+        - handler: handleTokenIssuerIssued
           kind: substrate/EventHandler
           filter:
             module: tokenIssuer
