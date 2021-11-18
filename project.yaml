@@ -3431,3 +3431,8 @@ dataSources:
           filter:
             module: vesting
             method: VestingCompleted
+        - handler: handleSalpLiteIssued
+          kind: substrate/EventHandler
+          filter:
+            module: salpLite
+            method: Issued
