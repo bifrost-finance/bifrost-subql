@@ -36,7 +36,7 @@ export async function salp(block: SubstrateBlock): Promise<void> {
       record.blockHeight = blockNumber;
       record.method = method.toString();
       record.data = data.toString();
-      record.paraId = paraId;
+      record.para_id = paraId;
       await record.save();
     }
   }
