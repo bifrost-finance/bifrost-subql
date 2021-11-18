@@ -3422,27 +3422,3 @@ dataSources:
 
         - handler: salpContribution
           kind: substrate/BlockHandler
-
-        - handler: handleSalpContributed
-          kind: substrate/EventHandler
-          filter:
-            module: salp
-            method: Contributed
-
-        - handler: handleSalpLiteContributed
-          kind: substrate/EventHandler
-          filter:
-            module: salpLite
-            method: Issued
-
-        - handler: handleSalpRefunded
-          kind: substrate/EventHandler
-          filter:
-            module: salp
-            method: Refunded
-
-        - handler: handleSalpLiteRefunded
-          kind: substrate/EventHandler
-          filter:
-            module: salpLite
-            method: Refunded

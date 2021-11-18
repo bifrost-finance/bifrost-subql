@@ -133,7 +133,7 @@ type SalpInfo @entity {
   blockHeight: BigInt!
   method: String!
   accountIdOf: String
-  paraId: String
+  para_id: Int
   balanceOf: BigInt
   data: String!
 }
