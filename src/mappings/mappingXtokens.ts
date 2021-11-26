@@ -88,11 +88,18 @@ export async function handleCurrenciesTransferred(event: SubstrateEvent): Promis
   await record.save();
 
   const balanceNum = new BigNumber(balance.toString());
-  const text =
+  let text =
     '```block_height: ' + blockNumber.toString() +
     '\nevent: ' + section.toString() + '.' + method.toString() +
     '\ncurrency: ' + (currency as CurrencyId).toString() +
     '\nbalance: ' + balanceNum.div(1e+12).toFixed(2);
+  if ((currency as CurrencyId).toString() == '{"token":"ZLK"}') {
+    text =
+      '```block_height: ' + blockNumber.toString() +
+      '\nevent: ' + section.toString() + '.' + method.toString() +
+      '\ncurrency: ' + (currency as CurrencyId).toString() +
+      '\nbalance: ' + balanceNum.div(1e+18).toFixed(2);
+  }
   postSlack(from.toString(), text, to.toString());
 }
 
