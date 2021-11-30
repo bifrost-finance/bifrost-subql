@@ -272,3 +272,14 @@ type Vesting @entity {
   currency: String
   balance: BigInt
 }
+
+type Tvl @entity {
+  id: ID!
+  block_height: Int!
+  block_timestamp: Date!
+  currency: String
+  usd: Float
+  cny: Float
+  total_issuance: BigInt
+  tvl: Float
+}

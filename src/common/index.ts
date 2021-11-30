@@ -1,4 +1,7 @@
 import { SubstrateEvent, SubstrateBlock } from "@subql/types";
+import axiosOriginal from 'axios';
+import adapter from 'axios/lib/adapters/http';
+const axios = axiosOriginal.create({ adapter });
 
 function getDayStartUnix(block: SubstrateBlock): string {
   let timestamp = block.timestamp.getTime() / 1000
@@ -29,6 +32,32 @@ function tokenSplit(tokenName: string): string[] {
   }
 }
 
+let prices = [];
 
+export interface Price {
+  date: string;
+  coin_id: string;
+  cny: string;
+  usd: string;
+}
 
-export { getDayStartUnix, get7DayStartUnix, tokenSplit };
+async function getPrice(block: SubstrateBlock, coin_id: string): Promise<Price> {
+  const date = `${block.timestamp.getDate()}-${block.timestamp.getMonth()}-${block.timestamp.getFullYear()}`;
+  const price = prices.filter(price => price.date == date && price.coin_id == coin_id);
+  if (price.length === 0) {
+    logger.info("Request")
+    const url = "https://api.coingecko.com/api/v3/coins/" + coin_id + "/history?date=" + date;
+    const result = await axios.get(url);
+    const p = {
+      date: date,
+      coin_id: coin_id,
+      cny: result.data.market_data ? result.data.market_data.current_price.cny : '0',
+      usd: result.data.market_data ? result.data.market_data.current_price.usd : '0',
+    }
+    prices.push(p)
+    return p as Price
+  }
+  return price[0]
+}
+
+export { getDayStartUnix, get7DayStartUnix, tokenSplit, getPrice };

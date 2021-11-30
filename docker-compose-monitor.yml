@@ -3,7 +3,7 @@ version: '3'
 services:
 
   subquery-node:
-    image: ronyang/bifrost-subql-node:v0.23.2-alpha.1
+    image: ronyang/bifrost-subql-node:v0.25.1.alpha.1
     depends_on:
       - "postgres"
     restart: always
@@ -18,3 +18,4 @@ services:
     command:
       - -f=/app
       - --local
+      - --unsafe

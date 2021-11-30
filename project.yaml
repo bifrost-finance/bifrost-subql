@@ -3242,6 +3242,8 @@ dataSources:
     startBlock: 318500
     mapping:
       handlers:
+        - handler: handleBlock
+          kind: substrate/BlockHandler
         # mappingVtokenPool.ts:
         # - handler: vtokenPoolBlock
         #   kind: substrate/BlockHandler
