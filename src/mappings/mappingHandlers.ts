@@ -11,12 +11,14 @@ const Tokens = [
   {
     id: "vsKSM",
     coin_id: "kusama",
-    currency: { "vsToken": "KSM" }
+    currency: { "vsToken": "KSM" },
+    decimal: 12
   },
   {
     id: "vsDOT",
     coin_id: "polkadot",
-    currency: { "vsToken": "DOT" }
+    currency: { "vsToken": "DOT" },
+    decimal: 10
   }
 ];
 
@@ -25,12 +27,14 @@ const DexTokens = [
     id: "vsKSM-dex",
     coin_id: "kusama",
     currency: { "vsToken": "KSM" },
+    decimal: 12,
     dex_address: [["5EYCAe5ViNAoHnU1ZZAMeuwFRzWVSR8nXc92oKzfVm5Mqh7Q", { "vsToken": "KSM" }]]
   },
   {
     id: "KSM-dex",
     coin_id: "kusama",
     currency: { "Token": "KSM" },
+    decimal: 12,
     dex_address: [
       ["5EYCAe5ViNAoHnU1ZZAMeuwFRzWVSR8nXc92oKzfVm5Mqh7Q", { "Token": "KSM" }],
       ["5EYCAe5ViNAoHnU1ZZAR51LmTJsa1PC4JmRES1LEWhhomrXX", { "Token": "KSM" }],
@@ -41,12 +45,14 @@ const DexTokens = [
     id: "ZLK-dex",
     coin_id: "zenlink-network-token",
     currency: { "Token": "ZLK" },
+    decimal: 18,
     dex_address: [["5EYCAe5ViNAoHnU1ZZAKfoyy3zaPgXQF31qreBoKBD5ZuYrM", { "Token": "ZLK" }]]
   },
   {
     id: "BNC-dex",
     coin_id: "bifrost-native-coin",
     currency: { "Native": "BNC" },
+    decimal: 12,
     dex_address: [
       "5EYCAe5ViNAoHnU1ZZAKfoyy3zaPgXQF31qreBoKBD5ZuYrM",
       "5EYCAe5ViNAoHnU1ZZAR51LmTJsa1PC4JmRES1LEWhhomrXX"
@@ -56,6 +62,7 @@ const DexTokens = [
     id: "kUSD-dex",
     coin_id: "tether",
     currency: { "Stable": "KUSD" },
+    decimal: 12,
     dex_address: [["5EYCAe5ViNAoHnU1ZZAJu3bwfpqQ7zTeBZ4VWBYvzNsXugiH", { "Stable": "KUSD" }]]
   }
 ];
@@ -75,7 +82,8 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
     record.cny = parseFloat(token_price.cny);
     const tvlNum = new BigNumber(token_price.usd).multipliedBy(token_total_issuance.toString());
     // record.tvl = parseFloat(tvlNum.div(1e+12).toFixed(2).toString());
-    record.tvl = BigInt(tvlNum.toFixed(0));
+    record.tvl_native = BigInt(tvlNum.toFixed(0));
+    record.tvl = parseFloat(tvlNum.div("1e+" + token.decimal).toFixed(2));
     record.isdex = false;
     await record.save();
   }));
@@ -113,7 +121,8 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
     record.usd = parseFloat(token_price.usd);
     record.cny = parseFloat(token_price.cny);
     const tvlNum = new BigNumber(token_price.usd).multipliedBy(token_total_issuance);
-    record.tvl = BigInt(tvlNum.toFixed(0));
+    record.tvl_native = BigInt(tvlNum.toFixed(0));
+    record.tvl = parseFloat(tvlNum.div("1e+" + token.decimal).toFixed(2));
     record.isdex = true;
     await record.save();
   }));

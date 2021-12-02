@@ -27,6 +27,7 @@ services:
       - -f=/app
       - --local
       - --unsafe
+      - --timestamp-field
 
   graphql-engine:
     image: onfinality/subql-query:latest

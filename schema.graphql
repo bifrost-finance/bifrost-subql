@@ -281,6 +281,7 @@ type Tvl @entity {
   usd: Float
   cny: Float
   total_issuance: BigInt
-  tvl: BigInt
+  tvl_native: BigInt
+  tvl: Float
   isdex: Boolean
 }
