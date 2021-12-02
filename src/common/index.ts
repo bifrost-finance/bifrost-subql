@@ -42,7 +42,7 @@ export interface Price {
 }
 
 async function getPrice(block: SubstrateBlock, coin_id: string): Promise<Price> {
-  const date = `${block.timestamp.getDate()}-${block.timestamp.getMonth()}-${block.timestamp.getFullYear()}`;
+  const date = `${block.timestamp.getDate()}-${block.timestamp.getMonth() + 1}-${block.timestamp.getFullYear()}`;
   const price = prices.filter(price => price.date == date && price.coin_id == coin_id);
   if (price.length === 0) {
     logger.info("Request")
