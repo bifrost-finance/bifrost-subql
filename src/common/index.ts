@@ -44,17 +44,27 @@ export interface Price {
 async function getPrice(block: SubstrateBlock, coin_id: string): Promise<Price> {
   const date = `${block.timestamp.getDate()}-${block.timestamp.getMonth() + 1}-${block.timestamp.getFullYear()}`;
   const price = prices.filter(price => price.date == date && price.coin_id == coin_id);
+  let yesterday = new Date(block.timestamp);
+  yesterday.setDate(block.timestamp.getDate() - 1);
+  const yesterday_date = `${yesterday.getDate()}-${yesterday.getMonth() + 1}-${yesterday.getFullYear()}`;
+  const price2 = prices.filter(price => price.date == yesterday_date && price.coin_id == coin_id);
   if (price.length === 0) {
-    logger.info("Request")
+    logger.info(`Request:${date} ${coin_id}`)
     const url = "https://api.coingecko.com/api/v3/coins/" + coin_id + "/history?date=" + date;
     const result = await axios.get(url);
-    const p = {
+    let p = {
       date: date,
       coin_id: coin_id,
-      cny: result.data.market_data ? result.data.market_data.current_price.cny : '0',
-      usd: result.data.market_data ? result.data.market_data.current_price.usd : '0',
+      cny: '0',
+      usd: '0',
     }
-    prices.push(p)
+    if (result.data.market_data) {  // If today's price exists, update usd and cny fields.
+      p.cny = result.data.market_data.current_price.cny;
+      p.usd = result.data.market_data.current_price.usd;
+      prices.push(p)
+    } else if (price2.length !== 0) {  // If only today's price do not exist, return yesterday's price.
+      return price2[0]
+    }
     return p as Price
   }
   return price[0]
