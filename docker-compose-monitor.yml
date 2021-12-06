@@ -19,3 +19,4 @@ services:
       - -f=/app
       - --local
       - --unsafe
+      - --timestamp-field
