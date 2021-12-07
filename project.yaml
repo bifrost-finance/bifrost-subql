@@ -3299,6 +3299,11 @@ dataSources:
             method: LiquidityRemoved
         - handler: vsbond
           kind: substrate/BlockHandler
+        - handler: handleVsBondAuctionOrderClinchd
+          kind: substrate/EventHandler
+          filter:
+            module: vsBondAuction
+            method: OrderClinchd
         - handler: handleXtokensTransferred
           kind: substrate/EventHandler
           filter:

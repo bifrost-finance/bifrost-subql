@@ -285,3 +285,15 @@ type Tvl @entity {
   tvl: Float
   isdex: Boolean
 }
+
+type VsBondOrderClinchd @entity {
+  id: ID!
+  block_height: Int!
+  block_timestamp: Date!
+  event_id: Int!
+  extrinsic_id: Int
+  currency: String
+  total_price: BigInt
+  amount: BigInt
+  price: Float
+}
