@@ -2,6 +2,7 @@ import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import { SalpLiteIssued, SalpLiteRedeemed } from '../types/models';
+import BigNumber from "bignumber.js";
 import { postSlack } from '../common';
 
 export async function handleSalpLiteIssued(event: SubstrateEvent): Promise<void> {
@@ -42,6 +43,7 @@ export async function handleSalpLiteRedeemed(event: SubstrateEvent): Promise<voi
     '\nevent_id: ' + event.idx.toString() +
     '\nextrinsic_id: ' + event.extrinsic.idx.toString() +
     '\nevent: ' + event.event.data.toString() +
+    '\nbalance: ' + new BigNumber(balance.toString()).div(1e+12).toFixed(2) +
     '```';
   postSlack(text);
 }
