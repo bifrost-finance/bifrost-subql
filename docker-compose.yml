@@ -26,6 +26,7 @@ services:
     command:
       - -f=/app
       - --local
+      - --unsafe
 
   graphql-engine:
     image: onfinality/subql-query:latest

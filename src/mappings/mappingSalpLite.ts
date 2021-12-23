@@ -1,10 +1,9 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
-import { Compact } from '@polkadot/types';
 import type { ParaId } from '@polkadot/types/interfaces/parachains';
-import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
-import { SalpInfo } from '../types/models/SalpInfo';
 import { SalpLiteIssued, SalpLiteRedeemed } from '../types/models';
+import BigNumber from "bignumber.js";
+import { postSlack } from '../common';
 
 export async function handleSalpLiteIssued(event: SubstrateEvent): Promise<void> {
   const blockNumber = event.block.block.header.number.toNumber();
@@ -38,4 +37,13 @@ export async function handleSalpLiteRedeemed(event: SubstrateEvent): Promise<voi
   record.balance = (balance as Balance).toBigInt();
   record.state = "Pending";
   await record.save();
+  const text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nblock_timestamp: ' + event.block.timestamp.toString() +
+    '\nevent_id: ' + event.idx.toString() +
+    '\nextrinsic_id: ' + event.extrinsic.idx.toString() +
+    '\nevent: ' + event.event.data.toString() +
+    '\nbalance: ' + new BigNumber(balance.toString()).div(1e+12).toFixed(2) +
+    '```';
+  postSlack(text);
 }
