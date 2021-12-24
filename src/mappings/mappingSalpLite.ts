@@ -45,7 +45,7 @@ export async function handleSalpLiteRedeemed(event: SubstrateEvent): Promise<voi
     '\nevent_id: ' + event.idx.toString() +
     '\nextrinsic_id: ' + event.extrinsic.idx.toString() +
     '\nevent: ' + event.event.data.toString() +
-    '\nbalance: ' + new BigNumber(balance.toString()).div(1e+12).toFixed(2) +
+    '\nbalance: ' + new BigNumber(balance.toString()).div(1e+10).toFixed(2) +
     '```';
   postSlack(text);
 }
@@ -74,7 +74,7 @@ export async function handleSalpLiteRefunded(event: SubstrateEvent): Promise<voi
     '\nevent_id: ' + event.idx.toString() +
     '\nextrinsic_id: ' + event.extrinsic.idx.toString() +
     '\nevent: ' + event.event.data.toString() +
-    '\nbalance: ' + new BigNumber(balance.toString()).div(1e+12).toFixed(2) +
+    '\nbalance: ' + new BigNumber(balance.toString()).div(1e+10).toFixed(2) +
     '```';
   postSlack(text);
 }
