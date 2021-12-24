@@ -23,7 +23,38 @@ export async function handleSalpLiteIssued(event: SubstrateEvent): Promise<void>
 
 export async function handleSalpLiteRedeemed(event: SubstrateEvent): Promise<void> {
   const blockNumber = event.block.block.header.number.toNumber();
+  if (blockNumber > 1009118) { return }
+  logger.info("redeem")
 
+  const { event: { data: [account, para_id, first_slot, last_slot, balance] } } = event;
+  const record = new SalpLiteRedeemed(blockNumber.toString() + '-' + event.idx.toString());
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.extrinsic_id = event.extrinsic.idx;
+  record.block_timestamp = event.block.timestamp;
+  record.account = account.toString();
+  record.para_id = (para_id as ParaId).toNumber();
+  record.first_slot = first_slot.toString();
+  record.last_slot = last_slot.toString();
+  record.balance = (balance as Balance).toBigInt();
+  record.state = "Pending";
+  await record.save();
+  const text =
+    '```block_height: ' + blockNumber.toString() +
+    '\nblock_timestamp: ' + event.block.timestamp.toString() +
+    '\nevent_id: ' + event.idx.toString() +
+    '\nextrinsic_id: ' + event.extrinsic.idx.toString() +
+    '\nevent: ' + event.event.data.toString() +
+    '\nbalance: ' + new BigNumber(balance.toString()).div(1e+12).toFixed(2) +
+    '```';
+  postSlack(text);
+}
+
+export async function handleSalpLiteRefunded(event: SubstrateEvent): Promise<void> {
+  const blockNumber = event.block.block.header.number.toNumber();
+  if (blockNumber < 1009118) { return }
+
+  logger.info("refund")
   const { event: { data: [account, para_id, first_slot, last_slot, balance] } } = event;
   const record = new SalpLiteRedeemed(blockNumber.toString() + '-' + event.idx.toString());
   record.block_height = blockNumber;

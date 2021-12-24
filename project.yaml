@@ -3442,3 +3442,8 @@ dataSources:
           filter:
             module: salpLite
             method: Redeemed
+        - handler: handleSalpLiteRefunded
+          kind: substrate/EventHandler
+          filter:
+            module: salpLite
+            method: Refunded
