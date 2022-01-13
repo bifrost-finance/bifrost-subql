@@ -64,6 +64,13 @@ async function getPrice(block: SubstrateBlock, coin_id: string): Promise<Price> 
       prices.push(p)
     } else if (price2.length !== 0) {  // If only today's price do not exist, return yesterday's price.
       return price2[0]
+    } else {
+      const price3 = prices.filter(price => price.coin_id == coin_id);
+      if (price3.length !== 0) {
+        const old_price = price3.pop()
+        p.cny = old_price.cny;
+        p.usd = old_price.usd;
+      }
     }
     return p as Price
   }
