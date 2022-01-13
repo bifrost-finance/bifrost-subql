@@ -3430,4 +3430,19 @@ dataSources:
 
         - handler: salpContribution
           kind: substrate/BlockHandler
-
+        # salpLite
+        - handler: handleSalpLiteIssued
+          kind: substrate/EventHandler
+          filter:
+            module: salpLite
+            method: Issued
+        - handler: handleSalpLiteRedeemed
+          kind: substrate/EventHandler
+          filter:
+            module: salpLite
+            method: Redeemed
+        - handler: handleSalpLiteRefunded
+          kind: substrate/EventHandler
+          filter:
+            module: salpLite
+            method: Refunded

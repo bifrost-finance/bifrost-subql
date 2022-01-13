@@ -56,7 +56,7 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
         message_id = (data[3] as MessageId).toString();
       }
       else if(method === 'Refunded'){
-        balanceOf = (data[2] as BalanceOf).toBigInt();
+        balanceOf = (data[4] as BalanceOf).toBigInt();
       }
       else if(method === 'Redeemed'){
         balanceOf = (data[4] as BalanceOf).toBigInt();
@@ -109,5 +109,3 @@ const _handleSalpRefunded = async(event: SubstrateEvent): Promise<void> => {
 }
 
 export const handleSalpRefunded = _handleSalpRefunded;
-
-export const handleSalpLiteRefunded = _handleSalpRefunded;

@@ -297,3 +297,29 @@ type VsBondOrderClinchd @entity {
   amount: BigInt
   price: Float
 }
+
+type SalpLiteIssued @entity {
+  id: ID!
+  block_height: Int!
+  event_id: Int!
+  extrinsic_id: Int!
+  block_timestamp: Date!
+  account: String
+  para_id: Int
+  balance: BigInt
+  message_id: String
+}
+
+type SalpLiteRedeemed @entity {
+  id: ID!
+  block_height: Int!
+  event_id: Int
+  extrinsic_id: Int
+  block_timestamp: Date
+  account: String
+  para_id: Int
+  first_slot: String
+  last_slot: String
+  balance: BigInt
+  state: String
+}
