@@ -72,6 +72,7 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
   if (block.block.header.number.toNumber() % 100 !== 0) { return }
   await Promise.all(Tokens.map(async (token) => {
     const token_price = await getPrice(block, token.coin_id);
+    if (token_price.cny === "0") { return }
     let record = new Tvl(blockNumber.toString() + "-" + token.id);
     record.block_height = block.block.header.number.toNumber();
     record.block_timestamp = block.timestamp;
@@ -90,6 +91,7 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
 
   await Promise.all(DexTokens.map(async (token) => {
     const token_price = await getPrice(block, token.coin_id);
+    if (token_price.cny === "0") { return }
     let record = new Tvl(blockNumber.toString() + "-" + token.id);
     record.block_height = block.block.header.number.toNumber();
     record.block_timestamp = block.timestamp;
