@@ -3,15 +3,12 @@ import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import { Compact } from '@polkadot/types';
 import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
-import { SalpInfo } from '../types/models/SalpInfo';
-import { SalpContributed } from '../types/models/SalpContributed';
 // import { SalpContributeFailed } from '../types/models/SalpContributeFailed';
 // import { SalpWithdrew } from '../types/models/SalpWithdrew';
 // import { SalpWithdrawFailed } from '../types/models/SalpWithdrawFailed';
 // import { SalpRedeemed } from '../types/models/SalpRedeemed';
 // import { SalpRedeemFailed } from '../types/models/SalpRedeemFailed';
-import { SalpContribution } from '../types/models/SalpContribution';
-import { SalpRefunded } from '../types/models/SalpRefunded';
+import { SalpInfo, SalpContributed, SalpContribution, SalpRefunded, SalpFailed } from '../types/models';
 
 export async function salp(block: SubstrateBlock): Promise<void> {
   const blockNumber = (block.block.header.number as Compact<BlockNumber>).toBigInt();
@@ -159,5 +156,19 @@ export async function handleSalpRefunded(event: SubstrateEvent): Promise<void> {
   record.account = account.toString();
   record.para_id = (para_id as ParaId).toNumber();
   record.balance = (balance as Balance).toBigInt();
+  await record.save();
+}
+
+
+export async function handleSalpFailed(event: SubstrateEvent): Promise<void> {
+  const blockNumber = event.block.block.header.number.toNumber();
+
+  const { event: { data: [para_id] } } = event;
+  const record = new SalpFailed(blockNumber.toString() + '-' + event.idx.toString());
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.extrinsic_id = event.extrinsic.idx;
+  record.block_timestamp = event.block.timestamp;
+  record.para_id = (para_id as ParaId).toNumber();
   await record.save();
 }

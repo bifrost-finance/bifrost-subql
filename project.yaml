@@ -3344,6 +3344,11 @@ dataSources:
           filter:
             module: salp
             method: Refunded
+        - handler: handleSalpFailed
+          kind: substrate/EventHandler
+          filter:
+            module: salp
+            method: Failed
         - handler: handleXtokensTransferred
           kind: substrate/EventHandler
           filter:

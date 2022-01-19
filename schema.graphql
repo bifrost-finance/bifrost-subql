@@ -211,6 +211,15 @@ type SalpRefunded @entity {
   balance: BigInt
 }
 
+type SalpFailed @entity {
+  id: ID!
+  event_id: Int!
+  extrinsic_id: Int!
+  block_height: Int!
+  block_timestamp: Date!
+  para_id: Int
+}
+
 type XtokensTransferred @entity {
   id: ID!
   event_id: Int!
