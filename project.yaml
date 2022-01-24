@@ -77,7 +77,9 @@ network:
         "update_b": "BlockNumber",
         "state": "PoolState",
         "block_startup": "Option<BlockNumber>",
-        "block_retired": "Option<BlockNumber>"
+        "redeem_limit_time": "BlockNumber",
+        "unlock_limit_nums": "u32",
+        "pending_unlock_nums": "u32"
     },
     "Share": "u128",
     "OracleValue": "Price",
@@ -450,7 +452,8 @@ network:
             "ETH": 5,
             "KAR": 6,
             "ZLK": 7,
-            "PHA": 8
+            "PHA": 8,
+            "RMRK": 9
         }
     },
     "CurrencyId": {
@@ -500,7 +503,8 @@ network:
     "DepositData": {
         "deposit": "Balance",
         "gain_avgs": "BTreeMap<CurrencyId, FixedU128>",
-        "update_b": "BlockNumber"
+        "update_b": "BlockNumber",
+        "pending_unlocks": "Vec<(BlockNumber, Balance)>"
     },
     "RewardData": {
         "total": "Balance",
@@ -926,7 +930,9 @@ network:
                             "update_b": "BlockNumber",
                             "state": "PoolState",
                             "block_startup": "Option<BlockNumber>",
-                            "block_retired": "Option<BlockNumber>"
+                            "redeem_limit_time": "BlockNumber",
+                            "unlock_limit_nums": "u32",
+                            "pending_unlock_nums": "u32"
                         },
                         "Share": "u128",
                         "OracleValue": "Price",
@@ -1298,7 +1304,8 @@ network:
                                 "KSM": 4,
                                 "KAR": 6,
                                 "ZLK": 7,
-                                "PHA": 8
+                                "PHA": 8,
+                                "RMRK": 9
                             }
                         },
                         "CurrencyId": {
@@ -1348,7 +1355,8 @@ network:
                         "DepositData": {
                             "deposit": "Balance",
                             "gain_avgs": "BTreeMap<CurrencyId, FixedU128>",
-                            "update_b": "BlockNumber"
+                            "update_b": "BlockNumber",
+                            "pending_unlocks": "Vec<(BlockNumber, Balance)>"
                         },
                         "RewardData": {
                             "total": "Balance",
@@ -1442,7 +1450,9 @@ network:
                             "update_b": "BlockNumber",
                             "state": "PoolState",
                             "block_startup": "Option<BlockNumber>",
-                            "block_retired": "Option<BlockNumber>"
+                            "redeem_limit_time": "BlockNumber",
+                            "unlock_limit_nums": "u32",
+                            "pending_unlock_nums": "u32"
                         },
                         "Share": "u128",
                         "OracleValue": "Price",
@@ -1814,7 +1824,8 @@ network:
                                 "KSM": 4,
                                 "KAR": 6,
                                 "ZLK": 7,
-                                "PHA": 8
+                                "PHA": 8,
+                                "RMRK": 9
                             }
                         },
                         "CurrencyId": {
@@ -1864,7 +1875,8 @@ network:
                         "DepositData": {
                             "deposit": "Balance",
                             "gain_avgs": "BTreeMap<CurrencyId, FixedU128>",
-                            "update_b": "BlockNumber"
+                            "update_b": "BlockNumber",
+                            "pending_unlocks": "Vec<(BlockNumber, Balance)>"
                         },
                         "RewardData": {
                             "total": "Balance",
@@ -2303,7 +2315,9 @@ network:
                             "update_b": "BlockNumber",
                             "state": "PoolState",
                             "block_startup": "Option<BlockNumber>",
-                            "block_retired": "Option<BlockNumber>"
+                            "redeem_limit_time": "BlockNumber",
+                            "unlock_limit_nums": "u32",
+                            "pending_unlock_nums": "u32"
                         },
                         "Share": "u128",
                         "OracleValue": "Price",
@@ -2676,7 +2690,8 @@ network:
                                 "ETH": 5,
                                 "KAR": 6,
                                 "ZLK": 7,
-                                "PHA": 8
+                                "PHA": 8,
+                                "RMRK": 9
                             }
                         },
                         "CurrencyId": {
@@ -2726,7 +2741,8 @@ network:
                         "DepositData": {
                             "deposit": "Balance",
                             "gain_avgs": "BTreeMap<CurrencyId, FixedU128>",
-                            "update_b": "BlockNumber"
+                            "update_b": "BlockNumber",
+                            "pending_unlocks": "Vec<(BlockNumber, Balance)>"
                         },
                         "RewardData": {
                             "total": "Balance",
@@ -2820,7 +2836,9 @@ network:
                             "update_b": "BlockNumber",
                             "state": "PoolState",
                             "block_startup": "Option<BlockNumber>",
-                            "block_retired": "Option<BlockNumber>"
+                            "redeem_limit_time": "BlockNumber",
+                            "unlock_limit_nums": "u32",
+                            "pending_unlock_nums": "u32"
                         },
                         "Share": "u128",
                         "OracleValue": "Price",
@@ -3193,7 +3211,8 @@ network:
                                 "ETH": 5,
                                 "KAR": 6,
                                 "ZLK": 7,
-                                "PHA": 8
+                                "PHA": 8,
+                                "RMRK": 9
                             }
                         },
                         "CurrencyId": {
@@ -3243,7 +3262,8 @@ network:
                         "DepositData": {
                             "deposit": "Balance",
                             "gain_avgs": "BTreeMap<CurrencyId, FixedU128>",
-                            "update_b": "BlockNumber"
+                            "update_b": "BlockNumber",
+                            "pending_unlocks": "Vec<(BlockNumber, Balance)>"
                         },
                         "RewardData": {
                             "total": "Balance",
