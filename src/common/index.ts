@@ -1,6 +1,7 @@
 import { SubstrateEvent, SubstrateBlock } from "@subql/types";
 import axiosOriginal from 'axios';
 import adapter from 'axios/lib/adapters/http';
+import BigNumber from "bignumber.js";
 const axios = axiosOriginal.create({ adapter });
 
 function getDayStartUnix(block: SubstrateBlock): string {
@@ -77,4 +78,38 @@ async function getPrice(block: SubstrateBlock, coin_id: string): Promise<Price> 
   return price[0]
 }
 
-export { getDayStartUnix, get7DayStartUnix, tokenSplit, getPrice };
+function getZenlinkTokenName(assetIndex: number): { name?: string, coin_id?: string, decimal?: number } {
+  switch (assetIndex) {
+    case 0:
+      return { name: 'BNC', coin_id: 'bifrost-native-coin', decimal: 12 };
+    case 515:
+      return { name: 'DOT', coin_id: 'polkadot', decimal: 10 };
+    case 516:
+      return { name: 'KSM', coin_id: 'kusama', decimal: 12 };
+    case 517:
+      return { name: 'ETH', coin_id: 'ethereum', decimal: 18 };
+    case 518:
+      return { name: 'KAR', coin_id: 'karura', decimal: 12 };
+    case 519:
+      return { name: 'ZLK', coin_id: 'zenlink-network-token', decimal: 18 };
+    case 770:
+      return { name: 'kUSD', coin_id: 'tether', decimal: 12 };
+    case 1027:
+      return { name: 'vsDOT', decimal: 10 };
+    case 1028:
+      return { name: 'vsKSM', decimal: 12 };
+    default:
+      return {};
+  }
+}
+
+function toUnitToken(balance: number, decimals): number {
+  if (balance) {
+    const base = new BigNumber(10).pow(new BigNumber(decimals || 12));
+    const dm = new BigNumber(balance).div(base).toString();
+    return parseFloat(dm);
+  }
+  return 0;
+}
+
+export { getDayStartUnix, get7DayStartUnix, tokenSplit, getPrice, getZenlinkTokenName, toUnitToken };

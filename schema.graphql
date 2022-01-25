@@ -110,6 +110,9 @@ type ZenlinkLiquidityCalculation @entity {
   recipient: String
   asset_0: String
   asset_1: String
+  asset_0_name: String
+  asset_1_name: String
+  amount: Float
   balance_in: BigInt
   balance_out: BigInt
   add_balance_0: BigInt
