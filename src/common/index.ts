@@ -92,6 +92,8 @@ function getZenlinkTokenName(assetIndex: number): { name?: string, coin_id?: str
       return { name: 'KAR', coin_id: 'karura', decimal: 12 };
     case 519:
       return { name: 'ZLK', coin_id: 'zenlink-network-token', decimal: 18 };
+    case 521:
+      return { name: 'RMRK', coin_id: 'rmrk', decimal: 10 };
     case 770:
       return { name: 'kUSD', coin_id: 'tether', decimal: 12 };
     case 1027:
