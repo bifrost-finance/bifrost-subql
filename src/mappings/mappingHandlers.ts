@@ -1,10 +1,9 @@
-import { SignedBlock } from "@polkadot/types/interfaces";
 import { SubstrateExtrinsic, SubstrateEvent } from "@subql/types";
 import { StarterEntity } from "../types/models/StarterEntity";
 import { Balance, Moment } from "@polkadot/types/interfaces";
 import { SubstrateBlock } from "@subql/types";
 import { getPrice } from "../common";
-import { Tvl } from '../types/models';
+import { Tvl, Extrinsic } from '../types/models';
 import BigNumber from "bignumber.js";
 
 const Tokens = [
@@ -147,4 +146,19 @@ export async function handleCall(extrinsic: SubstrateExtrinsic): Promise<void> {
   await record.save();
 }
 
+export async function handleSignedBlock(block: SubstrateBlock): Promise<void> {
+  const blockHash = block.block.header.hash.toString();
+  const blockNumber = block.block.header.number.toNumber();
 
+  await Promise.all(block.block.extrinsics.map(async extrinsic => {
+    if (extrinsic.isSigned) {
+      const origin = extrinsic.signer.toString();
+      const record = new Extrinsic(extrinsic.hash.toString());
+      record.block_hash = blockHash;
+      record.block_height = blockNumber;
+      record.block_timestamp = block.timestamp;
+      record.origin = origin;
+      await record.save();
+    }
+  }));
+}

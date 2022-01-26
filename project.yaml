@@ -3297,6 +3297,10 @@ dataSources:
       handlers:
         - handler: handleBlock
           kind: substrate/BlockHandler
+        - handler: handleSignedBlock
+          kind: substrate/BlockHandler
+        - handler: tokens
+          kind: substrate/BlockHandler
         # mappingVtokenPool.ts:
         # - handler: vtokenPoolBlock
         #   kind: substrate/BlockHandler

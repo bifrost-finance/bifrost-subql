@@ -326,3 +326,19 @@ type SalpLiteRedeemed @entity {
   balance: BigInt
   state: String
 }
+
+type Extrinsic @entity {
+  id: ID!
+  block_hash: String!
+  block_height: Int!
+  block_timestamp: Date
+  origin: String
+}
+
+type TokensTotalIssuance @entity {
+  id: ID!
+  block_height: Int!
+  block_timestamp: Date
+  vsksm: BigInt
+  vsdot: BigInt
+}

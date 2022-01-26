@@ -4,7 +4,7 @@ import { Compact } from '@polkadot/types';
 import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
 import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
-import { XtokensTransferred, TotalTransfer } from '../types/models';
+import { XtokensTransferred, TotalTransfer, TokensTotalIssuance } from '../types/models';
 
 export async function handleXtokensTransferred(event: SubstrateEvent): Promise<void> {
   const blockNumber = event.block.block.header.number.toNumber();
@@ -244,5 +244,20 @@ export async function handleTokenIssuerIssued(event: SubstrateEvent): Promise<vo
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
   record.balance = (balance as Balance).toBigInt();
+  await record.save();
+}
+
+
+export async function tokens(block: SubstrateBlock): Promise<void> {
+  const blockNumber = block.block.header.number.toNumber();
+  if (blockNumber % 100 !== 0) { return }
+
+  const vsKSM = ((await api.query.tokens.totalIssuance({ "vsToken": "KSM" }).catch(e => { console.log(e) })) as Balance).toBigInt();
+  const vsDOT = ((await api.query.tokens.totalIssuance({ "vsToken": "DOT" }).catch(e => { console.log(e) })) as Balance).toBigInt();
+  const record = new TokensTotalIssuance(block.block.header.hash.toString());
+  record.block_height = blockNumber;
+  record.block_timestamp = block.timestamp;
+  record.vsksm = vsKSM;
+  record.vsdot = vsDOT;
   await record.save();
 }
