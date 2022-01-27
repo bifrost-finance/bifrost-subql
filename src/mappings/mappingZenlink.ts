@@ -58,7 +58,7 @@ export async function zenlinkLiquidityAdded(event: SubstrateEvent): Promise<void
   const asset1 = getZenlinkTokenName(JSON.parse(asset_1.toString()).assetIndex)
   const entity = new ZenlinkLiquidityCalculation(blockNumber.toString() + '-' + event.idx.toString());
   const token_price = await getPrice(event.extrinsic.block, asset0.coin_id || asset1.coin_id);
-  const amount_balance = asset0.coin_id ? toUnitToken((add_balance_0 as Compact<Balance>).toNumber(), asset0.decimal) : toUnitToken((add_balance_1 as Compact<Balance>).toNumber(), asset1.decimal)
+  const amount_balance = asset0.coin_id ? toUnitToken((add_balance_0 as Compact<Balance>).toString(), asset0.decimal) : toUnitToken((add_balance_1 as Compact<Balance>).toString(), asset1.decimal)
 
   entity.block_height = blockNumber;
   entity.block_timestamp = event.extrinsic.block.timestamp;
@@ -84,7 +84,7 @@ export async function zenlinkLiquidityRemoved(event: SubstrateEvent): Promise<vo
   const asset1 = getZenlinkTokenName(JSON.parse(asset_1.toString()).assetIndex)
   const entity = new ZenlinkLiquidityCalculation(blockNumber.toString() + '-' + event.idx.toString());
   const token_price = await getPrice(event.extrinsic.block, asset0.coin_id || asset1.coin_id);
-  const amount_balance = asset0.coin_id ? toUnitToken((rm_balance_0 as Compact<Balance>).toNumber(), asset0.decimal) : toUnitToken((rm_balance_1 as Compact<Balance>).toNumber(), asset1.decimal)
+  const amount_balance = asset0.coin_id ? toUnitToken((rm_balance_0 as Compact<Balance>).toString(), asset0.decimal) : toUnitToken((rm_balance_1 as Compact<Balance>).toString(), asset1.decimal)
 
   entity.block_height = blockNumber;
   entity.block_timestamp = event.extrinsic.block.timestamp;

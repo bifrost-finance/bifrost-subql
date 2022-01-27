@@ -105,7 +105,7 @@ function getZenlinkTokenName(assetIndex: number): { name?: string, coin_id?: str
   }
 }
 
-function toUnitToken(balance: number, decimals): number {
+function toUnitToken(balance: string, decimals): number {
   if (balance) {
     const base = new BigNumber(10).pow(new BigNumber(decimals || 12));
     const dm = new BigNumber(balance).div(base).toString();
