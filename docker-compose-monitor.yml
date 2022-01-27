@@ -3,7 +3,7 @@ version: '3'
 services:
 
   subquery-node:
-    image: ronyang/bifrost-subql-node:v0.25.1.alpha.1
+    image: onfinality/subql-node:latest
     depends_on:
       - "postgres"
     restart: always
@@ -17,6 +17,6 @@ services:
       - ./bifrost-subql/:/app
     command:
       - -f=/app
-      - --local
       - --unsafe
       - --timestamp-field
+      - --batch-size=30
