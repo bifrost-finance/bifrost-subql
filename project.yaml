@@ -3301,6 +3301,10 @@ dataSources:
           kind: substrate/BlockHandler
         - handler: tokens
           kind: substrate/BlockHandler
+        - handler: democracy
+          kind: substrate/BlockHandler
+        - handler: council
+          kind: substrate/BlockHandler
         # mappingVtokenPool.ts:
         # - handler: vtokenPoolBlock
         #   kind: substrate/BlockHandler
