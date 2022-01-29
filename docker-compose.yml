@@ -25,6 +25,7 @@ services:
       - ./:/app
     command:
       - -f=/app
+      - --local
       - --unsafe
       - --timestamp-field
       - --batch-size=30

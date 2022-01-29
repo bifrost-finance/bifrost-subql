@@ -17,6 +17,7 @@ services:
       - ./bifrost-subql/:/app
     command:
       - -f=/app
+      - --local
       - --unsafe
       - --timestamp-field
       - --batch-size=30
