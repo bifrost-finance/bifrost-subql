@@ -115,12 +115,6 @@ type ZenlinkLiquidityCalculation @entity {
   amount: Float
   balance_in: BigInt
   balance_out: BigInt
-  add_balance_0: BigInt
-  add_balance_1: BigInt
-  mint_balance_lp: BigInt
-  rm_balance_0: BigInt
-  rm_balance_1: BigInt
-  burn_balance_lp: BigInt
 }
 
 type VsbondInfo @entity {

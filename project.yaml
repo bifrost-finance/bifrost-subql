@@ -3348,16 +3348,16 @@ dataSources:
           filter:
             module: zenlinkProtocol
             method: AssetSwap
-        - handler: zenlinkLiquidityAdded
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityAdded
-        - handler: zenlinkLiquidityRemoved
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityRemoved
+        #        - handler: zenlinkLiquidityAdded
+        #          kind: substrate/EventHandler
+        #          filter:
+        #            module: zenlinkProtocol
+        #            method: LiquidityAdded
+        #        - handler: zenlinkLiquidityRemoved
+        #          kind: substrate/EventHandler
+        #          filter:
+        #            module: zenlinkProtocol
+        #            method: LiquidityRemoved
         - handler: vsbond
           kind: substrate/BlockHandler
         - handler: handleVsBondAuctionOrderClinchd
