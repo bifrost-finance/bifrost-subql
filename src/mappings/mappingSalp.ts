@@ -136,6 +136,7 @@ export async function handleSalpContributed(event: SubstrateEvent): Promise<void
   record.block_height = blockNumber;
   record.event_id = event.idx;
   record.extrinsic_id = event.extrinsic.idx;
+  record.extrinsic_hash = event.extrinsic.extrinsic.hash.toString();
   record.block_timestamp = event.block.timestamp;
   record.account = account.toString();
   record.para_id = (para_id as ParaId).toNumber();

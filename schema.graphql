@@ -143,6 +143,7 @@ type SalpContributed @entity {
   block_height: Int!
   event_id: Int!
   extrinsic_id: Int!
+  extrinsic_hash: String
   block_timestamp: Date!
   account: String
   para_id: Int
@@ -205,7 +206,7 @@ type SalpRefunded @entity {
   extrinsic_id: Int!
   block_height: Int!
   block_timestamp: Date!
-  method: String!
+  method: String
   account: String
   para_id: Int
   balance: BigInt
