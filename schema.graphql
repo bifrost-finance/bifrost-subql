@@ -193,6 +193,9 @@ type SalpContribution @entity {
   id: ID!
   block_height: Int!
   block_timestamp: Date!
+  event_id: Int
+  extrinsic_id: Int
+  extrinsic_hash: String
   method: String!
   account: String
   para_id: Int

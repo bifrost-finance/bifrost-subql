@@ -118,6 +118,9 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
       const record = new SalpContribution(blockNumber.toString() + '-' + salpEvent.idx.toString());
       record.block_height = blockNumber;
       record.block_timestamp = block.timestamp;
+      record.event_id = salpEvent.idx;
+      record.extrinsic_id = salpEvent.extrinsic.idx;
+      record.extrinsic_hash = salpEvent.extrinsic.extrinsic.hash.toString();
       record.method = method.toString();
       record.account = accountIdOf;
       record.para_id = paraId;
