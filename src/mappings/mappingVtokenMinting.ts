@@ -5,8 +5,11 @@ import {
 } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
+import BigNumber from "bignumber.js";
+
 import { VtokenMintingInfo } from "../types/models/VtokenMintingInfo";
 import { VtokenMintingMinted } from "../types/models/VtokenMintingMinted";
+import { VtokenMintingRate } from "../types/models/VtokenMintingRate";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
   const blockNumber = (
@@ -28,6 +31,30 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     record.block_timestamp = block.timestamp;
     record.method = method.toString();
     record.data = data.toString();
+    await record.save();
+  }
+
+  if (new BigNumber(blockNumber.toString()).modulo(100).toNumber() === 0) {
+    const vKSMtotalIssuance = await api.query.tokens.totalIssuance({
+      vToken: "KSM",
+    });
+    const KSMTokenPool = await api.query.vtokenMinting.tokenPool({
+      Token: "KSM",
+    });
+
+    const record = new VtokenMintingRate(blockNumber.toString());
+
+    record.block_height = blockNumber;
+    record.block_timestamp = block.timestamp;
+    record.vksm_balance = (vKSMtotalIssuance as Balance).toBigInt();
+    record.ksm_balance = (KSMTokenPool as Balance).toBigInt();
+    record.rate =
+      KSMTokenPool.toString() === "0" || vKSMtotalIssuance.toString() === "0"
+        ? "0"
+        : new BigNumber(vKSMtotalIssuance.toString())
+            .div(KSMTokenPool.toString())
+            .toString();
+
     await record.save();
   }
   return;

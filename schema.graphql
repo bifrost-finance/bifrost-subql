@@ -6,6 +6,15 @@ type VtokenMintingInfo @entity {
    data: String!
 }
 
+type VtokenMintingRate @entity {
+   id: ID!
+   block_height: BigInt!
+   block_timestamp: Date!
+   ksm_balance: BigInt!
+   vksm_balance: BigInt!
+   rate: String!
+}
+
 type VtokenMintingMinted @entity {
   id: ID!
   block_height: BigInt!
