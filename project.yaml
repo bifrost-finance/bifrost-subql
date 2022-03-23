@@ -6,20 +6,32 @@ repository: 'https://github.com/bifrost-finance/bifrost-subql.git'
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed'
-  endpoint: 'wss://bifrost-rpc.liebi.com/ws'
+  genesisHash: '0x1594dda75e4d7e77198acb5a1ef9e563a2fe9f8dd61ff2fa3b6633524b60f5c8'
+  endpoint: 'wss://bifrost-rpc.devnet.liebi.com/ws'
   chaintypes:
     file: ./types.json
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1502100
+    startBlock: 1
     mapping:
       file: ./dist/index.js
       handlers:
-        - handler: parachainStaking
+        - handler: vtokenMinting
           kind: substrate/BlockHandler
-        - handler: handleParachainStakingRewarded
+        - handler: handleVtokenMintingMinted
+          kind: substrate/CallHandler
+          filter:
+            module: vtokenMinting
+            method: mint
+            success: true
+        - handler: handleVtokenMintingMinted
+          kind: substrate/CallHandler
+          filter:
+            module: utility
+            method: batchAll
+            success: true
+        - handler: handleCurrenciesTransferred
           kind: substrate/EventHandler
           filter:
-            module: parachainStaking
-            method: Rewarded
+            module: currencies
+            method: Transferred

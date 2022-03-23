@@ -1,3 +1,3 @@
 import "@polkadot/api-augment";
-export * from './mappings/mappingHandlers'
-export * from "./mappings/mappingStaking";
+export * from "./mappings/mappingVtokenMinting";
+export * from "./mappings/mappingBalance";

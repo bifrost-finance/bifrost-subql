@@ -1,20 +1,4 @@
-type StarterEntity @entity {
-
-  id: ID! #id is a required field
-
-  field1: Int!
-
-  field2: String #filed2 is an optional field
-
-  field3: BigInt
-
-  field4: Date
-
-  field5: Boolean
-
-}
-
-type ParachainStakingInfo @entity {
+type VtokenMintingInfo @entity {
    id: ID!
    block_height: BigInt!
    block_timestamp: Date!
@@ -22,10 +6,26 @@ type ParachainStakingInfo @entity {
    data: String!
 }
 
-type ParachainStakingRewarded @entity {
+type VtokenMintingMinted @entity {
   id: ID!
-  block_height: Int!
+  block_height: BigInt!
   block_timestamp: Date!
+  mint_token: String
   account: String
+  vKSM_balance:BigInt
+  balance: BigInt
+}
+
+type TotalTransfer @entity {
+  id: ID!
+  event_id: Int!
+  extrinsic_id: Int
+  block_height: BigInt!
+  block_timestamp: Date!
+  section: String
+  method: String
+  from: String
+  to: String
+  currency: String
   balance: BigInt
 }

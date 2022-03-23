@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "subql build",
+    "build": "subql build --mode=dev",
     "prepack": "rm -rf dist && npm build",
     "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
     "test": "jest",
