@@ -1,7 +1,8 @@
 import { SubstrateEvent } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
-import { TotalTransfer } from "../types/models";
 import { Compact } from "@polkadot/types";
+
+import { TotalTransfer } from "../types";
 
 export async function handleCurrenciesTransferred(
   event: SubstrateEvent

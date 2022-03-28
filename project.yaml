@@ -6,8 +6,8 @@ repository: 'https://github.com/bifrost-finance/bifrost-subql.git'
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x1594dda75e4d7e77198acb5a1ef9e563a2fe9f8dd61ff2fa3b6633524b60f5c8'
-  endpoint: 'wss://bifrost-rpc.devnet.liebi.com/ws'
+  genesisHash: '0x28a92c0b05f7fedb20da73f8662976410d3826e40783b1f17fc575c03c42fad1'
+  endpoint: 'wss://bifrost-rpc.prod-test.liebi.com/ws'
   chaintypes:
     file: ./types.json
 dataSources:
@@ -30,6 +30,11 @@ dataSources:
             module: utility
             method: batchAll
             success: true
+        - handler: handleVKSMSwap
+          kind: substrate/EventHandler
+          filter:
+            module: zenlinkProtocol
+            method: AssetSwap
         - handler: handleCurrenciesTransferred
           kind: substrate/EventHandler
           filter:

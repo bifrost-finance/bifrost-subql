@@ -6,13 +6,15 @@ type VtokenMintingInfo @entity {
    data: String!
 }
 
-type VtokenMintingRate @entity {
+type VtokenMintingRatio @entity {
    id: ID!
    block_height: BigInt!
    block_timestamp: Date!
    ksm_balance: BigInt!
    vksm_balance: BigInt!
-   rate: String!
+   ratio: String!
+   vksm_ksm_ratio:String!
+   kusd_ksm_ratio:String!
 }
 
 type VtokenMintingMinted @entity {
@@ -21,7 +23,7 @@ type VtokenMintingMinted @entity {
   block_timestamp: Date!
   mint_token: String
   account: String
-  vKSM_balance:BigInt
+  vksm_balance:BigInt
   balance: BigInt
 }
 
@@ -37,4 +39,34 @@ type TotalTransfer @entity {
   to: String
   currency: String
   balance: BigInt
+}
+
+type VtokenSwap @entity  {
+  id: ID!
+  block_height: BigInt!
+  block_timestamp: Date!
+  event_id: Int
+  extrinsic_id: Int
+  owner: String
+  recipient: String
+  asset_0: String
+  asset_1: String
+  asset_0_name: String
+  asset_1_name: String
+  balance_in: BigInt
+  balance_out: BigInt
+}
+
+type VtokenSwapRatio @entity  {
+  id: ID!
+  block_height: BigInt!
+  block_timestamp: Date!
+  event_id: Int
+  asset_0: String
+  asset_1: String
+  asset_0_name: String
+  asset_1_name: String
+  balance_in: BigInt
+  balance_out: BigInt
+  ratio:String!
 }
