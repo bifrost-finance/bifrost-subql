@@ -59,8 +59,8 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
         : new BigNumber(vKSMtotalIssuance.toString())
             .div(KSMTokenPool.toString())
             .toString();
-    record.vksm_ksm_ratio = swapVKSMKSMRecord?.ratio || "";
-    record.kusd_ksm_ratio = swapVUSDKSMRecord?.ratio || "";
+    record.vksm_ksm_ratio = swapVKSMKSMRecord?.ratio || "0";
+    record.kusd_ksm_ratio = swapVUSDKSMRecord?.ratio || "0";
 
     await record.save();
   }
