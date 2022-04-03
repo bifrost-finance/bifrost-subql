@@ -6,7 +6,7 @@ repository: 'https://github.com/bifrost-finance/bifrost-subql.git'
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x28a92c0b05f7fedb20da73f8662976410d3826e40783b1f17fc575c03c42fad1'
+  genesisHash: '0x1672fb3b6885e3b18e844bdb77dea624d2b86bf16ad801d2be504e54812eb542'
   endpoint: 'wss://bifrost-rpc.prod-test.liebi.com/ws'
   chaintypes:
     file: ./types.json
@@ -30,6 +30,27 @@ dataSources:
             module: utility
             method: batchAll
             success: true
+        - handler: handleVtokenMintingRedeemed
+          kind: substrate/CallHandler
+          filter:
+            module: vtokenMinting
+            method: redeem
+        - handler: handleVtokenMintingRedeemed
+          kind: substrate/CallHandler
+          filter:
+            module: utility
+            method: batchAll
+            success: true
+        - handler: handleVtokenMintingRebondedByUnlockId
+          kind: substrate/CallHandler
+          filter:
+            module: vtokenMinting
+            method: rebondByUnlockId
+        - handler: handleVtokenMintingRedeemedEndowed
+          kind: substrate/EventHandler
+          filter:
+            module: tokens
+            method: Endowed
         - handler: handleVKSMSwap
           kind: substrate/EventHandler
           filter:

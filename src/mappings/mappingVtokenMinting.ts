@@ -12,6 +12,9 @@ import {
   VtokenMintingInfo,
   VtokenMintingMinted,
   VtokenMintingRatio,
+  VtokenMintingRedeemedEndowed,
+  VtokenMintingRedeemed,
+  VtokenMintingRebondedByUnlockId,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -107,5 +110,122 @@ export async function handleVtokenMintingMinted(
 
       await record.save();
     }
+  }
+}
+
+export async function handleVtokenMintingRebondedByUnlockId(
+  extrinsic: SubstrateExtrinsic
+): Promise<void> {
+  const { block, events } = extrinsic;
+  const blockNumber = (
+    block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
+
+  const vtokenMintingEndowedEvent = events.find(
+    (e) => e.event.section === "tokens" && e.event.method === "Endowed"
+  ) as SubstrateEvent;
+  const vtokenMintingRebondedByUnlockIdEvent = events.find(
+    (e) =>
+      e.event.section === "vtokenMinting" &&
+      e.event.method === "RebondedByUnlockId"
+  ) as SubstrateEvent;
+
+  if (vtokenMintingEndowedEvent && vtokenMintingRebondedByUnlockIdEvent) {
+    const {
+      event: {
+        data: [token, balanceKSM, balanceVKSM],
+      },
+    } = vtokenMintingRebondedByUnlockIdEvent;
+    const {
+      event: {
+        data: [endowedToken, account, endowedVKSM],
+      },
+    } = vtokenMintingEndowedEvent;
+    const record = new VtokenMintingRebondedByUnlockId(
+      blockNumber.toString() +
+        "-" +
+        vtokenMintingRebondedByUnlockIdEvent.idx.toString()
+    );
+    record.block_height = blockNumber;
+    record.event_id = vtokenMintingRebondedByUnlockIdEvent.idx;
+    record.block_timestamp =
+      vtokenMintingRebondedByUnlockIdEvent.block.timestamp;
+    record.token = token.toString();
+    record.endowed_token = endowedToken.toString();
+    record.account = account.toString();
+    record.balance_ksm = (balanceKSM as Balance).toBigInt();
+    record.balance_vksm = (balanceVKSM as Balance).toBigInt();
+    record.balance_endowed_vksm = (endowedVKSM as Balance).toBigInt();
+    await record.save();
+  }
+}
+
+export async function handleVtokenMintingRedeemed(
+  extrinsic: SubstrateExtrinsic
+): Promise<void> {
+  const { block, events } = extrinsic;
+  const blockNumber = (
+    block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
+
+  const vtokenMintingWithdrawnEvent = events.find(
+    (e) => e.event.section === "currencies" && e.event.method === "Withdrawn"
+  ) as SubstrateEvent;
+  const vtokenMintingRedeemedEvent = events.find(
+    (e) => e.event.section === "vtokenMinting" && e.event.method === "Redeemed"
+  ) as SubstrateEvent;
+
+  if (vtokenMintingRedeemedEvent && vtokenMintingWithdrawnEvent) {
+    const {
+      event: {
+        data: [token, balanceKSM, balanceVKSM],
+      },
+    } = vtokenMintingRedeemedEvent;
+    const {
+      event: {
+        data: [withdrawnToken, account, withdrawnBalance],
+      },
+    } = vtokenMintingWithdrawnEvent;
+
+    const record = new VtokenMintingRedeemed(
+      blockNumber.toString() + "-" + vtokenMintingRedeemedEvent.idx.toString()
+    );
+    record.block_height = blockNumber;
+    record.event_id = vtokenMintingRedeemedEvent.idx;
+    record.block_timestamp = vtokenMintingRedeemedEvent.block.timestamp;
+    record.token = token.toString();
+    record.withdrawn_token = withdrawnToken.toString();
+    record.account = account.toString();
+    record.balance_ksm = (balanceKSM as Balance).toBigInt();
+    record.balance_vksm = (balanceVKSM as Balance).toBigInt();
+    record.withdrawn_vksm_balance = (withdrawnBalance as Balance).toBigInt();
+    await record.save();
+  }
+}
+
+export async function handleVtokenMintingRedeemedEndowed(
+  event: SubstrateEvent
+): Promise<void> {
+  const blockNumber = (
+    event.block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
+
+  const {
+    event: {
+      data: [token, account, balanceKSM],
+    },
+  } = event;
+  if (token.toString() === `{"token":"KSM"}`) {
+    const record = new VtokenMintingRedeemedEndowed(
+      blockNumber.toString() + "-" + event.idx.toString()
+    );
+    record.block_height = blockNumber;
+    record.event_id = event.idx;
+    record.block_timestamp = event.block.timestamp;
+    record.token = token.toString();
+    record.token = account.toString();
+    record.balance_ksm = (balanceKSM as Balance).toBigInt();
+
+    await record.save();
   }
 }

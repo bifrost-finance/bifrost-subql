@@ -1,72 +1,108 @@
 type VtokenMintingInfo @entity {
-   id: ID!
-   block_height: BigInt!
-   block_timestamp: Date!
-   method: String!
-   data: String!
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    method: String!
+    data: String!
 }
 
 type VtokenMintingRatio @entity {
-   id: ID!
-   block_height: BigInt!
-   block_timestamp: Date!
-   ksm_balance: BigInt!
-   vksm_balance: BigInt!
-   ratio: String!
-   vksm_ksm_ratio:String!
-   kusd_ksm_ratio:String!
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    ksm_balance: BigInt!
+    vksm_balance: BigInt!
+    ratio: String!
+    vksm_ksm_ratio:String!
+    kusd_ksm_ratio:String!
 }
 
 type VtokenMintingMinted @entity {
-  id: ID!
-  block_height: BigInt!
-  block_timestamp: Date!
-  mint_token: String
-  account: String
-  vksm_balance:BigInt
-  balance: BigInt
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    mint_token: String
+    account: String
+    vksm_balance:BigInt
+    balance: BigInt
+}
+
+type VtokenMintingRebondedByUnlockId @entity {
+    id: ID!
+    block_height: BigInt!
+    event_id: Int!
+    block_timestamp: Date!
+    token: String
+    account: String
+    endowed_token: String
+    balance_ksm:BigInt
+    balance_vksm: BigInt
+    balance_endowed_vksm: BigInt
+}
+
+type VtokenMintingRedeemed @entity {
+    id: ID!
+    block_height: BigInt!
+    event_id: Int!
+    block_timestamp: Date!
+    token: String
+    withdrawn_token: String
+    account: String
+    balance_ksm:BigInt
+    balance_vksm: BigInt
+    withdrawn_vksm_balance:BigInt
+}
+
+type VtokenMintingRedeemedEndowed @entity {
+    id: ID!
+    block_height: BigInt!
+    event_id: Int!
+    block_timestamp: Date!
+    token: String
+    account: String
+    balance_ksm:BigInt
 }
 
 type TotalTransfer @entity {
-  id: ID!
-  event_id: Int!
-  extrinsic_id: Int
-  block_height: BigInt!
-  block_timestamp: Date!
-  section: String
-  method: String
-  from: String
-  to: String
-  currency: String
-  balance: BigInt
+    id: ID!
+    event_id: Int!
+    extrinsic_id: Int
+    block_height: BigInt!
+    block_timestamp: Date!
+    section: String
+    method: String
+    from: String
+    to: String
+    currency: String
+    balance: BigInt
 }
 
 type VtokenSwap @entity  {
-  id: ID!
-  block_height: BigInt!
-  block_timestamp: Date!
-  event_id: Int
-  extrinsic_id: Int
-  owner: String
-  recipient: String
-  asset_0: String
-  asset_1: String
-  asset_0_name: String
-  asset_1_name: String
-  balance_in: BigInt
-  balance_out: BigInt
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    event_id: Int
+    extrinsic_id: Int
+    owner: String
+    recipient: String
+    asset_0: String
+    asset_1: String
+    asset_0_name: String
+    asset_1_name: String
+    balance_in: BigInt
+    balance_out: BigInt
 }
 
 type VtokenSwapRatio @entity  {
-  id: ID!
-  block_height: BigInt!
-  block_timestamp: Date!
-  event_id: Int
-  asset_0: String
-  asset_1: String
-  asset_0_name: String
-  asset_1_name: String
-  balance_in: BigInt
-  balance_out: BigInt
-  ratio:String!
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    event_id: Int
+    asset_0: String
+    asset_1: String
+    asset_0_name: String
+    asset_1_name: String
+    balance_in: BigInt
+    balance_out: BigInt
+    ratio:String!
 }
