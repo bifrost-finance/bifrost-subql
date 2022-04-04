@@ -53,14 +53,15 @@ type VtokenMintingRedeemed @entity {
     withdrawn_vksm_balance:BigInt
 }
 
-type VtokenMintingRedeemedEndowed @entity {
+type VtokenMintingRedeemedTransferred @entity {
     id: ID!
     block_height: BigInt!
     event_id: Int!
     block_timestamp: Date!
     token: String
+    from: String
     account: String
-    balance_ksm:BigInt
+    balance:BigInt
 }
 
 type TotalTransfer @entity {

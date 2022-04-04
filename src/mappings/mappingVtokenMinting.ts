@@ -12,7 +12,7 @@ import {
   VtokenMintingInfo,
   VtokenMintingMinted,
   VtokenMintingRatio,
-  VtokenMintingRedeemedEndowed,
+  VtokenMintingRedeemedTransferred,
   VtokenMintingRedeemed,
   VtokenMintingRebondedByUnlockId,
 } from "../types";
@@ -203,7 +203,7 @@ export async function handleVtokenMintingRedeemed(
   }
 }
 
-export async function handleVtokenMintingRedeemedEndowed(
+export async function handleVtokenMintingRedeemedTransferred(
   event: SubstrateEvent
 ): Promise<void> {
   const blockNumber = (
@@ -212,19 +212,21 @@ export async function handleVtokenMintingRedeemedEndowed(
 
   const {
     event: {
-      data: [token, account, balanceKSM],
+      data: [currency, from, to, balance],
     },
   } = event;
-  if (token.toString() === `{"token":"KSM"}`) {
-    const record = new VtokenMintingRedeemedEndowed(
+
+  if (currency.toString() === `{"token":"KSM"}` && !event.extrinsic) {
+    const record = new VtokenMintingRedeemedTransferred(
       blockNumber.toString() + "-" + event.idx.toString()
     );
     record.block_height = blockNumber;
     record.event_id = event.idx;
     record.block_timestamp = event.block.timestamp;
-    record.token = token.toString();
-    record.token = account.toString();
-    record.balance_ksm = (balanceKSM as Balance).toBigInt();
+    record.token = currency.toString();
+    record.from = from.toString();
+    record.account = to.toString();
+    record.balance = (balance as Balance).toBigInt();
 
     await record.save();
   }

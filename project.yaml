@@ -35,6 +35,7 @@ dataSources:
           filter:
             module: vtokenMinting
             method: redeem
+            success: true
         - handler: handleVtokenMintingRedeemed
           kind: substrate/CallHandler
           filter:
@@ -46,11 +47,11 @@ dataSources:
           filter:
             module: vtokenMinting
             method: rebondByUnlockId
-        - handler: handleVtokenMintingRedeemedEndowed
+        - handler: handleVtokenMintingRedeemedTransferred
           kind: substrate/EventHandler
           filter:
-            module: tokens
-            method: Endowed
+            module: currencies
+            method: Transferred
         - handler: handleVKSMSwap
           kind: substrate/EventHandler
           filter:

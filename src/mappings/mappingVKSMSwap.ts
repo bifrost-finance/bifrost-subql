@@ -22,7 +22,6 @@ function getZenlinkTokenName(assetIndex: number): {
   }
 }
 export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
-  logger.info("handleVKSMSwap");
   const {
     event: {
       data: [owner, recipient, swap_path, balances],
