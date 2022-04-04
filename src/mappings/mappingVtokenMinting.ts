@@ -121,8 +121,8 @@ export async function handleVtokenMintingRebondedByUnlockId(
     block.block.header.number as Compact<BlockNumber>
   ).toBigInt();
 
-  const vtokenMintingEndowedEvent = events.find(
-    (e) => e.event.section === "tokens" && e.event.method === "Endowed"
+  const vtokenMintingCurrenciesDepositedEvent = events.find(
+    (e) => e.event.section === "currencies" && e.event.method === "Deposited"
   ) as SubstrateEvent;
   const vtokenMintingRebondedByUnlockIdEvent = events.find(
     (e) =>
@@ -130,7 +130,10 @@ export async function handleVtokenMintingRebondedByUnlockId(
       e.event.method === "RebondedByUnlockId"
   ) as SubstrateEvent;
 
-  if (vtokenMintingEndowedEvent && vtokenMintingRebondedByUnlockIdEvent) {
+  if (
+    vtokenMintingCurrenciesDepositedEvent &&
+    vtokenMintingRebondedByUnlockIdEvent
+  ) {
     const {
       event: {
         data: [token, balanceKSM, balanceVKSM],
@@ -138,9 +141,9 @@ export async function handleVtokenMintingRebondedByUnlockId(
     } = vtokenMintingRebondedByUnlockIdEvent;
     const {
       event: {
-        data: [endowedToken, account, endowedVKSM],
+        data: [depositedToken, account, depositedVKSM],
       },
-    } = vtokenMintingEndowedEvent;
+    } = vtokenMintingCurrenciesDepositedEvent;
     const record = new VtokenMintingRebondedByUnlockId(
       blockNumber.toString() +
         "-" +
@@ -151,11 +154,11 @@ export async function handleVtokenMintingRebondedByUnlockId(
     record.block_timestamp =
       vtokenMintingRebondedByUnlockIdEvent.block.timestamp;
     record.token = token.toString();
-    record.endowed_token = endowedToken.toString();
+    record.endowed_token = depositedToken.toString();
     record.account = account.toString();
     record.balance_ksm = (balanceKSM as Balance).toBigInt();
     record.balance_vksm = (balanceVKSM as Balance).toBigInt();
-    record.balance_endowed_vksm = (endowedVKSM as Balance).toBigInt();
+    record.balance_endowed_vksm = (depositedVKSM as Balance).toBigInt();
     await record.save();
   }
 }
