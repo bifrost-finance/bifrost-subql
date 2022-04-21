@@ -15,6 +15,7 @@ import {
   VtokenMintingRedeemedTransferred,
   VtokenMintingRedeemed,
   VtokenMintingRebondedByUnlockId,
+  VtokenRedeemedSuccess,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -233,4 +234,31 @@ export async function handleVtokenMintingRedeemedTransferred(
 
     await record.save();
   }
+}
+
+export async function handleVtokenRedeemedSuccess(
+  event: SubstrateEvent
+): Promise<void> {
+  const blockNumber = (
+    event.block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
+
+  const {
+    event: {
+      data: [id, token, account, balance],
+    },
+  } = event;
+
+  const record = new VtokenRedeemedSuccess(
+    blockNumber.toString() + "-" + event.idx.toString()
+  );
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.block_timestamp = event.block.timestamp;
+  record.redeem_id = id.toString();
+  record.token = token.toString();
+  record.account = account.toString();
+  record.balance = (balance as Balance).toBigInt();
+
+  await record.save();
 }
