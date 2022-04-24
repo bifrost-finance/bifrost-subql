@@ -6,7 +6,7 @@ repository: 'https://github.com/bifrost-finance/bifrost-subql.git'
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x1a318cafa9adbfffa83e8668b09ffcfecc7c2414885863e41a7b50cc97d4a8c4'
+  genesisHash: '0xf76d68a4c4559de22197fc09d444c9e539748f5e29db723a344a2aad495f2a2d'
   endpoint: 'wss://bifrost-rpc.devnet.liebi.com/ws'
   chaintypes:
     file: ./types.json

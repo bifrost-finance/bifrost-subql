@@ -12,7 +12,6 @@ import {
   VtokenMintingInfo,
   VtokenMintingMinted,
   VtokenMintingRatio,
-  VtokenMintingRedeemedTransferred,
   VtokenMintingRedeemed,
   VtokenMintingRebondedByUnlockId,
   VtokenRedeemedSuccess,
@@ -45,7 +44,7 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     const vKSMtotalIssuance = await api.query.tokens.totalIssuance({
       vToken: "KSM",
     });
-    const KSMTokenPool = await api.query.vtokenMinting.tokenPool({
+    const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
       Token: "KSM",
     });
 
@@ -56,12 +55,14 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     record.block_height = blockNumber;
     record.block_timestamp = block.timestamp;
     record.vksm_balance = (vKSMtotalIssuance as Balance).toBigInt();
-    record.ksm_balance = (KSMTokenPool as Balance).toBigInt();
+    record.ksm_balance = KSMTokenPool
+      ? (KSMTokenPool as Balance).toBigInt()
+      : BigInt(0);
     record.ratio =
-      KSMTokenPool.toString() === "0" || vKSMtotalIssuance.toString() === "0"
+      KSMTokenPool?.toString() === "0" || vKSMtotalIssuance.toString() === "0"
         ? "0"
         : new BigNumber(vKSMtotalIssuance.toString())
-            .div(KSMTokenPool.toString())
+            .div(KSMTokenPool?.toString())
             .toString();
     record.vksm_ksm_ratio = swapVKSMKSMRecord?.ratio || "0";
     record.kusd_ksm_ratio = swapVUSDKSMRecord?.ratio || "0";
@@ -207,34 +208,34 @@ export async function handleVtokenMintingRedeemed(
   }
 }
 
-export async function handleVtokenMintingRedeemedTransferred(
-  event: SubstrateEvent
-): Promise<void> {
-  const blockNumber = (
-    event.block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
-
-  const {
-    event: {
-      data: [currency, from, to, balance],
-    },
-  } = event;
-
-  if (currency.toString() === `{"token":"KSM"}` && !event.extrinsic) {
-    const record = new VtokenMintingRedeemedTransferred(
-      blockNumber.toString() + "-" + event.idx.toString()
-    );
-    record.block_height = blockNumber;
-    record.event_id = event.idx;
-    record.block_timestamp = event.block.timestamp;
-    record.token = currency.toString();
-    record.from = from.toString();
-    record.account = to.toString();
-    record.balance = (balance as Balance).toBigInt();
-
-    await record.save();
-  }
-}
+// export async function handleVtokenMintingRedeemedTransferred(
+//   event: SubstrateEvent
+// ): Promise<void> {
+//   const blockNumber = (
+//     event.block.block.header.number as Compact<BlockNumber>
+//   ).toBigInt();
+//
+//   const {
+//     event: {
+//       data: [currency, from, to, balance],
+//     },
+//   } = event;
+//
+//   if (currency.toString() === `{"token":"KSM"}` && !event.extrinsic) {
+//     const record = new VtokenMintingRedeemedTransferred(
+//       blockNumber.toString() + "-" + event.idx.toString()
+//     );
+//     record.block_height = blockNumber;
+//     record.event_id = event.idx;
+//     record.block_timestamp = event.block.timestamp;
+//     record.token = currency.toString();
+//     record.from = from.toString();
+//     record.account = to.toString();
+//     record.balance = (balance as Balance).toBigInt();
+//
+//     await record.save();
+//   }
+// }
 
 export async function handleVtokenRedeemedSuccess(
   event: SubstrateEvent
