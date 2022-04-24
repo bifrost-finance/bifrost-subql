@@ -1,8 +1,4 @@
-import {
-  SubstrateBlock,
-  SubstrateEvent,
-  SubstrateExtrinsic,
-} from "@subql/types";
+import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
@@ -117,7 +113,6 @@ export async function handleVtokenMintingRebondedByUnlockId(
   );
 
   record.block_height = blockNumber;
-  record.event_id = event.idx;
   record.block_timestamp = event.block.timestamp;
   record.token = token.toString();
   record.account = account.toString();
@@ -144,7 +139,6 @@ export async function handleVtokenMintingRedeemed(
   );
 
   record.block_height = blockNumber;
-  record.event_id = event.idx;
   record.block_timestamp = event.block.timestamp;
   record.token = token.toString();
   record.account = account.toString();
@@ -171,7 +165,6 @@ export async function handleVtokenRedeemedSuccess(
     blockNumber.toString() + "-" + event.idx.toString()
   );
   record.block_height = blockNumber;
-  record.event_id = event.idx;
   record.block_timestamp = event.block.timestamp;
   record.redeem_id = id.toString();
   record.token = token.toString();

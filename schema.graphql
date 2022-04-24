@@ -9,7 +9,6 @@ type VtokenMintingInfo @entity {
 type VtokenRedeemedSuccess @entity {
     id: ID!
     block_height: BigInt!
-    event_id: Int!
     block_timestamp: Date!
     redeem_id: String!
     token: String!
@@ -41,7 +40,6 @@ type VtokenMintingMinted @entity {
 type VtokenMintingRebondedByUnlockId @entity {
     id: ID!
     block_height: BigInt!
-    event_id: Int!
     block_timestamp: Date!
     token: String
     account: String
@@ -52,7 +50,6 @@ type VtokenMintingRebondedByUnlockId @entity {
 type VtokenMintingRedeemed @entity {
     id: ID!
     block_height: BigInt!
-    event_id: Int!
     block_timestamp: Date!
     token: String
     account: String
