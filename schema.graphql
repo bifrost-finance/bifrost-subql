@@ -31,11 +31,12 @@ type VtokenMintingRatio @entity {
 type VtokenMintingMinted @entity {
     id: ID!
     block_height: BigInt!
+    event_id: Int!
     block_timestamp: Date!
-    mint_token: String
+    token: String
     account: String
-    vksm_balance:BigInt
-    balance: BigInt
+    balance_ksm:BigInt
+    balance_vksm: BigInt
 }
 
 type VtokenMintingRebondedByUnlockId @entity {
@@ -45,10 +46,8 @@ type VtokenMintingRebondedByUnlockId @entity {
     block_timestamp: Date!
     token: String
     account: String
-    endowed_token: String
     balance_ksm:BigInt
     balance_vksm: BigInt
-    balance_endowed_vksm: BigInt
 }
 
 type VtokenMintingRedeemed @entity {
@@ -57,11 +56,9 @@ type VtokenMintingRedeemed @entity {
     event_id: Int!
     block_timestamp: Date!
     token: String
-    withdrawn_token: String
     account: String
     balance_ksm:BigInt
     balance_vksm: BigInt
-    withdrawn_vksm_balance:BigInt
 }
 
 type VtokenMintingRedeemedTransferred @entity {

@@ -19,39 +19,20 @@ dataSources:
         - handler: vtokenMinting
           kind: substrate/BlockHandler
         - handler: handleVtokenMintingMinted
-          kind: substrate/CallHandler
-          filter:
-            module: vtokenMinting
-            method: mint
-            success: true
-        - handler: handleVtokenMintingMinted
-          kind: substrate/CallHandler
-          filter:
-            module: utility
-            method: batchAll
-            success: true
-        - handler: handleVtokenMintingRedeemed
-          kind: substrate/CallHandler
-          filter:
-            module: vtokenMinting
-            method: redeem
-            success: true
-        - handler: handleVtokenMintingRedeemed
-          kind: substrate/CallHandler
-          filter:
-            module: utility
-            method: batchAll
-            success: true
-        - handler: handleVtokenMintingRebondedByUnlockId
-          kind: substrate/CallHandler
-          filter:
-            module: vtokenMinting
-            method: rebondByUnlockId
-        - handler: handleVtokenMintingRedeemedTransferred
           kind: substrate/EventHandler
           filter:
-            module: currencies
-            method: Transferred
+            module: vtokenMinting
+            method: Minted
+        - handler: handleVtokenMintingRedeemed
+          kind: substrate/EventHandler
+          filter:
+            module: vtokenMinting
+            method: Redeemed
+        - handler: handleVtokenMintingRebondedByUnlockId
+          kind: substrate/EventHandler
+          filter:
+            module: vtokenMinting
+            method: RebondedByUnlockId
         - handler: handleVKSMSwap
           kind: substrate/EventHandler
           filter:

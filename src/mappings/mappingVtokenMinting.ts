@@ -73,169 +73,87 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
 }
 
 export async function handleVtokenMintingMinted(
-  extrinsic: SubstrateExtrinsic
+  event: SubstrateEvent
 ): Promise<void> {
-  const { block, events } = extrinsic;
   const blockNumber = (
-    block.block.header.number as Compact<BlockNumber>
+    event.block.block.header.number as Compact<BlockNumber>
   ).toBigInt();
-  const vtokenMintingMintedEvent = events.find(
-    (e) => e.event.section === "vtokenMinting" && e.event.method === "Minted"
-  ) as SubstrateEvent;
-  const vtokenMintingMintedDepositedEvent = events.find(
-    (e) => e.event.section === "currencies" && e.event.method === "Deposited"
-  ) as SubstrateEvent;
 
-  if (vtokenMintingMintedEvent && vtokenMintingMintedDepositedEvent) {
-    const {
-      event: {
-        data: [token, balance],
-      },
-    } = vtokenMintingMintedEvent;
-    const {
-      event: {
-        data: [depositedCurrency, account, getVKSMBalance],
-      },
-    } = vtokenMintingMintedDepositedEvent;
+  const {
+    event: {
+      data: [account, token, balance_ksm, balance_vksm],
+    },
+  } = event;
 
-    if (depositedCurrency.toString() === `{"vToken":"KSM"}`) {
-      const record = new VtokenMintingMinted(
-        `${blockNumber}-${extrinsic.idx.toString()}`
-      );
+  const record = new VtokenMintingMinted(
+    blockNumber.toString() + "-" + event.idx.toString()
+  );
 
-      record.block_height = blockNumber;
-      record.block_timestamp = block.timestamp;
-      record.mint_token = token.toString();
-      record.account = account.toString();
-      record.balance = (balance as Balance).toBigInt();
-      record.vksm_balance = (getVKSMBalance as Balance).toBigInt();
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.block_timestamp = event.block.timestamp;
+  record.token = token.toString();
+  record.account = account.toString();
+  record.balance_ksm = (balance_ksm as Balance).toBigInt();
+  record.balance_vksm = (balance_vksm as Balance).toBigInt();
 
-      await record.save();
-    }
-  }
+  await record.save();
 }
 
 export async function handleVtokenMintingRebondedByUnlockId(
-  extrinsic: SubstrateExtrinsic
+  event: SubstrateEvent
 ): Promise<void> {
-  const { block, events } = extrinsic;
   const blockNumber = (
-    block.block.header.number as Compact<BlockNumber>
+    event.block.block.header.number as Compact<BlockNumber>
   ).toBigInt();
 
-  const vtokenMintingCurrenciesDepositedEvent = events.find(
-    (e) => e.event.section === "currencies" && e.event.method === "Deposited"
-  ) as SubstrateEvent;
-  const vtokenMintingRebondedByUnlockIdEvent = events.find(
-    (e) =>
-      e.event.section === "vtokenMinting" &&
-      e.event.method === "RebondedByUnlockId"
-  ) as SubstrateEvent;
+  const {
+    event: {
+      data: [account, token, balanceKSM, balancevKSM],
+    },
+  } = event;
 
-  if (
-    vtokenMintingCurrenciesDepositedEvent &&
-    vtokenMintingRebondedByUnlockIdEvent
-  ) {
-    const {
-      event: {
-        data: [token, balanceKSM, balanceVKSM],
-      },
-    } = vtokenMintingRebondedByUnlockIdEvent;
-    const {
-      event: {
-        data: [depositedToken, account, depositedVKSM],
-      },
-    } = vtokenMintingCurrenciesDepositedEvent;
-    const record = new VtokenMintingRebondedByUnlockId(
-      blockNumber.toString() +
-        "-" +
-        vtokenMintingRebondedByUnlockIdEvent.idx.toString()
-    );
-    record.block_height = blockNumber;
-    record.event_id = vtokenMintingRebondedByUnlockIdEvent.idx;
-    record.block_timestamp =
-      vtokenMintingRebondedByUnlockIdEvent.block.timestamp;
-    record.token = token.toString();
-    record.endowed_token = depositedToken.toString();
-    record.account = account.toString();
-    record.balance_ksm = (balanceKSM as Balance).toBigInt();
-    record.balance_vksm = (balanceVKSM as Balance).toBigInt();
-    record.balance_endowed_vksm = (depositedVKSM as Balance).toBigInt();
-    await record.save();
-  }
+  const record = new VtokenMintingRebondedByUnlockId(
+    blockNumber.toString() + "-" + event.idx.toString()
+  );
+
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.block_timestamp = event.block.timestamp;
+  record.token = token.toString();
+  record.account = account.toString();
+  record.balance_ksm = (balanceKSM as Balance).toBigInt();
+  record.balance_vksm = (balancevKSM as Balance).toBigInt();
+  await record.save();
 }
 
 export async function handleVtokenMintingRedeemed(
-  extrinsic: SubstrateExtrinsic
+  event: SubstrateEvent
 ): Promise<void> {
-  const { block, events } = extrinsic;
   const blockNumber = (
-    block.block.header.number as Compact<BlockNumber>
+    event.block.block.header.number as Compact<BlockNumber>
   ).toBigInt();
 
-  const vtokenMintingWithdrawnEvent = events.find(
-    (e) => e.event.section === "currencies" && e.event.method === "Withdrawn"
-  ) as SubstrateEvent;
-  const vtokenMintingRedeemedEvent = events.find(
-    (e) => e.event.section === "vtokenMinting" && e.event.method === "Redeemed"
-  ) as SubstrateEvent;
+  const {
+    event: {
+      data: [account, token, balanceKSM, balancevKSM],
+    },
+  } = event;
 
-  if (vtokenMintingRedeemedEvent && vtokenMintingWithdrawnEvent) {
-    const {
-      event: {
-        data: [token, balanceKSM, balanceVKSM],
-      },
-    } = vtokenMintingRedeemedEvent;
-    const {
-      event: {
-        data: [withdrawnToken, account, withdrawnBalance],
-      },
-    } = vtokenMintingWithdrawnEvent;
+  const record = new VtokenMintingRedeemed(
+    blockNumber.toString() + "-" + event.idx.toString()
+  );
 
-    const record = new VtokenMintingRedeemed(
-      blockNumber.toString() + "-" + vtokenMintingRedeemedEvent.idx.toString()
-    );
-    record.block_height = blockNumber;
-    record.event_id = vtokenMintingRedeemedEvent.idx;
-    record.block_timestamp = vtokenMintingRedeemedEvent.block.timestamp;
-    record.token = token.toString();
-    record.withdrawn_token = withdrawnToken.toString();
-    record.account = account.toString();
-    record.balance_ksm = (balanceKSM as Balance).toBigInt();
-    record.balance_vksm = (balanceVKSM as Balance).toBigInt();
-    record.withdrawn_vksm_balance = (withdrawnBalance as Balance).toBigInt();
-    await record.save();
-  }
+  record.block_height = blockNumber;
+  record.event_id = event.idx;
+  record.block_timestamp = event.block.timestamp;
+  record.token = token.toString();
+  record.account = account.toString();
+  record.balance_ksm = (balanceKSM as Balance).toBigInt();
+  record.balance_vksm = (balancevKSM as Balance).toBigInt();
+
+  await record.save();
 }
-
-// export async function handleVtokenMintingRedeemedTransferred(
-//   event: SubstrateEvent
-// ): Promise<void> {
-//   const blockNumber = (
-//     event.block.block.header.number as Compact<BlockNumber>
-//   ).toBigInt();
-//
-//   const {
-//     event: {
-//       data: [currency, from, to, balance],
-//     },
-//   } = event;
-//
-//   if (currency.toString() === `{"token":"KSM"}` && !event.extrinsic) {
-//     const record = new VtokenMintingRedeemedTransferred(
-//       blockNumber.toString() + "-" + event.idx.toString()
-//     );
-//     record.block_height = blockNumber;
-//     record.event_id = event.idx;
-//     record.block_timestamp = event.block.timestamp;
-//     record.token = currency.toString();
-//     record.from = from.toString();
-//     record.account = to.toString();
-//     record.balance = (balance as Balance).toBigInt();
-//
-//     await record.save();
-//   }
-// }
 
 export async function handleVtokenRedeemedSuccess(
   event: SubstrateEvent
