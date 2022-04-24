@@ -31,7 +31,6 @@ type VtokenMintingRatio @entity {
 type VtokenMintingMinted @entity {
     id: ID!
     block_height: BigInt!
-    event_id: Int!
     block_timestamp: Date!
     token: String
     account: String

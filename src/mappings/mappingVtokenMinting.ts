@@ -90,7 +90,6 @@ export async function handleVtokenMintingMinted(
   );
 
   record.block_height = blockNumber;
-  record.event_id = event.idx;
   record.block_timestamp = event.block.timestamp;
   record.token = token.toString();
   record.account = account.toString();
