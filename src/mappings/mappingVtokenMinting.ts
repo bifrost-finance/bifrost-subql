@@ -37,7 +37,7 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
   }
 
   if (new BigNumber(blockNumber.toString()).modulo(20).toNumber() === 0) {
-    const vKSMtotalIssuance = await api.query.tokens.totalIssuance({
+    const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
       vToken: "KSM",
     });
     const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
@@ -50,14 +50,16 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
 
     record.block_height = blockNumber;
     record.block_timestamp = block.timestamp;
-    record.vksm_balance = (vKSMtotalIssuance as Balance).toBigInt();
+    record.vksm_balance = vKSMtotalIssuance
+      ? (vKSMtotalIssuance as Balance).toBigInt()
+      : BigInt(0);
     record.ksm_balance = KSMTokenPool
       ? (KSMTokenPool as Balance).toBigInt()
       : BigInt(0);
     record.ratio =
-      KSMTokenPool?.toString() === "0" || vKSMtotalIssuance.toString() === "0"
+      KSMTokenPool?.toString() === "0" || vKSMtotalIssuance?.toString() === "0"
         ? "0"
-        : new BigNumber(vKSMtotalIssuance.toString())
+        : new BigNumber(vKSMtotalIssuance?.toString())
             .div(KSMTokenPool?.toString())
             .toString();
     record.vksm_ksm_ratio = swapVKSMKSMRecord?.ratio || "0";

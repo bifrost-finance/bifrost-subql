@@ -57,17 +57,6 @@ type VtokenMintingRedeemed @entity {
     balance_vksm: BigInt
 }
 
-type VtokenMintingRedeemedTransferred @entity {
-    id: ID!
-    block_height: BigInt!
-    event_id: Int!
-    block_timestamp: Date!
-    token: String
-    from: String
-    account: String
-    balance:BigInt
-}
-
 type TotalTransfer @entity {
     id: ID!
     event_id: Int!
