@@ -14,6 +14,9 @@ type VtokenRedeemedSuccess @entity {
     token: String!
     account: String!
     balance: BigInt!
+    ksm_balance:BigInt
+    vksm_balance: BigInt
+    ratio:String!
 }
 
 type VtokenMintingRatio @entity {
@@ -57,18 +60,17 @@ type VtokenMintingRedeemed @entity {
     balance_vksm: BigInt
 }
 
-type TotalTransfer @entity {
+type VtokenTransfer @entity {
     id: ID!
-    event_id: Int!
-    extrinsic_id: Int
     block_height: BigInt!
     block_timestamp: Date!
-    section: String
-    method: String
     from: String
     to: String
     currency: String
     balance: BigInt
+    ksm_balance:BigInt
+    vksm_balance: BigInt
+    ratio:String!
 }
 
 type VtokenSwap @entity  {
@@ -85,6 +87,9 @@ type VtokenSwap @entity  {
     asset_1_name: String
     balance_in: BigInt
     balance_out: BigInt
+    ksm_balance:BigInt
+    vksm_balance: BigInt
+    ratio:String!
 }
 
 type VtokenSwapRatio @entity  {

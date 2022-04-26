@@ -163,6 +163,13 @@ export async function handleVtokenRedeemedSuccess(
     },
   } = event;
 
+  const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
+    vToken: "KSM",
+  });
+  const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
+    Token: "KSM",
+  });
+
   const record = new VtokenRedeemedSuccess(
     blockNumber.toString() + "-" + event.idx.toString()
   );
@@ -172,6 +179,18 @@ export async function handleVtokenRedeemedSuccess(
   record.token = token.toString();
   record.account = account.toString();
   record.balance = (balance as Balance).toBigInt();
+  record.vksm_balance = vKSMtotalIssuance
+    ? (vKSMtotalIssuance as Balance).toBigInt()
+    : BigInt(0);
+  record.ksm_balance = KSMTokenPool
+    ? (KSMTokenPool as Balance).toBigInt()
+    : BigInt(0);
+  record.ratio =
+    KSMTokenPool?.toString() === "0" || vKSMtotalIssuance?.toString() === "0"
+      ? "0"
+      : new BigNumber(vKSMtotalIssuance?.toString())
+          .div(KSMTokenPool?.toString())
+          .toString();
 
   await record.save();
 }

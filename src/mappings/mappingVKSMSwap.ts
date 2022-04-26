@@ -1,5 +1,5 @@
 import { SubstrateEvent } from "@subql/types";
-import { BlockNumber } from "@polkadot/types/interfaces";
+import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import { VtokenSwap, VtokenSwapRatio } from "../types/models";
 
@@ -47,6 +47,13 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
         (asset0.name === "KSM" && asset1.name === "vKSM");
 
       if (isKUSD_KSM || isVKSM_KSM) {
+        const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
+          vToken: "KSM",
+        });
+        const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
+          Token: "KSM",
+        });
+
         const entity = new VtokenSwap(
           blockNumber.toString() +
             "-" +
@@ -67,6 +74,20 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
         entity.asset_1_name = asset1.name;
         entity.balance_in = balances_obj[0];
         entity.balance_out = balances_obj[swap_path_obj.length - 1];
+        entity.vksm_balance = vKSMtotalIssuance
+          ? (vKSMtotalIssuance as Balance).toBigInt()
+          : BigInt(0);
+        entity.ksm_balance = KSMTokenPool
+          ? (KSMTokenPool as Balance).toBigInt()
+          : BigInt(0);
+        entity.ratio =
+          KSMTokenPool?.toString() === "0" ||
+          vKSMtotalIssuance?.toString() === "0"
+            ? "0"
+            : new BigNumber(vKSMtotalIssuance?.toString())
+                .div(KSMTokenPool?.toString())
+                .toString();
+
         await entity.save();
 
         if (isKUSD_KSM) {
