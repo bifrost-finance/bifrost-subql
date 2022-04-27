@@ -48,3 +48,13 @@ dataSources:
           filter:
             module: vtokenMinting
             method: RedeemSuccess
+        - handler: handleVtokenLiquidity
+          kind: substrate/EventHandler
+          filter:
+            module: zenlinkProtocol
+            method: LiquidityAdded
+        - handler: handleVtokenLiquidity
+          kind: substrate/EventHandler
+          filter:
+            module: zenlinkProtocol
+            method: LiquidityRemoved

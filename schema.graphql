@@ -64,8 +64,8 @@ type VtokenTransfer @entity {
     id: ID!
     block_height: BigInt!
     block_timestamp: Date!
-    from: String
-    to: String
+    from_account: String
+    to_account: String
     currency: String
     balance: BigInt
     ksm_balance:BigInt
@@ -104,4 +104,17 @@ type VtokenSwapRatio @entity  {
     balance_in: BigInt
     balance_out: BigInt
     ratio:String!
+}
+
+type VtokenLiquidity @entity  {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    method: String
+    owner: String
+    asset_0: String
+    asset_1: String
+    balance_0: BigInt
+    balance_1: BigInt
+    balance_lp: BigInt
 }

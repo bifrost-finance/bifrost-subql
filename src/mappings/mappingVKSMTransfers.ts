@@ -31,8 +31,8 @@ export async function handleCurrenciesTransferred(
     );
     record.block_height = blockNumber;
     record.block_timestamp = event.block.timestamp;
-    record.from = from.toString();
-    record.to = to.toString();
+    record.from_account = from.toString();
+    record.to_account = to.toString();
     record.currency = currency.toString();
     record.balance = (balance as Balance).toBigInt();
     record.vksm_balance = vKSMtotalIssuance
