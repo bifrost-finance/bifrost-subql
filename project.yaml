@@ -39,10 +39,10 @@ dataSources:
             module: zenlinkProtocol
             method: AssetSwap
         - handler: handleCurrenciesTransferred
-          kind: substrate/EventHandler
+          kind: substrate/CallHandler
           filter:
             module: currencies
-            method: Transferred
+            method: transfer
         - handler: handleVtokenRedeemedSuccess
           kind: substrate/EventHandler
           filter:

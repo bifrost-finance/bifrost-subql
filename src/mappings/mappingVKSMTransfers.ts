@@ -1,4 +1,4 @@
-import { SubstrateEvent } from "@subql/types";
+import { SubstrateExtrinsic, SubstrateEvent } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
@@ -6,17 +6,21 @@ import BigNumber from "bignumber.js";
 import { VtokenTransfer } from "../types";
 
 export async function handleCurrenciesTransferred(
-  event: SubstrateEvent
+  extrinsic: SubstrateExtrinsic
 ): Promise<void> {
+  const { block, events } = extrinsic;
   const blockNumber = (
-    event.block.block.header.number as Compact<BlockNumber>
+    block.block.header.number as Compact<BlockNumber>
   ).toBigInt();
 
+  const transferEvent = events.find(
+    (e) => e.event.section === "currencies" && e.event.method === "Transferred"
+  ) as SubstrateEvent;
   const {
     event: {
       data: [currency, from, to, balance],
     },
-  } = event;
+  } = transferEvent;
 
   if (currency.toString() === '{"vToken":"KSM"}') {
     const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
@@ -27,10 +31,10 @@ export async function handleCurrenciesTransferred(
     });
 
     const record = new VtokenTransfer(
-      blockNumber.toString() + "-" + event.idx.toString()
+      blockNumber.toString() + "-" + transferEvent.idx.toString()
     );
     record.block_height = blockNumber;
-    record.block_timestamp = event.block.timestamp;
+    record.block_timestamp = transferEvent.block.timestamp;
     record.from_account = from.toString();
     record.to_account = to.toString();
     record.currency = currency.toString();
