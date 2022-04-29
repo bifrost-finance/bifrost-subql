@@ -43,6 +43,7 @@ dataSources:
           filter:
             module: currencies
             method: transfer
+            success: true
         - handler: handleVtokenRedeemedSuccess
           kind: substrate/EventHandler
           filter:
