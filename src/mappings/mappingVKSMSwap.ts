@@ -72,8 +72,8 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
         entity.asset_1 = swap_path_obj[key + 1];
         entity.asset_0_name = asset0.name;
         entity.asset_1_name = asset1.name;
-        entity.balance_in = balances_obj[0];
-        entity.balance_out = balances_obj[swap_path_obj.length - 1];
+        entity.balance_in = balances_obj[key];
+        entity.balance_out = balances_obj[key + 1];
         entity.vksm_balance = vKSMtotalIssuance
           ? (vKSMtotalIssuance as Balance).toBigInt()
           : BigInt(0);
@@ -100,12 +100,10 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
           entity.asset_1 = swap_path_obj[key + 1];
           entity.asset_0_name = asset0.name;
           entity.asset_1_name = asset1.name;
-          entity.balance_in = balances_obj[0];
-          entity.balance_out = balances_obj[swap_path_obj.length - 1];
-          entity.ratio = new BigNumber(
-            balances_obj[swap_path_obj.length - 1].toString()
-          )
-            .div(balances_obj[0].toString())
+          entity.balance_in = balances_obj[key];
+          entity.balance_out = balances_obj[key + 1];
+          entity.ratio = new BigNumber(balances_obj[key + 1].toString())
+            .div(balances_obj[key].toString())
             .toString();
           await entity.save();
         }
@@ -120,15 +118,15 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
           entity.asset_1 = swap_path_obj[key + 1];
           entity.asset_0_name = asset0.name;
           entity.asset_1_name = asset1.name;
-          entity.balance_in = balances_obj[0];
-          entity.balance_out = balances_obj[swap_path_obj.length - 1];
+          entity.balance_in = balances_obj[key];
+          entity.balance_out = balances_obj[key + 1];
           entity.ratio = entity.ratio =
             asset0.name === "KSM"
-              ? new BigNumber(balances_obj[swap_path_obj.length - 1].toString())
-                  .div(balances_obj[0].toString())
+              ? new BigNumber(balances_obj[1].toString())
+                  .div(balances_obj[key].toString())
                   .toString()
               : new BigNumber(balances_obj[0].toString())
-                  .div(balances_obj[swap_path_obj.length - 1].toString())
+                  .div(balances_obj[key + 1].toString())
                   .toString();
           await entity.save();
         }

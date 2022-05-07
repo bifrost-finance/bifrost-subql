@@ -2,6 +2,7 @@ import { SubstrateEvent } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import { VtokenLiquidity } from "../types/models";
+import BigNumber from "bignumber.js";
 
 function getZenlinkTokenName(assetIndex: number): {
   name?: string;
@@ -36,6 +37,12 @@ export async function handleVtokenLiquidity(
     const blockNumber = (
       event.extrinsic.block.block.header.number as Compact<BlockNumber>
     ).toBigInt();
+    const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken: "KSM",
+    });
+    const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token: "KSM",
+    });
 
     if (asset0?.name === "vKSM" || asset1?.name === "vKSM") {
       const entity = new VtokenLiquidity(
@@ -50,6 +57,19 @@ export async function handleVtokenLiquidity(
       entity.balance_0 = (balance_0 as Balance).toBigInt();
       entity.balance_1 = (balance_1 as Balance).toBigInt();
       entity.balance_lp = (balance_lp as Balance).toBigInt();
+      entity.vksm_balance = vKSMtotalIssuance
+        ? (vKSMtotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+      entity.ksm_balance = KSMTokenPool
+        ? (KSMTokenPool as Balance).toBigInt()
+        : BigInt(0);
+      entity.ratio =
+        KSMTokenPool?.toString() === "0" ||
+        vKSMtotalIssuance?.toString() === "0"
+          ? "0"
+          : new BigNumber(vKSMtotalIssuance?.toString())
+              .div(KSMTokenPool?.toString())
+              .toString();
 
       await entity.save();
     }
@@ -71,6 +91,12 @@ export async function handleVtokenLiquidity(
     const blockNumber = (
       event.extrinsic.block.block.header.number as Compact<BlockNumber>
     ).toBigInt();
+    const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken: "KSM",
+    });
+    const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token: "KSM",
+    });
 
     if (asset0?.name === "vKSM" || asset1?.name === "vKSM") {
       const entity = new VtokenLiquidity(
@@ -85,6 +111,19 @@ export async function handleVtokenLiquidity(
       entity.balance_0 = (balance_0 as Balance).toBigInt();
       entity.balance_1 = (balance_1 as Balance).toBigInt();
       entity.balance_lp = (balance_lp as Balance).toBigInt();
+      entity.vksm_balance = vKSMtotalIssuance
+        ? (vKSMtotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+      entity.ksm_balance = KSMTokenPool
+        ? (KSMTokenPool as Balance).toBigInt()
+        : BigInt(0);
+      entity.ratio =
+        KSMTokenPool?.toString() === "0" ||
+        vKSMtotalIssuance?.toString() === "0"
+          ? "0"
+          : new BigNumber(vKSMtotalIssuance?.toString())
+              .div(KSMTokenPool?.toString())
+              .toString();
 
       await entity.save();
     }

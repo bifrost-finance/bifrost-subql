@@ -117,4 +117,7 @@ type VtokenLiquidity @entity  {
     balance_0: BigInt
     balance_1: BigInt
     balance_lp: BigInt
+    ksm_balance:BigInt
+    vksm_balance: BigInt
+    ratio:String!
 }
