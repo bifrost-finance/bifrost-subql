@@ -24,6 +24,14 @@ const Tokens = [
     coin_id: "kusama",
     currency: { vToken: "KSM" },
     decimal: 12,
+    token: "KSM",
+  },
+  {
+    id: "vMOVR",
+    coin_id: "moonriver",
+    currency: { vToken: "vMOVR" },
+    decimal: 12,
+    token: "MOVR",
   },
 ];
 
@@ -94,9 +102,9 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       record.block_timestamp = block.timestamp;
       record.currency = JSON.stringify(token.currency);
       let token_total_issuance;
-      if (token.id === "vKSM") {
+      if (token.id === "vKSM" || token.id === "vMOVR") {
         token_total_issuance = await api.query.vtokenMinting?.tokenPool({
-          token: "KSM",
+          token: token.token,
         });
       } else {
         token_total_issuance = await api.query.tokens.totalIssuance(
