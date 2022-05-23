@@ -12,7 +12,7 @@ network:
     file: ./types.json
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 1504966
     mapping:
       file: ./dist/index.js
       handlers:
@@ -21,3 +21,18 @@ dataSources:
           filter:
             module: parachainStaking
             method: Rewarded
+        - handler: handleScheduleRevokeDelegation
+          kind: substrate/CallHandler
+          filter:
+            module: parachainStaking
+            method: scheduleRevokeDelegation
+        - handler: handleDelegatorBondMore
+          kind: substrate/CallHandler
+          filter:
+            module: parachainStaking
+            method: delegatorBondMore
+        - handler: handleExecuteDelegationRequest
+          kind: substrate/CallHandler
+          filter:
+            module: parachainStaking
+            method: executeDelegationRequest

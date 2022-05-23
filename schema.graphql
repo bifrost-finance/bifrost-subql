@@ -317,3 +317,41 @@ type ParachainStakingRewarded @entity {
   account: String
   balance: BigInt
 }
+
+# type ScheduleRevokeDelegation @entity {
+#   id: ID!
+#   call: String
+#   extrinsic_id: Int
+#   block_height: BigInt!
+#   block_timestamp: Date!
+#   collator: String
+# }
+
+# type DelegatorBondMore @entity {
+#   id: ID!
+#   extrinsic_id: Int
+#   block_height: BigInt!
+#   block_timestamp: Date!
+#   candidate: String
+#   more: BigInt
+# }
+
+# type ExecuteDelegationRequest @entity {
+#   id: ID!
+#   extrinsic_id: Int
+#   block_height: BigInt!
+#   block_timestamp: Date!
+#   delegator: String
+#   candidate: String
+# }
+
+type ScheduleRevokeDelegation @entity {
+  id: ID!
+  call: String
+  extrinsic_id: Int
+  block_height: BigInt!
+  block_timestamp: Date!
+  delegator: String
+  candidate: String
+  more: BigInt
+}
