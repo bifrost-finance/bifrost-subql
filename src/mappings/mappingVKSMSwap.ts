@@ -122,10 +122,10 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
           entity.balance_out = balances_obj[key + 1];
           entity.ratio = entity.ratio =
             asset0.name === "KSM"
-              ? new BigNumber(balances_obj[1].toString())
+              ? new BigNumber(balances_obj[key + 1].toString())
                   .div(balances_obj[key].toString())
                   .toString()
-              : new BigNumber(balances_obj[0].toString())
+              : new BigNumber(balances_obj[key].toString())
                   .div(balances_obj[key + 1].toString())
                   .toString();
           await entity.save();
