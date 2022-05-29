@@ -416,7 +416,7 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   record.block_timestamp = block.timestamp;
   record.vsksm = vsKSM;
   record.vsdot = vsDOT;
-  record.vKSM = vksm;
-  record.vMOVR = vmovr;
+  record.vksm = vksm;
+  record.vmovr = vmovr;
   await record.save();
 }
