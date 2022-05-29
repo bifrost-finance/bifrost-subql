@@ -335,8 +335,8 @@ type TokensTotalIssuance @entity {
   block_timestamp: Date
   vsksm: BigInt
   vsdot: BigInt
-  vKSM: BigInt
-  vMOVR: BigInt
+  vksm: BigInt
+  vmovr: BigInt
 }
 
 type DemocracyInfo @entity {

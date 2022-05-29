@@ -400,12 +400,12 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
       console.log(e);
     })) as Balance
   ).toBigInt();
-  const vKSM = (
+  const vksm = (
     (await api.query.tokens?.totalIssuance({ vToken: "KSM" }).catch((e) => {
       console.log(e);
     })) as Balance
   ).toBigInt();
-  const vMOVR = (
+  const vmovr = (
     (await api.query.tokens?.totalIssuance({ vToken: "MOVR" }).catch((e) => {
       console.log(e);
     })) as Balance
