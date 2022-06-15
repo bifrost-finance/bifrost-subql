@@ -14,7 +14,9 @@ export async function handleCurrenciesTransferred(
   ).toBigInt();
 
   const transferEvent = events.find(
-    (e) => e.event.section === "currencies" && e.event.method === "Transferred"
+    (e) =>
+      (e.event.section === "currencies" && e.event.method === "Transferred") ||
+      (e.event.section === "tokens" && e.event.method === "Transfer")
   ) as SubstrateEvent;
 
   if (transferEvent) {
