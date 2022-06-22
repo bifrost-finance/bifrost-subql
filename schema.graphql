@@ -218,6 +218,9 @@ type XtokensTransferred @entity {
   currency: String
   balance: BigInt
   multilocation: String
+  assets: String
+  assets_id: String
+  fungible: BigInt
 }
 
 # type CurrenciesDeposited @entity {

@@ -13,6 +13,36 @@ import {
   TokensTotalIssuance,
 } from "../types/models";
 
+export async function handleXtokensTransferredMultiAssets(
+  event: SubstrateEvent
+): Promise<void> {
+  const blockNumber = event.block.block.header.number.toNumber();
+
+  const {
+    event: {
+      section,
+      method,
+      data: [account, multiassets, multiasset, multilocation],
+    },
+  } = event;
+  let assets = JSON.parse(JSON.stringify(multiassets))
+  for (let i = 0; i < assets; i++) {
+    const record = new XtokensTransferred(
+      blockNumber.toString() + "-" + event.idx.toString() + "-" + i
+    );
+    record.block_height = blockNumber;
+    record.event_id = event.idx;
+    record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
+    record.block_timestamp = event.block.timestamp;
+    record.account = account.toString();
+    record.multilocation = multilocation.toString();
+    record.assets = multiassets.toString();
+    record.fungible = BigInt(assets[i].fun.fungible);
+    record.assets_id = JSON.stringify(assets[i].id);
+    await record.save();
+  };
+}
+
 export async function handleXtokensTransferred(
   event: SubstrateEvent
 ): Promise<void> {

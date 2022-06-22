@@ -3204,6 +3204,11 @@ dataSources:
           filter:
             module: xTokens
             method: Transferred
+        - handler: handleXtokensTransferredMultiAssets
+          kind: substrate/EventHandler
+          filter:
+            module: xTokens
+            method: TransferredMultiAssets
         # balances
         - handler: handleBalancesTransfer
           kind: substrate/EventHandler
