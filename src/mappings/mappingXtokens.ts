@@ -26,7 +26,8 @@ export async function handleXtokensTransferredMultiAssets(
     },
   } = event;
   let assets = JSON.parse(JSON.stringify(multiassets))
-  for (let i = 0; i < assets; i++) {
+  let list = [];
+  for (let i = 0; i < assets.length; i++) {
     const record = new XtokensTransferred(
       blockNumber.toString() + "-" + event.idx.toString() + "-" + i
     );
@@ -39,8 +40,9 @@ export async function handleXtokensTransferredMultiAssets(
     record.assets = multiassets.toString();
     record.fungible = BigInt(assets[i].fun.fungible);
     record.assets_id = JSON.stringify(assets[i].id);
-    await record.save();
+    list.push(record.save());
   };
+  await Promise.all(list)
 }
 
 export async function handleXtokensTransferred(
