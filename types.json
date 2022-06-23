@@ -58,6 +58,7 @@
       "perPeriod": "Compact<Balance>"
     },
     "VestingScheduleOf": "OrmlVestingSchedule",
+    "OrmlCurrencyId": "u8",
     "PoolInfo": {
       "pool_id": "PoolId",
       "keeper": "AccountId",
@@ -75,6 +76,12 @@
       "redeem_limit_time": "BlockNumber",
       "unlock_limit_nums": "u32",
       "pending_unlock_nums": "u32"
+    },
+    "CompactBalance": "Compact<Balance>",
+    "PoolInfoV0": {
+      "totalShares": "Compact<Share>",
+      "totalRewards": "CompactBalance",
+      "totalWithdrawnRewards": "CompactBalance"
     },
     "Share": "u128",
     "OracleValue": "Price",
@@ -277,6 +284,32 @@
     },
     "IsExtended": "bool",
     "SystemPalletId": "PalletId",
+    "TimeUnit": {
+      "Era": "U32",
+      "SlashingSpan": "U32"
+    },
+    "ledger": {
+      "Substrate": "SubstrateLedger"
+    },
+    "SubstrateLedger": {
+      "account": "AccountId",
+      "total": "Balance",
+      "active": "Balance",
+      "unlocking": "Vec<UnlockChunk>"
+    },
+    "UnlockChunk": {
+      "value": "Balance",
+      "unlock_time": "TimeUnit"
+    },
+    "MinimumsMaximums": {
+      "delegator_bonded_minimum": "Balance",
+      "bond_extra_minimum": "Balance",
+      "unbond_minimum": "Balance",
+      "rebond_minimum": "Balance",
+      "unbond_record_maximum": "U32",
+      "validators_back_maximum": "U32",
+      "delegator_active_staking_maximum": "Balance"
+    },
     "TrieIndex": "u32",
     "FundInfo": {
       "raised": "Balance",
@@ -403,6 +436,7 @@
         "Buy": 1
       }
     },
+    "UnlockId": "U32",
     "ZenlinkAssetId": {
       "chain_id": "u32",
       "asset_type": "u8",
@@ -448,7 +482,8 @@
         "KAR": 6,
         "ZLK": 7,
         "PHA": 8,
-        "RMRK": 9
+        "RMRK": 9,
+        "MOVR": 10
       }
     },
     "CurrencyId": {
@@ -472,6 +507,7 @@
     "NodePrimitivesCurrencyCurrencyId": "CurrencyId",
     "OrmlTokensBalanceLock": "BalanceLock",
     "OrmlTokensAccountData": "OrmlAccountData",
+    "OrmlTokensReserveData": "(Currency, u8, Amount, u128)",
     "TransferOriginType": {
       "_enum": {
         "FromSelf": 0,
