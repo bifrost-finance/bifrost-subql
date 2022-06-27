@@ -3,7 +3,7 @@ import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
 
-import { VtokenTransfer } from "../types";
+import { VtokenTransfer, VtokenMovrTransfer } from "../types";
 
 export async function handleCurrenciesTransferred(
   extrinsic: SubstrateExtrinsic
@@ -55,6 +55,39 @@ export async function handleCurrenciesTransferred(
           ? "0"
           : new BigNumber(vKSMtotalIssuance?.toString())
               .div(KSMTokenPool?.toString())
+              .toString();
+      await record.save();
+    }
+
+    if (currency.toString() === '{"vToken":"MOVR"}') {
+      const vMOVRTotalIssuance = await api.query.tokens?.totalIssuance({
+        vToken: "MOVR",
+      });
+      const MOVRTokenPool = await api.query.vtokenMinting?.tokenPool({
+        Token: "MOVR",
+      });
+
+      const record = new VtokenMovrTransfer(
+        blockNumber.toString() + "-" + transferEvent.idx.toString()
+      );
+      record.block_height = blockNumber;
+      record.block_timestamp = transferEvent.block.timestamp;
+      record.from_account = from.toString();
+      record.to_account = to.toString();
+      record.currency = currency.toString();
+      record.balance = (balance as Balance).toBigInt();
+      record.vmovr_balance = vMOVRTotalIssuance
+        ? (vMOVRTotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+      record.movr_balance = MOVRTokenPool
+        ? (MOVRTokenPool as Balance).toBigInt()
+        : BigInt(0);
+      record.ratio =
+        MOVRTokenPool?.toString() === "0" ||
+        vMOVRTotalIssuance?.toString() === "0"
+          ? "0"
+          : new BigNumber(vMOVRTotalIssuance?.toString())
+              .div(MOVRTokenPool?.toString())
               .toString();
       await record.save();
     }

@@ -11,6 +11,7 @@ import {
   VtokenMintingRedeemed,
   VtokenMintingRebondedByUnlockId,
   VtokenRedeemedSuccess,
+  VtokenMintingMovrRatio,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -66,6 +67,37 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     record.kusd_ksm_ratio = swapVUSDKSMRecord?.ratio || "0";
 
     await record.save();
+
+    const vMOVRtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken: "MOVR",
+    });
+    const MOVRTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token: "MOVR",
+    });
+
+    const movrRecord = new VtokenMintingMovrRatio(blockNumber.toString());
+    const swapVMOVRMOVRRecord = await VtokenSwapRatio.get("vMOVR_MOVR");
+    const swapVUSDMOVRRecord = await VtokenSwapRatio.get("kUSD_MOVR");
+
+    movrRecord.block_height = blockNumber;
+    movrRecord.block_timestamp = block.timestamp;
+    movrRecord.vmovr_balance = vMOVRtotalIssuance
+      ? (vMOVRtotalIssuance as Balance).toBigInt()
+      : BigInt(0);
+    movrRecord.movr_balance = MOVRTokenPool
+      ? (MOVRTokenPool as Balance).toBigInt()
+      : BigInt(0);
+    movrRecord.ratio =
+      MOVRTokenPool?.toString() === "0" ||
+      vMOVRtotalIssuance?.toString() === "0"
+        ? "0"
+        : new BigNumber(vMOVRtotalIssuance?.toString())
+            .div(MOVRTokenPool?.toString())
+            .toString();
+    movrRecord.vmovr_movr_ratio = swapVMOVRMOVRRecord?.ratio || "0";
+    movrRecord.kusd_movr_ratio = swapVUSDMOVRRecord?.ratio || "0";
+
+    await movrRecord.save();
   }
   return;
 }

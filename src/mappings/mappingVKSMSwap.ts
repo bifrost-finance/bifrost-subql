@@ -1,7 +1,7 @@
 import { SubstrateEvent } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
-import { VtokenSwap, VtokenSwapRatio } from "../types/models";
+import { VtokenSwap, VtokenSwapRatio, VtokenMovrSwap } from "../types";
 
 import BigNumber from "bignumber.js";
 
@@ -13,7 +13,11 @@ function getZenlinkTokenName(assetIndex: number): {
   switch (assetIndex) {
     case 260:
       return { name: "vKSM" };
+    case 266:
+      return { name: "vMOVR" };
     case 516:
+      return { name: "KSM" };
+    case 522:
       return { name: "KSM" };
     case 770:
       return { name: "kUSD" };
@@ -122,6 +126,120 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
           entity.balance_out = balances_obj[key + 1];
           entity.ratio = entity.ratio =
             asset0.name === "KSM"
+              ? new BigNumber(balances_obj[key + 1].toString())
+                  .div(balances_obj[key].toString())
+                  .toString()
+              : new BigNumber(balances_obj[key].toString())
+                  .div(balances_obj[key + 1].toString())
+                  .toString();
+          await entity.save();
+        }
+      }
+    })
+  );
+}
+
+export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
+  const {
+    event: {
+      data: [owner, recipient, swap_path, balances],
+    },
+  } = event;
+  const swap_path_obj = JSON.parse(swap_path.toString());
+  const balances_obj = JSON.parse(balances.toString());
+  const blockNumber = (
+    event.extrinsic.block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
+
+  await Promise.all(
+    new Array(swap_path_obj.length - 1).fill("").map(async (_, key) => {
+      const asset0 = getZenlinkTokenName(swap_path_obj[key].assetIndex);
+      const asset1 = getZenlinkTokenName(swap_path_obj[key + 1].assetIndex);
+
+      const isKUSD_MOVR =
+        (asset0.name === "kUSD" && asset1.name === "MOVR") ||
+        (asset0.name === "MOVR" && asset1.name === "kUSD");
+
+      const isVMOVR_MOVR =
+        (asset0.name === "vKSM" && asset1.name === "KSM") ||
+        (asset0.name === "MOVR" && asset1.name === "vKSM");
+
+      if (isKUSD_MOVR || isVMOVR_MOVR) {
+        const vMOVRtotalIssuance = await api.query.tokens?.totalIssuance({
+          vToken: "MOVR",
+        });
+        const MOVRTokenPool = await api.query.vtokenMinting?.tokenPool({
+          Token: "MOVR",
+        });
+
+        const entity = new VtokenMovrSwap(
+          blockNumber.toString() +
+            "-" +
+            event.idx.toString() +
+            "-" +
+            key.toString()
+        );
+
+        entity.block_height = blockNumber;
+        entity.block_timestamp = event.extrinsic.block.timestamp;
+        entity.event_id = event.idx;
+        entity.extrinsic_id = event.extrinsic.idx;
+        entity.owner = owner.toString();
+        entity.recipient = recipient.toString();
+        entity.asset_0 = swap_path_obj[key];
+        entity.asset_1 = swap_path_obj[key + 1];
+        entity.asset_0_name = asset0.name;
+        entity.asset_1_name = asset1.name;
+        entity.balance_in = balances_obj[key];
+        entity.balance_out = balances_obj[key + 1];
+        entity.vmovr_balance = vMOVRtotalIssuance
+          ? (vMOVRtotalIssuance as Balance).toBigInt()
+          : BigInt(0);
+        entity.movr_balance = MOVRTokenPool
+          ? (MOVRTokenPool as Balance).toBigInt()
+          : BigInt(0);
+        entity.ratio =
+          MOVRTokenPool?.toString() === "0" ||
+          vMOVRtotalIssuance?.toString() === "0"
+            ? "0"
+            : new BigNumber(vMOVRtotalIssuance?.toString())
+                .div(MOVRTokenPool?.toString())
+                .toString();
+
+        await entity.save();
+
+        if (isKUSD_MOVR) {
+          const entity = new VtokenSwapRatio("kUSD_MOVR");
+
+          entity.block_height = blockNumber;
+          entity.block_timestamp = event.extrinsic.block.timestamp;
+          entity.event_id = event.idx;
+          entity.asset_0 = swap_path_obj[key];
+          entity.asset_1 = swap_path_obj[key + 1];
+          entity.asset_0_name = asset0.name;
+          entity.asset_1_name = asset1.name;
+          entity.balance_in = balances_obj[key];
+          entity.balance_out = balances_obj[key + 1];
+          entity.ratio = new BigNumber(balances_obj[key + 1].toString())
+            .div(balances_obj[key].toString())
+            .toString();
+          await entity.save();
+        }
+
+        if (isVMOVR_MOVR) {
+          const entity = new VtokenSwapRatio("VMOVR_MOVR");
+
+          entity.block_height = blockNumber;
+          entity.block_timestamp = event.extrinsic.block.timestamp;
+          entity.event_id = event.idx;
+          entity.asset_0 = swap_path_obj[key];
+          entity.asset_1 = swap_path_obj[key + 1];
+          entity.asset_0_name = asset0.name;
+          entity.asset_1_name = asset1.name;
+          entity.balance_in = balances_obj[key];
+          entity.balance_out = balances_obj[key + 1];
+          entity.ratio = entity.ratio =
+            asset0.name === "MOVR"
               ? new BigNumber(balances_obj[key + 1].toString())
                   .div(balances_obj[key].toString())
                   .toString()
