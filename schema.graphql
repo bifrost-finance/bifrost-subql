@@ -180,3 +180,11 @@ type VtokenMovrLiquidity @entity  {
     vmovr_balance: BigInt
     ratio:String!
 }
+
+type SlpInfo @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    method: String!
+    data: String!
+}
