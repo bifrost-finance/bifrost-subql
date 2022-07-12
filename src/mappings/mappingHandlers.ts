@@ -30,7 +30,7 @@ const Tokens = [
     id: "vMOVR",
     coin_id: "moonriver",
     currency: { vToken: "vMOVR" },
-    decimal: 12,
+    decimal: 18,
     token: "MOVR",
   },
 ];
