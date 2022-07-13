@@ -3139,6 +3139,8 @@ dataSources:
           kind: substrate/BlockHandler
         - handler: council
           kind: substrate/BlockHandler
+        - handler: handleCallExtrinsic
+          kind: substrate/CallHandler
         # mappingVtokenPool.ts:
         # - handler: vtokenPoolBlock
         #   kind: substrate/BlockHandler
