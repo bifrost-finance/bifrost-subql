@@ -12,14 +12,9 @@ network:
     file: ./types.json
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 1502100
+    startBlock: 2127000
     mapping:
       file: ./dist/index.js
       handlers:
-        - handler: parachainStaking
+        - handler: handleTokenHolders
           kind: substrate/BlockHandler
-        - handler: handleParachainStakingRewarded
-          kind: substrate/EventHandler
-          filter:
-            module: parachainStaking
-            method: Rewarded
