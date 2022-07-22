@@ -67,7 +67,7 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
         );
 
         entity.block_height = blockNumber;
-        entity.block_timestamp = event.extrinsic.block.timestamp;
+        entity.block_timestamp = event.block.timestamp;
         entity.event_id = event.idx;
         entity.extrinsic_id = event.extrinsic.idx;
         entity.owner = owner.toString();
@@ -98,7 +98,7 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
           const entity = new VtokenSwapRatio("kUSD_KSM");
 
           entity.block_height = blockNumber;
-          entity.block_timestamp = event.extrinsic.block.timestamp;
+          entity.block_timestamp = event.block.timestamp;
           entity.event_id = event.idx;
           entity.asset_0 = swap_path_obj[key];
           entity.asset_1 = swap_path_obj[key + 1];
@@ -116,7 +116,7 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
           const entity = new VtokenSwapRatio("vKSM_KSM");
 
           entity.block_height = blockNumber;
-          entity.block_timestamp = event.extrinsic.block.timestamp;
+          entity.block_timestamp = event.block.timestamp;
           entity.event_id = event.idx;
           entity.asset_0 = swap_path_obj[key];
           entity.asset_1 = swap_path_obj[key + 1];
@@ -181,7 +181,7 @@ export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
         );
 
         entity.block_height = blockNumber;
-        entity.block_timestamp = event.extrinsic.block.timestamp;
+        entity.block_timestamp = event.block.timestamp;
         entity.event_id = event.idx;
         entity.extrinsic_id = event.extrinsic.idx;
         entity.owner = owner.toString();
@@ -212,7 +212,7 @@ export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
           const entity = new VtokenSwapRatio("kUSD_MOVR");
 
           entity.block_height = blockNumber;
-          entity.block_timestamp = event.extrinsic.block.timestamp;
+          entity.block_timestamp = event.block.timestamp;
           entity.event_id = event.idx;
           entity.asset_0 = swap_path_obj[key];
           entity.asset_1 = swap_path_obj[key + 1];
@@ -230,7 +230,7 @@ export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
           const entity = new VtokenSwapRatio("VMOVR_MOVR");
 
           entity.block_height = blockNumber;
-          entity.block_timestamp = event.extrinsic.block.timestamp;
+          entity.block_timestamp = event.block.timestamp;
           entity.event_id = event.idx;
           entity.asset_0 = swap_path_obj[key];
           entity.asset_1 = swap_path_obj[key + 1];

@@ -39,7 +39,7 @@ export async function handleVtokenLiquidity(
     const asset0 = getZenlinkTokenName(asset_0_obj?.assetIndex);
     const asset1 = getZenlinkTokenName(asset_1_obj?.assetIndex);
     const blockNumber = (
-      event.extrinsic.block.block.header.number as Compact<BlockNumber>
+      event.block.block.header.number as Compact<BlockNumber>
     ).toBigInt();
 
     if (asset0?.name === "vKSM" || asset1?.name === "vKSM") {
@@ -54,7 +54,7 @@ export async function handleVtokenLiquidity(
         blockNumber.toString() + "-" + event.idx.toString()
       );
       entity.block_height = blockNumber;
-      entity.block_timestamp = event.extrinsic.block.timestamp;
+      entity.block_timestamp = event.block.timestamp;
       entity.method = method.toString();
       entity.owner = owner.toString();
       entity.asset_0 = asset0.name;
@@ -91,7 +91,7 @@ export async function handleVtokenLiquidity(
         blockNumber.toString() + "-" + event.idx.toString()
       );
       entity.block_height = blockNumber;
-      entity.block_timestamp = event.extrinsic.block.timestamp;
+      entity.block_timestamp = event.block.timestamp;
       entity.method = method.toString();
       entity.owner = owner.toString();
       entity.asset_0 = asset0.name;
@@ -131,7 +131,7 @@ export async function handleVtokenLiquidity(
     const asset0 = getZenlinkTokenName(asset_0_obj?.assetIndex);
     const asset1 = getZenlinkTokenName(asset_1_obj?.assetIndex);
     const blockNumber = (
-      event.extrinsic.block.block.header.number as Compact<BlockNumber>
+      event.block.block.header.number as Compact<BlockNumber>
     ).toBigInt();
 
     if (asset0?.name === "vKSM" || asset1?.name === "vKSM") {
@@ -146,7 +146,7 @@ export async function handleVtokenLiquidity(
         blockNumber.toString() + "-" + event.idx.toString()
       );
       entity.block_height = blockNumber;
-      entity.block_timestamp = event.extrinsic.block.timestamp;
+      entity.block_timestamp = event.block.timestamp;
       entity.method = method.toString();
       entity.owner = owner.toString();
       entity.asset_0 = asset0.name;
@@ -183,7 +183,7 @@ export async function handleVtokenLiquidity(
         blockNumber.toString() + "-" + event.idx.toString()
       );
       entity.block_height = blockNumber;
-      entity.block_timestamp = event.extrinsic.block.timestamp;
+      entity.block_timestamp = event.block.timestamp;
       entity.method = method.toString();
       entity.owner = owner.toString();
       entity.asset_0 = asset0.name;
