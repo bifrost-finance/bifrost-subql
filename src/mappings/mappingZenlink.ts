@@ -42,6 +42,7 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
 
 export async function zenlinkLiquidityAdded(event: SubstrateEvent): Promise<void> {
   const { event: { data: [owner, asset_0, asset_1, add_balance_0, add_balance_1, mint_balance_lp] } } = event;
+  if (event.extrinsic == undefined) return;
   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
 
   const entity = new ZenlinkLiquidityCalculation(blockNumber.toString() + '-' + event.idx.toString());
