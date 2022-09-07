@@ -494,7 +494,11 @@
         "Stable": "TokenSymbol",
         "VSToken": "TokenSymbol",
         "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)",
-        "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)"
+        "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)",
+        "Token2": "u8",
+        "VToken2": "u8",
+        "VSToken2": "u8",
+        "VSBond2": "u8"
       }
     },
     "CurrencyIdOf": "CurrencyId",
@@ -594,6 +598,54 @@
               "section": "oracle"
             }
           },
+          "farming": {
+            "getFarmingRewards": {
+              "description": "Get farming rewards",
+              "params": [
+                {
+                  "name": "who",
+                  "type": "AccountId"
+                },
+                {
+                  "name": "pid",
+                  "type": "PoolId"
+                },
+                {
+                  "name": "at",
+                  "type": "Hash",
+                  "isOptional": true
+                }
+              ],
+              "type": "Vec<(CurrencyId, Balance)>",
+              "isSubscription": false,
+              "jsonrpc": "farming_getFarmingRewards",
+              "method": "getFarmingRewards",
+              "section": "farming"
+            },
+            "getGaugeRewards": {
+              "description": "Get gauge rewards",
+              "params": [
+                {
+                  "name": "who",
+                  "type": "AccountId"
+                },
+                {
+                  "name": "pid",
+                  "type": "PoolId"
+                },
+                {
+                  "name": "at",
+                  "type": "Hash",
+                  "isOptional": true
+                }
+              ],
+              "type": "Vec<(CurrencyId, Balance)>",
+              "isSubscription": false,
+              "jsonrpc": "farming_getGaugeRewards",
+              "method": "getGaugeRewards",
+              "section": "farming"
+            }
+          },
           "flexibleFee": {
             "getFeeTokenAndAmount": {
               "description": "Get charging token type and amount in terms of flexible transaction fee.",
@@ -947,6 +999,7 @@
                 "perPeriod": "Compact<Balance>"
               },
               "VestingScheduleOf": "OrmlVestingSchedule",
+              "OrmlCurrencyId": "u8",
               "PoolInfo": {
                 "pool_id": "PoolId",
                 "keeper": "AccountId",
@@ -964,6 +1017,12 @@
                 "redeem_limit_time": "BlockNumber",
                 "unlock_limit_nums": "u32",
                 "pending_unlock_nums": "u32"
+              },
+              "CompactBalance": "Compact<Balance>",
+              "PoolInfoV0": {
+                "totalShares": "Compact<Share>",
+                "totalRewards": "CompactBalance",
+                "totalWithdrawnRewards": "CompactBalance"
               },
               "Share": "u128",
               "OracleValue": "Price",
@@ -1166,6 +1225,32 @@
               },
               "IsExtended": "bool",
               "SystemPalletId": "PalletId",
+              "TimeUnit": {
+                "Era": "U32",
+                "SlashingSpan": "U32"
+              },
+              "ledger": {
+                "Substrate": "SubstrateLedger"
+              },
+              "SubstrateLedger": {
+                "account": "AccountId",
+                "total": "Balance",
+                "active": "Balance",
+                "unlocking": "Vec<UnlockChunk>"
+              },
+              "UnlockChunk": {
+                "value": "Balance",
+                "unlock_time": "TimeUnit"
+              },
+              "MinimumsMaximums": {
+                "delegator_bonded_minimum": "Balance",
+                "bond_extra_minimum": "Balance",
+                "unbond_minimum": "Balance",
+                "rebond_minimum": "Balance",
+                "unbond_record_maximum": "U32",
+                "validators_back_maximum": "U32",
+                "delegator_active_staking_maximum": "Balance"
+              },
               "TrieIndex": "u32",
               "FundInfo": {
                 "raised": "Balance",
@@ -1292,6 +1377,7 @@
                   "Buy": 1
                 }
               },
+              "UnlockId": "U32",
               "ZenlinkAssetId": {
                 "chain_id": "u32",
                 "asset_type": "u8",
@@ -1336,7 +1422,8 @@
                   "KAR": 6,
                   "ZLK": 7,
                   "PHA": 8,
-                  "RMRK": 9
+                  "RMRK": 9,
+                  "MOVR": 10
                 }
               },
               "CurrencyId": {
@@ -1347,7 +1434,11 @@
                   "Stable": "TokenSymbol",
                   "VSToken": "TokenSymbol",
                   "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)",
-                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)"
+                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)",
+                  "Token2": "u8",
+                  "VToken2": "u8",
+                  "VSToken2": "u8",
+                  "VSBond2": "u8"
                 }
               },
               "CurrencyIdOf": "CurrencyId",
@@ -1360,6 +1451,7 @@
               "NodePrimitivesCurrencyCurrencyId": "CurrencyId",
               "OrmlTokensBalanceLock": "BalanceLock",
               "OrmlTokensAccountData": "OrmlAccountData",
+              "OrmlTokensReserveData": "(Currency, u8, Amount, u128)",
               "TransferOriginType": {
                 "_enum": {
                   "FromSelf": 0,
@@ -1467,6 +1559,7 @@
                 "perPeriod": "Compact<Balance>"
               },
               "VestingScheduleOf": "OrmlVestingSchedule",
+              "OrmlCurrencyId": "u8",
               "PoolInfo": {
                 "pool_id": "PoolId",
                 "keeper": "AccountId",
@@ -1484,6 +1577,12 @@
                 "redeem_limit_time": "BlockNumber",
                 "unlock_limit_nums": "u32",
                 "pending_unlock_nums": "u32"
+              },
+              "CompactBalance": "Compact<Balance>",
+              "PoolInfoV0": {
+                "totalShares": "Compact<Share>",
+                "totalRewards": "CompactBalance",
+                "totalWithdrawnRewards": "CompactBalance"
               },
               "Share": "u128",
               "OracleValue": "Price",
@@ -1686,6 +1785,32 @@
               },
               "IsExtended": "bool",
               "SystemPalletId": "PalletId",
+              "TimeUnit": {
+                "Era": "U32",
+                "SlashingSpan": "U32"
+              },
+              "ledger": {
+                "Substrate": "SubstrateLedger"
+              },
+              "SubstrateLedger": {
+                "account": "AccountId",
+                "total": "Balance",
+                "active": "Balance",
+                "unlocking": "Vec<UnlockChunk>"
+              },
+              "UnlockChunk": {
+                "value": "Balance",
+                "unlock_time": "TimeUnit"
+              },
+              "MinimumsMaximums": {
+                "delegator_bonded_minimum": "Balance",
+                "bond_extra_minimum": "Balance",
+                "unbond_minimum": "Balance",
+                "rebond_minimum": "Balance",
+                "unbond_record_maximum": "U32",
+                "validators_back_maximum": "U32",
+                "delegator_active_staking_maximum": "Balance"
+              },
               "TrieIndex": "u32",
               "FundInfo": {
                 "raised": "Balance",
@@ -1812,6 +1937,7 @@
                   "Buy": 1
                 }
               },
+              "UnlockId": "U32",
               "ZenlinkAssetId": {
                 "chain_id": "u32",
                 "asset_type": "u8",
@@ -1856,7 +1982,8 @@
                   "KAR": 6,
                   "ZLK": 7,
                   "PHA": 8,
-                  "RMRK": 9
+                  "RMRK": 9,
+                  "MOVR": 10
                 }
               },
               "CurrencyId": {
@@ -1867,7 +1994,11 @@
                   "Stable": "TokenSymbol",
                   "VSToken": "TokenSymbol",
                   "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)",
-                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)"
+                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)",
+                  "Token2": "u8",
+                  "VToken2": "u8",
+                  "VSToken2": "u8",
+                  "VSBond2": "u8"
                 }
               },
               "CurrencyIdOf": "CurrencyId",
@@ -1880,6 +2011,7 @@
               "NodePrimitivesCurrencyCurrencyId": "CurrencyId",
               "OrmlTokensBalanceLock": "BalanceLock",
               "OrmlTokensAccountData": "OrmlAccountData",
+              "OrmlTokensReserveData": "(Currency, u8, Amount, u128)",
               "TransferOriginType": {
                 "_enum": {
                   "FromSelf": 0,
@@ -1979,6 +2111,54 @@
               "section": "oracle"
             }
           },
+          "farming": {
+            "getFarmingRewards": {
+              "description": "Get farming rewards",
+              "params": [
+                {
+                  "name": "who",
+                  "type": "AccountId"
+                },
+                {
+                  "name": "pid",
+                  "type": "PoolId"
+                },
+                {
+                  "name": "at",
+                  "type": "Hash",
+                  "isOptional": true
+                }
+              ],
+              "type": "Vec<(CurrencyId, Balance)>",
+              "isSubscription": false,
+              "jsonrpc": "farming_getFarmingRewards",
+              "method": "getFarmingRewards",
+              "section": "farming"
+            },
+            "getGaugeRewards": {
+              "description": "Get gauge rewards",
+              "params": [
+                {
+                  "name": "who",
+                  "type": "AccountId"
+                },
+                {
+                  "name": "pid",
+                  "type": "PoolId"
+                },
+                {
+                  "name": "at",
+                  "type": "Hash",
+                  "isOptional": true
+                }
+              ],
+              "type": "Vec<(CurrencyId, Balance)>",
+              "isSubscription": false,
+              "jsonrpc": "farming_getGaugeRewards",
+              "method": "getGaugeRewards",
+              "section": "farming"
+            }
+          },
           "flexibleFee": {
             "getFeeTokenAndAmount": {
               "description": "Get charging token type and amount in terms of flexible transaction fee.",
@@ -2332,6 +2512,7 @@
                 "perPeriod": "Compact<Balance>"
               },
               "VestingScheduleOf": "OrmlVestingSchedule",
+              "OrmlCurrencyId": "u8",
               "PoolInfo": {
                 "pool_id": "PoolId",
                 "keeper": "AccountId",
@@ -2349,6 +2530,12 @@
                 "redeem_limit_time": "BlockNumber",
                 "unlock_limit_nums": "u32",
                 "pending_unlock_nums": "u32"
+              },
+              "CompactBalance": "Compact<Balance>",
+              "PoolInfoV0": {
+                "totalShares": "Compact<Share>",
+                "totalRewards": "CompactBalance",
+                "totalWithdrawnRewards": "CompactBalance"
               },
               "Share": "u128",
               "OracleValue": "Price",
@@ -2551,6 +2738,32 @@
               },
               "IsExtended": "bool",
               "SystemPalletId": "PalletId",
+              "TimeUnit": {
+                "Era": "U32",
+                "SlashingSpan": "U32"
+              },
+              "ledger": {
+                "Substrate": "SubstrateLedger"
+              },
+              "SubstrateLedger": {
+                "account": "AccountId",
+                "total": "Balance",
+                "active": "Balance",
+                "unlocking": "Vec<UnlockChunk>"
+              },
+              "UnlockChunk": {
+                "value": "Balance",
+                "unlock_time": "TimeUnit"
+              },
+              "MinimumsMaximums": {
+                "delegator_bonded_minimum": "Balance",
+                "bond_extra_minimum": "Balance",
+                "unbond_minimum": "Balance",
+                "rebond_minimum": "Balance",
+                "unbond_record_maximum": "U32",
+                "validators_back_maximum": "U32",
+                "delegator_active_staking_maximum": "Balance"
+              },
               "TrieIndex": "u32",
               "FundInfo": {
                 "raised": "Balance",
@@ -2677,6 +2890,7 @@
                   "Buy": 1
                 }
               },
+              "UnlockId": "U32",
               "ZenlinkAssetId": {
                 "chain_id": "u32",
                 "asset_type": "u8",
@@ -2722,7 +2936,8 @@
                   "KAR": 6,
                   "ZLK": 7,
                   "PHA": 8,
-                  "RMRK": 9
+                  "RMRK": 9,
+                  "MOVR": 10
                 }
               },
               "CurrencyId": {
@@ -2733,7 +2948,11 @@
                   "Stable": "TokenSymbol",
                   "VSToken": "TokenSymbol",
                   "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)",
-                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)"
+                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)",
+                  "Token2": "u8",
+                  "VToken2": "u8",
+                  "VSToken2": "u8",
+                  "VSBond2": "u8"
                 }
               },
               "CurrencyIdOf": "CurrencyId",
@@ -2746,6 +2965,7 @@
               "NodePrimitivesCurrencyCurrencyId": "CurrencyId",
               "OrmlTokensBalanceLock": "BalanceLock",
               "OrmlTokensAccountData": "OrmlAccountData",
+              "OrmlTokensReserveData": "(Currency, u8, Amount, u128)",
               "TransferOriginType": {
                 "_enum": {
                   "FromSelf": 0,
@@ -2853,6 +3073,7 @@
                 "perPeriod": "Compact<Balance>"
               },
               "VestingScheduleOf": "OrmlVestingSchedule",
+              "OrmlCurrencyId": "u8",
               "PoolInfo": {
                 "pool_id": "PoolId",
                 "keeper": "AccountId",
@@ -2870,6 +3091,12 @@
                 "redeem_limit_time": "BlockNumber",
                 "unlock_limit_nums": "u32",
                 "pending_unlock_nums": "u32"
+              },
+              "CompactBalance": "Compact<Balance>",
+              "PoolInfoV0": {
+                "totalShares": "Compact<Share>",
+                "totalRewards": "CompactBalance",
+                "totalWithdrawnRewards": "CompactBalance"
               },
               "Share": "u128",
               "OracleValue": "Price",
@@ -3072,6 +3299,32 @@
               },
               "IsExtended": "bool",
               "SystemPalletId": "PalletId",
+              "TimeUnit": {
+                "Era": "U32",
+                "SlashingSpan": "U32"
+              },
+              "ledger": {
+                "Substrate": "SubstrateLedger"
+              },
+              "SubstrateLedger": {
+                "account": "AccountId",
+                "total": "Balance",
+                "active": "Balance",
+                "unlocking": "Vec<UnlockChunk>"
+              },
+              "UnlockChunk": {
+                "value": "Balance",
+                "unlock_time": "TimeUnit"
+              },
+              "MinimumsMaximums": {
+                "delegator_bonded_minimum": "Balance",
+                "bond_extra_minimum": "Balance",
+                "unbond_minimum": "Balance",
+                "rebond_minimum": "Balance",
+                "unbond_record_maximum": "U32",
+                "validators_back_maximum": "U32",
+                "delegator_active_staking_maximum": "Balance"
+              },
               "TrieIndex": "u32",
               "FundInfo": {
                 "raised": "Balance",
@@ -3198,6 +3451,7 @@
                   "Buy": 1
                 }
               },
+              "UnlockId": "U32",
               "ZenlinkAssetId": {
                 "chain_id": "u32",
                 "asset_type": "u8",
@@ -3243,7 +3497,8 @@
                   "KAR": 6,
                   "ZLK": 7,
                   "PHA": 8,
-                  "RMRK": 9
+                  "RMRK": 9,
+                  "MOVR": 10
                 }
               },
               "CurrencyId": {
@@ -3254,7 +3509,11 @@
                   "Stable": "TokenSymbol",
                   "VSToken": "TokenSymbol",
                   "VSBond": "(TokenSymbol, ParaId, LeasePeriod, LeasePeriod)",
-                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)"
+                  "LPToken": "(TokenSymbol, u8, TokenSymbol, u8)",
+                  "Token2": "u8",
+                  "VToken2": "u8",
+                  "VSToken2": "u8",
+                  "VSBond2": "u8"
                 }
               },
               "CurrencyIdOf": "CurrencyId",
@@ -3267,6 +3526,7 @@
               "NodePrimitivesCurrencyCurrencyId": "CurrencyId",
               "OrmlTokensBalanceLock": "BalanceLock",
               "OrmlTokensAccountData": "OrmlAccountData",
+              "OrmlTokensReserveData": "(Currency, u8, Amount, u128)",
               "TransferOriginType": {
                 "_enum": {
                   "FromSelf": 0,

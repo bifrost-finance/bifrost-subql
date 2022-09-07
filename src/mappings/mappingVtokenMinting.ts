@@ -4,14 +4,13 @@ import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
 
 import {
-  VtokenSwapRatio,
   VtokenMintingInfo,
   VtokenMintingMinted,
-  VtokenMintingRatio,
   VtokenMintingRedeemed,
   VtokenMintingRebondedByUnlockId,
   VtokenRedeemedSuccess,
-  VtokenMintingMovrRatio,
+  VtokenSwapRatio,
+  VtokenMintingRatio,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -38,66 +37,33 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
   }
 
   if (new BigNumber(blockNumber.toString()).modulo(20).toNumber() === 0) {
-    const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
-      vToken: "KSM",
+    const vDOTtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken2: "0",
     });
-    const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
-      Token: "KSM",
+    const DOTTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token2: "0",
     });
 
     const record = new VtokenMintingRatio(blockNumber.toString());
-    const swapVKSMKSMRecord = await VtokenSwapRatio.get("vKSM_KSM");
-    const swapVUSDKSMRecord = await VtokenSwapRatio.get("kUSD_KSM");
+    const swapVDOTDOTRecord = await VtokenSwapRatio.get("vDOT_DOT");
 
     record.block_height = blockNumber;
     record.block_timestamp = block.timestamp;
-    record.vksm_balance = vKSMtotalIssuance
-      ? (vKSMtotalIssuance as Balance).toBigInt()
+    record.vdot_balance = vDOTtotalIssuance
+      ? (vDOTtotalIssuance as Balance).toBigInt()
       : BigInt(0);
-    record.ksm_balance = KSMTokenPool
-      ? (KSMTokenPool as Balance).toBigInt()
+    record.dot_balance = DOTTokenPool
+      ? (DOTTokenPool as Balance).toBigInt()
       : BigInt(0);
     record.ratio =
-      KSMTokenPool?.toString() === "0" || vKSMtotalIssuance?.toString() === "0"
+      DOTTokenPool?.toString() === "0" || vDOTtotalIssuance?.toString() === "0"
         ? "0"
-        : new BigNumber(vKSMtotalIssuance?.toString())
-            .div(KSMTokenPool?.toString())
+        : new BigNumber(vDOTtotalIssuance?.toString())
+            .div(DOTTokenPool?.toString())
             .toString();
-    record.vksm_ksm_ratio = swapVKSMKSMRecord?.ratio || "0";
-    record.kusd_ksm_ratio = swapVUSDKSMRecord?.ratio || "0";
+    record.vdot_dot_ratio = swapVDOTDOTRecord?.ratio || "0";
 
     await record.save();
-
-    const vMOVRtotalIssuance = await api.query.tokens?.totalIssuance({
-      vToken: "MOVR",
-    });
-    const MOVRTokenPool = await api.query.vtokenMinting?.tokenPool({
-      Token: "MOVR",
-    });
-
-    const movrRecord = new VtokenMintingMovrRatio(blockNumber.toString());
-    const swapVMOVRMOVRRecord = await VtokenSwapRatio.get("vMOVR_MOVR");
-    const swapVUSDMOVRRecord = await VtokenSwapRatio.get("kUSD_MOVR");
-
-    movrRecord.block_height = blockNumber;
-    movrRecord.block_timestamp = block.timestamp;
-    movrRecord.vmovr_balance = vMOVRtotalIssuance
-      ? (vMOVRtotalIssuance as Balance).toBigInt()
-      : BigInt(0);
-    movrRecord.movr_balance = MOVRTokenPool
-      ? (MOVRTokenPool as Balance).toBigInt()
-      : BigInt(0);
-    movrRecord.ratio =
-      MOVRTokenPool?.toString() === "0" ||
-      vMOVRtotalIssuance?.toString() === "0"
-        ? "0"
-        : new BigNumber(vMOVRtotalIssuance?.toString())
-            .div(MOVRTokenPool?.toString())
-            .toString();
-    movrRecord.vmovr_movr_ratio = swapVMOVRMOVRRecord?.ratio || "0";
-    movrRecord.kusd_movr_ratio = swapVUSDMOVRRecord?.ratio || "0";
-
-    await movrRecord.save();
   }
   return;
 }
@@ -111,7 +77,7 @@ export async function handleVtokenMintingMinted(
 
   const {
     event: {
-      data: [account, token, balance_ksm, balance_vksm],
+      data: [account, token, balance_dot, balance_vdot],
     },
   } = event;
 
@@ -123,8 +89,8 @@ export async function handleVtokenMintingMinted(
   record.block_timestamp = event.block.timestamp;
   record.token = token.toString();
   record.account = account.toString();
-  record.balance_ksm = (balance_ksm as Balance).toBigInt();
-  record.balance_vksm = (balance_vksm as Balance).toBigInt();
+  record.balance_dot = (balance_dot as Balance).toBigInt();
+  record.balance_vdot = (balance_vdot as Balance).toBigInt();
 
   await record.save();
 }
@@ -138,7 +104,7 @@ export async function handleVtokenMintingRebondedByUnlockId(
 
   const {
     event: {
-      data: [account, token, balanceKSM, balancevKSM],
+      data: [account, token, balanceDOT, balancevDOT],
     },
   } = event;
 
@@ -150,8 +116,8 @@ export async function handleVtokenMintingRebondedByUnlockId(
   record.block_timestamp = event.block.timestamp;
   record.token = token.toString();
   record.account = account.toString();
-  record.balance_ksm = (balanceKSM as Balance).toBigInt();
-  record.balance_vksm = (balancevKSM as Balance).toBigInt();
+  record.balance_dot = (balanceDOT as Balance).toBigInt();
+  record.balance_vdot = (balancevDOT as Balance).toBigInt();
   await record.save();
 }
 
@@ -164,7 +130,7 @@ export async function handleVtokenMintingRedeemed(
 
   const {
     event: {
-      data: [account, token, balanceKSM, balancevKSM],
+      data: [account, token, balanceDOT, balancevDOT],
     },
   } = event;
 
@@ -176,8 +142,8 @@ export async function handleVtokenMintingRedeemed(
   record.block_timestamp = event.block.timestamp;
   record.token = token.toString();
   record.account = account.toString();
-  record.balance_ksm = (balanceKSM as Balance).toBigInt();
-  record.balance_vksm = (balancevKSM as Balance).toBigInt();
+  record.balance_dot = (balanceDOT as Balance).toBigInt();
+  record.balance_vdot = (balancevDOT as Balance).toBigInt();
 
   await record.save();
 }
@@ -195,11 +161,11 @@ export async function handleVtokenRedeemedSuccess(
     },
   } = event;
 
-  const vKSMtotalIssuance = await api.query.tokens?.totalIssuance({
-    vToken: "KSM",
+  const vDOTtotalIssuance = await api.query.tokens?.totalIssuance({
+    vToken2: "0",
   });
-  const KSMTokenPool = await api.query.vtokenMinting?.tokenPool({
-    Token: "KSM",
+  const DOTTokenPool = await api.query.vtokenMinting?.tokenPool({
+    Token2: "0",
   });
 
   const record = new VtokenRedeemedSuccess(
@@ -211,17 +177,17 @@ export async function handleVtokenRedeemedSuccess(
   record.token = token.toString();
   record.account = account.toString();
   record.balance = (balance as Balance).toBigInt();
-  record.vksm_balance = vKSMtotalIssuance
-    ? (vKSMtotalIssuance as Balance).toBigInt()
+  record.vdot_balance = vDOTtotalIssuance
+    ? (vDOTtotalIssuance as Balance).toBigInt()
     : BigInt(0);
-  record.ksm_balance = KSMTokenPool
-    ? (KSMTokenPool as Balance).toBigInt()
+  record.dot_balance = DOTTokenPool
+    ? (DOTTokenPool as Balance).toBigInt()
     : BigInt(0);
   record.ratio =
-    KSMTokenPool?.toString() === "0" || vKSMtotalIssuance?.toString() === "0"
+    DOTTokenPool?.toString() === "0" || vDOTtotalIssuance?.toString() === "0"
       ? "0"
-      : new BigNumber(vKSMtotalIssuance?.toString())
-          .div(KSMTokenPool?.toString())
+      : new BigNumber(vDOTtotalIssuance?.toString())
+          .div(DOTTokenPool?.toString())
           .toString();
 
   await record.save();
