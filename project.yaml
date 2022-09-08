@@ -7,7 +7,7 @@ schema:
   file: ./schema.graphql
 network:
   genesisHash: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
-  endpoint: 'wss://hk.p.bifrost-rpc.liebi.com/ws'
+  endpoint: 'wss://polkadot-rpc.liebi.com/ws'
   chaintypes:
     file: ./types.json
 dataSources:
