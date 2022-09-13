@@ -33,12 +33,7 @@ dataSources:
           filter:
             module: vtokenMinting
             method: RebondedByUnlockId
-        - handler: handleVKSMSwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
-        - handler: handleVMOVRSwap
+        - handler: handleVDOTSwap
           kind: substrate/EventHandler
           filter:
             module: zenlinkProtocol
