@@ -6,13 +6,13 @@ repository: git@github.com:bifrost-finance/bifrost-subql.git
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed'
-  endpoint: wss://bifrost-parachain.api.onfinality.io/public-ws
+  genesisHash: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
+  endpoint: wss://hk.p.bifrost-rpc.liebi.com/ws
   chaintypes:
     file: ./types.json
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 318500
+    startBlock: 690000
     mapping:
       file: ./dist/index.js
       handlers:
@@ -99,26 +99,6 @@ dataSources:
           filter:
             module: balances
             method: ReserveRepatriated
-        - handler: handleCurrenciesDeposited
-          kind: substrate/EventHandler
-          filter:
-            module: currencies
-            method: Deposited
-        - handler: handleCurrenciesWithdrawn
-          kind: substrate/EventHandler
-          filter:
-            module: currencies
-            method: Withdrawn
-        - handler: handleCurrenciesTransferred
-          kind: substrate/EventHandler
-          filter:
-            module: currencies
-            method: Transferred
-        - handler: handleCurrenciesBalanceUpdated
-          kind: substrate/EventHandler
-          filter:
-            module: currencies
-            method: BalanceUpdated
         - handler: handleTokensTransfer
           kind: substrate/EventHandler
           filter:
@@ -169,18 +149,18 @@ dataSources:
           filter:
             module: vesting
             method: VestingCompleted
-        - handler: handleSalpLiteIssued
-          kind: substrate/EventHandler
-          filter:
-            module: salpLite
-            method: Issued
-        - handler: handleSalpLiteRedeemed
-          kind: substrate/EventHandler
-          filter:
-            module: salpLite
-            method: Redeemed
-        - handler: handleSalpLiteRefunded
-          kind: substrate/EventHandler
-          filter:
-            module: salpLite
-            method: Refunded
+        # - handler: handleSalpLiteIssued
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: salpLite
+        #     method: Issued
+        # - handler: handleSalpLiteRedeemed
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: salpLite
+        #     method: Redeemed
+        # - handler: handleSalpLiteRefunded
+        #   kind: substrate/EventHandler
+        #   filter:
+        #     module: salpLite
+        #     method: Refunded
