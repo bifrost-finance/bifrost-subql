@@ -1,16 +1,4 @@
 import { SubstrateEvent, SubstrateBlock } from "@subql/types";
-import axiosOriginal from 'axios';
-import adapter from 'axios/lib/adapters/http';
-const axios = axiosOriginal.create({
-  adapter, headers: {
-    'Authorization': ''
-  }
-});
-
-const options = {
-  'channel': '',
-  'text': ''
-};
 
 function getDayStartUnix(block: SubstrateBlock): string {
   let timestamp = block.timestamp.getTime() / 1000
@@ -41,10 +29,4 @@ function tokenSplit(tokenName: string): string[] {
   }
 }
 
-async function postSlack(text: string) {
-  options.text = text;
-  await axios.post('https://slack.com/api/chat.postMessage', options);
-}
-
-
-export { getDayStartUnix, get7DayStartUnix, tokenSplit, postSlack };
+export { getDayStartUnix, get7DayStartUnix, tokenSplit };
