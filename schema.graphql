@@ -147,44 +147,6 @@ type SalpContributed @entity {
   message_id: String
 }
 
-# type SalpContributeFailed @entity {
-#   id: ID!
-#   blockHeight: BigInt!
-#   accountIdOf: String!
-#   paraId: String!
-#   balanceOf: BigInt!
-# }
-
-# type SalpWithdrew @entity {
-#   id: ID!
-#   blockHeight: BigInt!
-#   accountIdOf: String!
-#   paraId: String!
-#   balanceOf: BigInt!
-# }
-
-# type SalpWithdrawFailed @entity {
-#   id: ID!
-#   blockHeight: BigInt!
-#   accountIdOf: String!
-#   paraId: String!
-#   balanceOf: BigInt!
-# }
-
-# type SalpRedeemed @entity {
-#   id: ID!
-#   blockHeight: BigInt!
-#   accountIdOf: String!
-#   balanceOf: BigInt!
-# }
-
-# type SalpRedeemFailed @entity {
-#   id: ID!
-#   blockHeight: BigInt!
-#   accountIdOf: String!
-#   balanceOf: BigInt!
-# }
-
 type SalpContribution @entity {
   id: ID!
   block_height: Int!
@@ -298,32 +260,6 @@ type VsBondOrderClinchd @entity {
   price: Float
 }
 
-type SalpLiteIssued @entity {
-  id: ID!
-  block_height: Int!
-  event_id: Int!
-  extrinsic_id: Int!
-  block_timestamp: Date!
-  account: String
-  para_id: Int
-  balance: BigInt
-  message_id: String
-}
-
-type SalpLiteRedeemed @entity {
-  id: ID!
-  block_height: Int!
-  event_id: Int
-  extrinsic_id: Int
-  block_timestamp: Date
-  account: String
-  para_id: Int
-  first_slot: String
-  last_slot: String
-  balance: BigInt
-  state: String
-}
-
 type Extrinsic @entity {
   id: ID!
   block_hash: String!
@@ -336,10 +272,9 @@ type TokensTotalIssuance @entity {
   id: ID!
   block_height: Int!
   block_timestamp: Date
-  vsksm: BigInt
   vsdot: BigInt
-  vksm: BigInt
-  vmovr: BigInt
+  vdot: BigInt
+  vglmr: BigInt
 }
 
 type DemocracyInfo @entity {

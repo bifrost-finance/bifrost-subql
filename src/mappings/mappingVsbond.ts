@@ -1,18 +1,24 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance } from "@polkadot/types/interfaces";
-import { Compact } from '@polkadot/types';
+import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
 import { VsbondInfo, VsBondOrderClinchd } from "../types/models";
-import { getPrice } from "../common";
-import { config } from "process";
 
 export async function vsbond(block: SubstrateBlock): Promise<void> {
-  const blockNumber = (block.block.header.number as Compact<BlockNumber>).toBigInt();
+  const blockNumber = (
+    block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
 
-  const vsbondEvents = block.events.filter(e => e.event.section === 'vsBondAuction') as SubstrateEvent[];
+  const vsbondEvents = block.events.filter(
+    (e) => e.event.section === "vsBondAuction"
+  ) as SubstrateEvent[];
   for (let vsbondEvent of vsbondEvents) {
-    const { event: { data, section, method } } = vsbondEvent;
-    const record = new VsbondInfo(blockNumber.toString() + '-' + vsbondEvent.idx.toString());
+    const {
+      event: { data, section, method },
+    } = vsbondEvent;
+    const record = new VsbondInfo(
+      blockNumber.toString() + "-" + vsbondEvent.idx.toString()
+    );
     record.block_height = blockNumber;
     record.block_timestamp = block.timestamp;
     record.method = method.toString();
@@ -22,12 +28,31 @@ export async function vsbond(block: SubstrateBlock): Promise<void> {
   return;
 }
 
-export async function handleVsBondAuctionOrderClinchd(event: SubstrateEvent): Promise<void> {
+export async function handleVsBondAuctionOrderClinchd(
+  event: SubstrateEvent
+): Promise<void> {
   const blockNumber = event.block.block.header.number.toNumber();
 
-  const { event: { section, method, data: [order_id, order_type, order_creator, order_opponent, vsbond_type,
-    vsbond_amount_clinched, vsbond_amount, vsbond_remain, total_price] } } = event;
-  const record = new VsBondOrderClinchd(blockNumber.toString() + '-' + event.idx.toString());
+  const {
+    event: {
+      section,
+      method,
+      data: [
+        order_id,
+        order_type,
+        order_creator,
+        order_opponent,
+        vsbond_type,
+        vsbond_amount_clinched,
+        vsbond_amount,
+        vsbond_remain,
+        total_price,
+      ],
+    },
+  } = event;
+  const record = new VsBondOrderClinchd(
+    blockNumber.toString() + "-" + event.idx.toString()
+  );
   record.block_height = blockNumber;
   record.event_id = event.idx;
   record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
@@ -35,7 +60,9 @@ export async function handleVsBondAuctionOrderClinchd(event: SubstrateEvent): Pr
   record.currency = vsbond_type.toString();
   record.total_price = (total_price as Balance).toBigInt();
   record.amount = (vsbond_amount as Balance).toBigInt();
-  let price = new BigNumber(record.total_price.toString()).div(record.amount.toString());
+  let price = new BigNumber(record.total_price.toString()).div(
+    record.amount.toString()
+  );
   let symbol = JSON.parse(JSON.stringify(vsbond_type));
   if (symbol.vsBond[0] == "DOT") {
     price = price.div(100);

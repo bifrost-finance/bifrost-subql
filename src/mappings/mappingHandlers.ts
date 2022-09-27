@@ -2,63 +2,54 @@ import { SubstrateExtrinsic, SubstrateEvent } from "@subql/types";
 import { StarterEntity } from "../types/models/StarterEntity";
 import { Balance } from "@polkadot/types/interfaces";
 import { SubstrateBlock } from "@subql/types";
-import { getPrice } from "../common";
+import { getPrice, assetTypeFormat } from "../common";
 import { Tvl, Extrinsic, DemocracyInfo, CouncilInfo } from "../types/models";
 import BigNumber from "bignumber.js";
 
 const Tokens = [
   {
-    id: "vsKSM",
-    coin_id: "kusama",
-    currency: { vsToken: "KSM" },
-    decimal: 12,
-  },
-  {
     id: "vsDOT",
     coin_id: "polkadot",
-    currency: { vsToken: "DOT" },
+    currency: { vsToken2: "0" },
     decimal: 10,
   },
   {
-    id: "vKSM",
-    coin_id: "kusama",
-    currency: { vToken: "KSM" },
-    decimal: 12,
+    id: "vDOT",
+    coin_id: "polkadot",
+    currency: { vToken2: "0" },
+    decimal: 10,
     token: "KSM",
   },
   {
-    id: "vMOVR",
-    coin_id: "moonriver",
-    currency: { vToken: "vMOVR" },
+    id: "vGLMR",
+    coin_id: "moonbeam",
+    currency: { vToken2: "1" },
     decimal: 18,
-    token: "MOVR",
+    token: "GLMR",
   },
 ];
 
 const DexTokens = [
   {
-    id: "KSM-dex",
-    coin_id: "kusama",
-    currency: { Token: "KSM" },
-    decimal: 12,
+    id: "DOT-dex",
+    coin_id: "polkadot",
+    currency: { Token: "0" },
+    decimal: 10,
     dex_address: [
-      ["eCSrvaystgdffuJxPVYKf8H8UYnHGNRdVGUvj1SWSiatWMq", { Token: "KSM" }],
-      ["eCSrvaystgdffuJxPVU9u7Vv2AVjXTAEwbuujLggS6t6HoE", { Token: "KSM" }],
-      ["eCSrvaystgdffuJxPVTJc2eQMgp9PnuPh7mMaQ6KbTynFRM", { Token: "KSM" }],
-      ["eCSrvaystgdffuJxPVZUZmUBqiz2nXKWuUWHQBPqvJFeDh1", { Token: "KSM" }],
-      ["eCSrvaystgdffuJxPVW4UMxAXMuTpU3jkCJeiqppyfoi6SG", { Token: "KSM" }],
+      ["eCSrvaystgdffuJxPVTne2cjBdWDh6yPvzt8RdkFdihjqS1", { Token: "0" }],
+      ["eCSrvaystgdffuJxPVRct68qJUZs1sFz762d7d37KJvb7Pz", { Token: "0" }],
     ],
   },
-  {
-    id: "ZLK-dex",
-    coin_id: "zenlink-network-token",
-    currency: { Token: "ZLK" },
-    decimal: 18,
-    dex_address: [
-      ["eCSrvaystgdffuJxPVRWqnxeKZJ3dWu8qJYidgLLStXXkiG", { Token: "ZLK" }],
-      ["eCSrvaystgdffuJxPVU5NQfnXRohvjWF9u8VaeUWRg1mn1y", { Token: "ZLK" }],
-    ],
-  },
+  // {
+  //   id: "ZLK-dex",
+  //   coin_id: "zenlink-network-token",
+  //   currency: { Token: "ZLK" },
+  //   decimal: 18,
+  //   dex_address: [
+  //     ["eCSrvaystgdffuJxPVRWqnxeKZJ3dWu8qJYidgLLStXXkiG", { Token: "ZLK" }],
+  //     ["eCSrvaystgdffuJxPVU5NQfnXRohvjWF9u8VaeUWRg1mn1y", { Token: "ZLK" }],
+  //   ],
+  // },
 ];
 
 export async function handleBlock(block: SubstrateBlock): Promise<void> {
@@ -77,10 +68,10 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       record.block_timestamp = block.timestamp;
       record.currency = JSON.stringify(token.currency);
       let token_total_issuance;
-      if (token.id === "vKSM" || token.id === "vMOVR") {
-        token_total_issuance = await api.query.vtokenMinting?.tokenPool({
-          token: token.token,
-        });
+      if (token.id === "vDOT" || token.id === "vGLMR") {
+        token_total_issuance = await api.query.vtokenMinting?.tokenPool(
+          assetTypeFormat(token.id)
+        );
       } else {
         token_total_issuance = await api.query.tokens.totalIssuance(
           token.currency
@@ -112,10 +103,6 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       record.block_timestamp = block.timestamp;
       record.currency = JSON.stringify(token.currency);
       let token_total_issuance = new BigNumber(0);
-      // const tokens_accounts_result= await api.query.tokens.accounts.multi(token.dex_address);
-      // JSON.parse(JSON.stringify(tokens_accounts_result)).forEach(item =>{
-      //   token_total_issuance.plus(item.free)
-      // })
 
       const tokens_accounts_result = await Promise.all(
         token.dex_address.map(async (item) => {
@@ -124,7 +111,6 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
             JSON.parse(JSON.stringify(item))[1]
           );
           return result;
-          // token_total_issuance.plus(BigInt(JSON.parse(JSON.stringify(result)).free).toString())
         })
       );
       JSON.parse(JSON.stringify(tokens_accounts_result)).forEach((item) => {
@@ -145,31 +131,6 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       await record.save();
     })
   );
-}
-
-export async function handleEvent(event: SubstrateEvent): Promise<void> {
-  const {
-    event: {
-      data: [account, balance],
-    },
-  } = event;
-  //Retrieve the record by its ID
-  const record = await StarterEntity.get(
-    event.extrinsic.block.block.header.hash.toString()
-  );
-  record.field2 = account.toString();
-  //Big integer type Balance of a transfer event
-  record.field3 = (balance as Balance).toBigInt();
-  await record.save();
-}
-
-export async function handleCall(extrinsic: SubstrateExtrinsic): Promise<void> {
-  const record = await StarterEntity.get(
-    extrinsic.block.block.header.hash.toString()
-  );
-  //Date type timestamp
-  record.field4 = extrinsic.block.timestamp;
-  await record.save();
 }
 
 export async function handleSignedBlock(block: SubstrateBlock): Promise<void> {

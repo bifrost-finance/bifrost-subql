@@ -137,6 +137,26 @@ function toUnitToken(balance: string, decimals): number {
   return 0;
 }
 
+function assetTypeFormat(asset) {
+  switch (asset) {
+    case "USDT":
+      return { ForeignAsset: 0 };
+    case "BNC":
+    case "ASG":
+      return { native: asset };
+    case "kUSD":
+      return { stable: asset };
+    case "DOT":
+      return { token2: "0" };
+    case "vDOT":
+      return { vToken2: "0" };
+    case "vsDOT":
+      return { vsToken2: "0" };
+    default:
+      throw new Error("not found");
+  }
+}
+
 export {
   getDayStartUnix,
   get7DayStartUnix,
@@ -144,4 +164,5 @@ export {
   getPrice,
   getZenlinkTokenName,
   toUnitToken,
+  assetTypeFormat,
 };

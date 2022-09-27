@@ -1,12 +1,6 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
-import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
-import { Compact } from "@polkadot/types";
-import type { ParaId } from "@polkadot/types/interfaces/parachains";
-import type {
-  AccountIdOf,
-  BalanceOf,
-} from "@polkadot/types/interfaces/runtime";
-import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
+import { Balance } from "@polkadot/types/interfaces";
+import { CurrencyId } from "@bifrost-finance/types/interfaces";
 import {
   XtokensTransferred,
   TotalTransfer,
@@ -25,7 +19,7 @@ export async function handleXtokensTransferredMultiAssets(
       data: [account, multiassets, multiasset, multilocation],
     },
   } = event;
-  let assets = JSON.parse(JSON.stringify(multiassets))
+  let assets = JSON.parse(JSON.stringify(multiassets));
   let list = [];
   for (let i = 0; i < assets.length; i++) {
     const record = new XtokensTransferred(
@@ -41,8 +35,8 @@ export async function handleXtokensTransferredMultiAssets(
     record.fungible = BigInt(assets[i].fun.fungible);
     record.assets_id = JSON.stringify(assets[i].id);
     list.push(record.save());
-  };
-  await Promise.all(list)
+  }
+  await Promise.all(list);
 }
 
 export async function handleXtokensTransferred(
@@ -69,18 +63,6 @@ export async function handleXtokensTransferred(
   record.balance = (balance as Balance).toBigInt();
   record.multilocation = multilocation.toString();
   await record.save();
-
-  // const record2 = new TotalTransfer(blockNumber.toString() + '-' + event.idx.toString());
-  // record2.block_height = blockNumber;
-  // record2.event_id = event.idx;
-  // record2.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
-  // record2.block_timestamp = event.block.timestamp;
-  // record2.section = section.toString();
-  // record2.method = method.toString();
-  // record2.to = account.toString();
-  // record2.currency = (currency as CurrencyId).toString();
-  // record2.balance = (balance as Balance).toBigInt();
-  // await record.save();
 }
 
 export async function handleCurrenciesDeposited(
@@ -422,23 +404,18 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
     return;
   }
 
-  const vsKSM = (
-    (await api.query.tokens.totalIssuance({ vsToken: "KSM" }).catch((e) => {
-      console.log(e);
-    })) as Balance
-  ).toBigInt();
   const vsDOT = (
-    (await api.query.tokens.totalIssuance({ vsToken: "DOT" }).catch((e) => {
+    (await api.query.tokens.totalIssuance({ vsToken: "0" }).catch((e) => {
       console.log(e);
     })) as Balance
   ).toBigInt();
-  const vksm = (
-    (await api.query.tokens?.totalIssuance({ vToken: "KSM" }).catch((e) => {
+  const vDOT = (
+    (await api.query.tokens?.totalIssuance({ vToken: "0" }).catch((e) => {
       console.log(e);
     })) as Balance
   ).toBigInt();
-  const vmovr = (
-    (await api.query.tokens?.totalIssuance({ vToken: "MOVR" }).catch((e) => {
+  const vGLMR = (
+    (await api.query.tokens?.totalIssuance({ vToken: "1" }).catch((e) => {
       console.log(e);
     })) as Balance
   ).toBigInt();
@@ -446,9 +423,8 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   const record = new TokensTotalIssuance(block.block.header.hash.toString());
   record.block_height = blockNumber;
   record.block_timestamp = block.timestamp;
-  record.vsksm = vsKSM;
+  record.vdot = vDOT;
   record.vsdot = vsDOT;
-  record.vksm = vksm;
-  record.vmovr = vmovr;
+  record.vglmr = vGLMR;
   await record.save();
 }
