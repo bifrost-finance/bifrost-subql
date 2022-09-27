@@ -7,7 +7,7 @@ schema:
   file: ./schema.graphql
 network:
   genesisHash: '0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed'
-  endpoint: wss://bifrost-parachain.api.onfinality.io/public-ws
+  endpoint: wss://bifrost-rpc.liebi.com/ws
   chaintypes:
     file: ./types.json
 dataSources:
