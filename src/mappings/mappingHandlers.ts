@@ -1,9 +1,7 @@
-import { SubstrateExtrinsic, SubstrateEvent } from "@subql/types";
-import { StarterEntity } from "../types/models/StarterEntity";
+import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { Balance } from "@polkadot/types/interfaces";
-import { SubstrateBlock } from "@subql/types";
 import { getPrice, assetTypeFormat } from "../common";
-import { Tvl, Extrinsic, DemocracyInfo, CouncilInfo } from "../types/models";
+import { Tvl, Extrinsic, DemocracyInfo, CouncilInfo } from "../types";
 import BigNumber from "bignumber.js";
 
 const Tokens = [

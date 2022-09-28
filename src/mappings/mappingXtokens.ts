@@ -5,7 +5,7 @@ import {
   XtokensTransferred,
   TotalTransfer,
   TokensTotalIssuance,
-} from "../types/models";
+} from "../types";
 
 export async function handleXtokensTransferredMultiAssets(
   event: SubstrateEvent

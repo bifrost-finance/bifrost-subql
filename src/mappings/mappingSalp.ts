@@ -2,14 +2,13 @@ import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import type { ParaId } from "@polkadot/types/interfaces/parachains";
-import type {
-  AccountIdOf,
-  BalanceOf,
-} from "@polkadot/types/interfaces/runtime";
-import { SalpInfo } from "../types/models/SalpInfo";
-import { SalpContributed } from "../types/models/SalpContributed";
-import { SalpContribution } from "../types/models/SalpContribution";
-import { SalpRefunded } from "../types/models/SalpRefunded";
+import type { BalanceOf } from "@polkadot/types/interfaces/runtime";
+import {
+  SalpInfo,
+  SalpContributed,
+  SalpContribution,
+  SalpRefunded,
+} from "../types";
 
 const isFundEvent = (eventType: string): boolean => {
   if (

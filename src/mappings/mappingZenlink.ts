@@ -2,8 +2,7 @@ import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
-import { ZenlinkInfo } from "../types/models/ZenlinkInfo";
-import { ZenlinkLiquidityCalculation } from "../types/models/ZenlinkLiquidityCalculation";
+import { ZenlinkInfo, ZenlinkLiquidityCalculation } from "../types";
 import { getPrice, getZenlinkTokenName, toUnitToken } from "../common";
 
 export async function zenlink(block: SubstrateBlock): Promise<void> {

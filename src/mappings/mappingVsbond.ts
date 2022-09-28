@@ -2,7 +2,7 @@ import { SubstrateBlock, SubstrateEvent } from "@subql/types";
 import { BlockNumber, Balance } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
-import { VsbondInfo, VsBondOrderClinchd } from "../types/models";
+import { VsbondInfo, VsBondOrderClinchd } from "../types";
 
 export async function vsbond(block: SubstrateBlock): Promise<void> {
   const blockNumber = (

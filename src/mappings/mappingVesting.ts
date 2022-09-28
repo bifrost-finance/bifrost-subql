@@ -1,6 +1,6 @@
-import { SubstrateBlock, SubstrateEvent } from "@subql/types";
-import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
-import { Vesting } from "../types/models";
+import { SubstrateEvent } from "@subql/types";
+import { Balance } from "@polkadot/types/interfaces";
+import { Vesting } from "../types";
 
 const NativeToken = JSON.stringify({ native: "BNC" });
 
