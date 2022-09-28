@@ -60,7 +60,7 @@ export async function handleXtokensTransferred(
   record.block_timestamp = event.block.timestamp;
   record.account = account.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   record.multilocation = multilocation.toString();
   await record.save();
 }
@@ -88,7 +88,7 @@ export async function handleCurrenciesDeposited(
   record.method = method.toString();
   record.to = account.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -115,7 +115,7 @@ export async function handleCurrenciesWithdrawn(
   record.method = method.toString();
   record.from = account.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -143,7 +143,7 @@ export async function handleCurrenciesTransferred(
   record.from = from.toString();
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -170,7 +170,7 @@ export async function handleCurrenciesBalanceUpdated(
   record.method = method.toString();
   record.from = account.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -198,7 +198,7 @@ export async function handleTokensTransfer(
   record.from = from.toString();
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -226,7 +226,7 @@ export async function handleTokensEndowed(
   // record.from = from.toString();
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -254,7 +254,7 @@ export async function handleTokensDustLost(
   record.from = from.toString();
   // record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -282,7 +282,7 @@ export async function handleTokensReserved(
   record.from = from.toString();
   // record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -310,7 +310,7 @@ export async function handleTokensUnreserved(
   // record.from = from.toString();
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -338,7 +338,7 @@ export async function handleTokensBalanceSet(
   // record.from = from.toString();
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (free as Balance).toBigInt();
+  record.balance = (free as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -366,7 +366,7 @@ export async function handleTokenIssuerTransferred(
   record.from = from.toString();
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -394,7 +394,7 @@ export async function handleTokenIssuerIssued(
   // record.from = from.toString();
   record.to = to.toString();
   record.currency = (currency as CurrencyId).toString();
-  record.balance = (balance as Balance).toBigInt();
+  record.balance = (balance as Balance)?.toBigInt();
   await record.save();
 }
 
@@ -405,20 +405,20 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   }
 
   const vsDOT = (
-    (await api.query.tokens.totalIssuance({ vsToken: "0" }).catch((e) => {
+    (await api.query.tokens?.totalIssuance({ vsToken: "0" }).catch((e) => {
       console.log(e);
     })) as Balance
-  ).toBigInt();
+  )?.toBigInt();
   const vDOT = (
     (await api.query.tokens?.totalIssuance({ vToken: "0" }).catch((e) => {
       console.log(e);
     })) as Balance
-  ).toBigInt();
+  )?.toBigInt();
   const vGLMR = (
     (await api.query.tokens?.totalIssuance({ vToken: "1" }).catch((e) => {
       console.log(e);
     })) as Balance
-  ).toBigInt();
+  )?.toBigInt();
 
   const record = new TokensTotalIssuance(block.block.header.hash.toString());
   record.block_height = blockNumber;

@@ -10,7 +10,7 @@ export async function handleCallExtrinsic(
   const { block, events } = extrinsic;
   const blockNumber = (
     block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
+  )?.toBigInt();
 
   const balancesWithdrawEvent = events.find(
     (e) => e.event.section === "balances" && e.event.method === "Withdraw"

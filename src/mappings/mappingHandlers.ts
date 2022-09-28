@@ -18,7 +18,7 @@ const Tokens = [
     coin_id: "polkadot",
     currency: { vToken2: "0" },
     decimal: 10,
-    token: "KSM",
+    token: "DOT",
   },
   {
     id: "vGLMR",
@@ -33,11 +33,11 @@ const DexTokens = [
   {
     id: "DOT-dex",
     coin_id: "polkadot",
-    currency: { Token: "0" },
+    currency: { Token2: "0" },
     decimal: 10,
     dex_address: [
-      ["eCSrvaystgdffuJxPVTne2cjBdWDh6yPvzt8RdkFdihjqS1", { Token: "0" }],
-      ["eCSrvaystgdffuJxPVRct68qJUZs1sFz762d7d37KJvb7Pz", { Token: "0" }],
+      ["eCSrvaystgdffuJxPVTne2cjBdWDh6yPvzt8RdkFdihjqS1", { Token2: "0" }],
+      ["eCSrvaystgdffuJxPVRct68qJUZs1sFz762d7d37KJvb7Pz", { Token2: "0" }],
     ],
   },
   // {
@@ -70,19 +70,19 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       let token_total_issuance;
       if (token.id === "vDOT" || token.id === "vGLMR") {
         token_total_issuance = await api.query.vtokenMinting?.tokenPool(
-          assetTypeFormat(token.id)
+          assetTypeFormat(token.token)
         );
       } else {
-        token_total_issuance = await api.query.tokens.totalIssuance(
+        token_total_issuance = await api.query.tokens?.totalIssuance(
           token.currency
         );
       }
 
-      record.total_issuance = (token_total_issuance as Balance).toBigInt();
+      record.total_issuance = (token_total_issuance as Balance)?.toBigInt();
       record.usd = parseFloat(token_price.usd);
       record.cny = parseFloat(token_price.cny);
       const tvlNum = new BigNumber(token_price.usd).multipliedBy(
-        token_total_issuance.toString()
+        token_total_issuance?.toString() || 0
       );
       // record.tvl = parseFloat(tvlNum.div(1e+12).toFixed(2).toString());
       record.tvl_native = BigInt(tvlNum.toFixed(0));
@@ -106,20 +106,25 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
 
       const tokens_accounts_result = await Promise.all(
         token.dex_address.map(async (item) => {
-          const result = await api.query.tokens.accounts(
+          const result = await api.query.tokens?.accounts(
             JSON.parse(JSON.stringify(item))[0],
             JSON.parse(JSON.stringify(item))[1]
           );
           return result;
         })
       );
-      JSON.parse(JSON.stringify(tokens_accounts_result)).forEach((item) => {
-        token_total_issuance = new BigNumber(BigInt(item.free).toString())
+
+      JSON.parse(JSON.stringify(tokens_accounts_result))?.forEach((item) => {
+        token_total_issuance = new BigNumber(
+          item?.free ? BigInt(item.free).toString() : 0
+        )
           .multipliedBy(2)
           .plus(token_total_issuance);
       });
 
-      record.total_issuance = BigInt(token_total_issuance.toFixed());
+      record.total_issuance = token_total_issuance
+        ? BigInt(token_total_issuance.toFixed())
+        : BigInt(0);
       record.usd = parseFloat(token_price.usd);
       record.cny = parseFloat(token_price.cny);
       const tvlNum = new BigNumber(token_price.usd).multipliedBy(

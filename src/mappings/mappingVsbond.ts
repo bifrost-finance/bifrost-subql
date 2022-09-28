@@ -7,7 +7,7 @@ import { VsbondInfo, VsBondOrderClinchd } from "../types/models";
 export async function vsbond(block: SubstrateBlock): Promise<void> {
   const blockNumber = (
     block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
+  )?.toBigInt();
 
   const vsbondEvents = block.events.filter(
     (e) => e.event.section === "vsBondAuction"
@@ -58,8 +58,8 @@ export async function handleVsBondAuctionOrderClinchd(
   record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
   record.block_timestamp = event.block.timestamp;
   record.currency = vsbond_type.toString();
-  record.total_price = (total_price as Balance).toBigInt();
-  record.amount = (vsbond_amount as Balance).toBigInt();
+  record.total_price = (total_price as Balance)?.toBigInt();
+  record.amount = (vsbond_amount as Balance)?.toBigInt();
   let price = new BigNumber(record.total_price.toString()).div(
     record.amount.toString()
   );

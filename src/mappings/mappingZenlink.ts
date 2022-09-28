@@ -9,7 +9,7 @@ import { getPrice, getZenlinkTokenName, toUnitToken } from "../common";
 export async function zenlink(block: SubstrateBlock): Promise<void> {
   const blockNumber = (
     block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
+  )?.toBigInt();
 
   const zenlinkEvents = block.events.filter(
     (e) => e.event.section === "zenlinkProtocol"
@@ -40,7 +40,7 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
   const balances_obj = JSON.parse(balances.toString());
   const blockNumber = (
     event.extrinsic.block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
+  )?.toBigInt();
 
   await Promise.all(
     new Array(swap_path_obj.length - 1).fill("").map(async (_, key) => {
@@ -83,7 +83,7 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
 
 // export async function zenlinkLiquidityAdded(event: SubstrateEvent): Promise<void> {
 //   const { event: { data: [owner, asset_0, asset_1, add_balance_0, add_balance_1, mint_balance_lp] } } = event;
-//   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
+//   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>)?.toBigInt();
 //
 //   const asset0 = getZenlinkTokenName(JSON.parse(asset_0.toString()).assetIndex)
 //   const asset1 = getZenlinkTokenName(JSON.parse(asset_1.toString()).assetIndex)
@@ -101,15 +101,15 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
 //   entity.asset_0_name = asset0.name;
 //   entity.asset_1_name = asset1.name;
 //   entity.amount = parseFloat(new BigNumber(token_price.usd).multipliedBy(amount_balance).toString());
-//   entity.add_balance_0 = (add_balance_0 as Compact<Balance>).toBigInt();
-//   entity.add_balance_1 = (add_balance_1 as Compact<Balance>).toBigInt();
-//   entity.mint_balance_lp = (mint_balance_lp as Compact<Balance>).toBigInt();
+//   entity.add_balance_0 = (add_balance_0 as Compact<Balance>)?.toBigInt();
+//   entity.add_balance_1 = (add_balance_1 as Compact<Balance>)?.toBigInt();
+//   entity.mint_balance_lp = (mint_balance_lp as Compact<Balance>)?.toBigInt();
 //   await entity.save();
 // }
 //
 // export async function zenlinkLiquidityRemoved(event: SubstrateEvent): Promise<void> {
 //   const { event: { data: [owner, recipient, asset_0, asset_1, rm_balance_0, rm_balance_1, burn_balance_lp] } } = event;
-//   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>).toBigInt();
+//   const blockNumber = (event.extrinsic.block.block.header.number as Compact<BlockNumber>)?.toBigInt();
 //
 //   const asset0 = getZenlinkTokenName(JSON.parse(asset_0.toString()).assetIndex)
 //   const asset1 = getZenlinkTokenName(JSON.parse(asset_1.toString()).assetIndex)
@@ -128,8 +128,8 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
 //   entity.asset_0_name = asset0.name;
 //   entity.asset_1_name = asset1.name;
 //   entity.amount = parseFloat(new BigNumber(token_price.usd).multipliedBy(amount_balance).toString());
-//   entity.rm_balance_0 = (rm_balance_0 as Compact<Balance>).toBigInt();
-//   entity.rm_balance_1 = (rm_balance_1 as Compact<Balance>).toBigInt();
-//   entity.burn_balance_lp = (burn_balance_lp as Compact<Balance>).toBigInt();
+//   entity.rm_balance_0 = (rm_balance_0 as Compact<Balance>)?.toBigInt();
+//   entity.rm_balance_1 = (rm_balance_1 as Compact<Balance>)?.toBigInt();
+//   entity.burn_balance_lp = (burn_balance_lp as Compact<Balance>)?.toBigInt();
 //   await entity.save();
 // }

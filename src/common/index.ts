@@ -148,8 +148,20 @@ function assetTypeFormat(asset) {
       return { stable: asset };
     case "DOT":
       return { token2: "0" };
+    case "GLMR":
+      return { token2: "1" };
+    case "KAR":
+    case "ZLK":
+    case "RMRK":
+    case "PHA":
+    case "TUR":
+    case "CSM":
+    case "CRAB":
+      return { token: asset };
     case "vDOT":
       return { vToken2: "0" };
+    case "vGLMR":
+      return { vToken2: "1" };
     case "vsDOT":
       return { vsToken2: "0" };
     default:
