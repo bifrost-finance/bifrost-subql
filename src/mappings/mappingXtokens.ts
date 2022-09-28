@@ -405,17 +405,17 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   }
 
   const vsDOT = (
-    (await api.query.tokens?.totalIssuance({ vsToken: "0" }).catch((e) => {
+    (await api.query.tokens?.totalIssuance({ VSToken2: 0 }).catch((e) => {
       console.log(e);
     })) as Balance
   )?.toBigInt();
   const vDOT = (
-    (await api.query.tokens?.totalIssuance({ vToken: "0" }).catch((e) => {
+    (await api.query.tokens?.totalIssuance({ VToken2: 0 }).catch((e) => {
       console.log(e);
     })) as Balance
   )?.toBigInt();
   const vGLMR = (
-    (await api.query.tokens?.totalIssuance({ vToken: "1" }).catch((e) => {
+    (await api.query.tokens?.totalIssuance({ VToken2: 0 }).catch((e) => {
       console.log(e);
     })) as Balance
   )?.toBigInt();

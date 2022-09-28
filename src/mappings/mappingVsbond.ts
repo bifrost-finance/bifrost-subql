@@ -64,9 +64,8 @@ export async function handleVsBondAuctionOrderClinchd(
     record.amount.toString()
   );
   let symbol = JSON.parse(JSON.stringify(vsbond_type));
-  if (symbol.vsBond[0] == "DOT") {
-    price = price.div(100);
-  }
+  price = price.div(100);
+
   record.price = parseFloat(price.toFixed(8));
   await record.save();
 }

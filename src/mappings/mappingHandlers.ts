@@ -8,20 +8,20 @@ const Tokens = [
   {
     id: "vsDOT",
     coin_id: "polkadot",
-    currency: { vsToken2: "0" },
+    currency: { VSToken2: 0 },
     decimal: 10,
   },
   {
     id: "vDOT",
     coin_id: "polkadot",
-    currency: { vToken2: "0" },
+    currency: { VToken2: 0 },
     decimal: 10,
     token: "DOT",
   },
   {
     id: "vGLMR",
     coin_id: "moonbeam",
-    currency: { vToken2: "1" },
+    currency: { VToken2: 0 },
     decimal: 18,
     token: "GLMR",
   },

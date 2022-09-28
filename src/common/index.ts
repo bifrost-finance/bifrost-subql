@@ -4,35 +4,6 @@ import adapter from "axios/lib/adapters/http";
 import BigNumber from "bignumber.js";
 const axios = axiosOriginal.create({ adapter });
 
-function getDayStartUnix(block: SubstrateBlock): string {
-  let timestamp = block.timestamp.getTime() / 1000;
-  let dayIndex = Math.floor(timestamp / 3600 / 24); // get unique hour within unix history
-  let dayStartUnix = dayIndex * 3600 * 24; // want the rounded effect
-  return dayStartUnix.toString();
-}
-
-function get7DayStartUnix(block: SubstrateBlock): string {
-  let timestamp = block.timestamp.getTime() / 1000 - 604800;
-  let dayIndex = Math.floor(timestamp / 3600 / 24); // get unique hour within unix history
-  let day7StartUnix = dayIndex * 3600 * 24; // want the rounded effect
-  return day7StartUnix.toString();
-}
-
-// function getUnix(block: SubstrateBlock): string {
-//   let timestamp = block.timestamp.getTime()
-//   return timestamp.toString()
-// }
-
-function tokenSplit(tokenName: string): string[] {
-  const substring = "v";
-  if (tokenName.includes(substring)) {
-    const words = tokenName.split(substring);
-    return [words[1], tokenName, "vToken"];
-  } else {
-    return [tokenName, "v" + tokenName, "token"];
-  }
-}
-
 let prices = [];
 
 export interface Price {
@@ -103,26 +74,23 @@ function getZenlinkTokenName(assetIndex: number): {
   switch (assetIndex) {
     case 0:
       return { name: "BNC", coin_id: "bifrost-native-coin", decimal: 12 };
-    case 260:
-      return { name: "vKSM", coin_id: "kusama", decimal: 12 };
-    case 515:
+    case 2048:
       return { name: "DOT", coin_id: "polkadot", decimal: 10 };
-    case 516:
-      return { name: "KSM", coin_id: "kusama", decimal: 12 };
     case 517:
       return { name: "ETH", coin_id: "ethereum", decimal: 18 };
-    case 518:
-      return { name: "KAR", coin_id: "karura", decimal: 12 };
     case 519:
       return { name: "ZLK", coin_id: "zenlink-network-token", decimal: 18 };
-    case 521:
-      return { name: "RMRK", coin_id: "rmrk", decimal: 10 };
     case 770:
       return { name: "kUSD", coin_id: "tether", decimal: 12 };
-    case 1027:
-      return { name: "vsDOT", decimal: 10 };
-    case 1028:
-      return { name: "vsKSM", decimal: 12 };
+    case 2304:
+      return { name: "vDOT", coin_id: "polkadot", decimal: 10 };
+    case 2560:
+      return { name: "vsDOT", coin_id: "polkadot", decimal: 10 };
+
+    case 2049:
+      return { name: "vGLMR", coin_id: "moonbeam", decimal: 18 };
+    case 2305:
+      return { name: "GLMR", coin_id: "moonbeam", decimal: 18 };
     default:
       return {};
   }
@@ -169,12 +137,4 @@ function assetTypeFormat(asset) {
   }
 }
 
-export {
-  getDayStartUnix,
-  get7DayStartUnix,
-  tokenSplit,
-  getPrice,
-  getZenlinkTokenName,
-  toUnitToken,
-  assetTypeFormat,
-};
+export { getPrice, getZenlinkTokenName, toUnitToken, assetTypeFormat };

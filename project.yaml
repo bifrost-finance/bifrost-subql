@@ -2,14 +2,14 @@ specVersion: 0.2.0
 name: bifrost-subql
 version: 1.0.0
 description: ''
-repository: git@github.com:bifrost-finance/bifrost-subql.git
+repository: 'https://github.com/bifrost-finance/bifrost-subql.git'
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
   endpoint: wss://hk.p.bifrost-rpc.liebi.com/ws
+  genesisHash: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
   chaintypes:
-    file: ./types.json
+    file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
     startBlock: 1
