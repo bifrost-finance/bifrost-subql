@@ -99,7 +99,7 @@ type VtokenMovrTransfer @entity {
 
 type VtokenSwap @entity  {
     id: ID!
-    block_height: BigInt!
+    block_height: Int!
     block_timestamp: Date!
     event_id: Int
     extrinsic_id: Int
@@ -118,7 +118,7 @@ type VtokenSwap @entity  {
 
 type VtokenMovrSwap @entity  {
     id: ID!
-    block_height: BigInt!
+    block_height: Int!
     block_timestamp: Date!
     event_id: Int
     extrinsic_id: Int
@@ -137,7 +137,7 @@ type VtokenMovrSwap @entity  {
 
 type VtokenSwapRatio @entity  {
     id: ID!
-    block_height: BigInt!
+    block_height: Int!
     block_timestamp: Date!
     event_id: Int
     asset_0: String

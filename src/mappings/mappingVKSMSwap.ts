@@ -1,6 +1,5 @@
 import { SubstrateEvent } from "@subql/types";
-import { Balance, BlockNumber } from "@polkadot/types/interfaces";
-import { Compact } from "@polkadot/types";
+import { Balance } from "@polkadot/types/interfaces";
 import { VtokenSwap, VtokenSwapRatio, VtokenMovrSwap } from "../types";
 
 import BigNumber from "bignumber.js";
@@ -33,9 +32,7 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
   } = event;
   const swap_path_obj = JSON.parse(swap_path.toString());
   const balances_obj = JSON.parse(balances.toString());
-  const blockNumber = (
-    event.extrinsic.block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
+  const blockNumber = event.block.block.header.number.toNumber();
 
   await Promise.all(
     new Array(swap_path_obj.length - 1).fill("").map(async (_, key) => {
@@ -59,17 +56,13 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
         });
 
         const entity = new VtokenSwap(
-          blockNumber.toString() +
-            "-" +
-            event.idx.toString() +
-            "-" +
-            key.toString()
+          blockNumber + "-" + event.idx.toString() + "-" + key.toString()
         );
 
         entity.block_height = blockNumber;
         entity.block_timestamp = event.block.timestamp;
         entity.event_id = event.idx;
-        entity.extrinsic_id = event.extrinsic.idx;
+        entity.extrinsic_id = event.idx;
         entity.owner = owner.toString();
         entity.recipient = recipient.toString();
         entity.asset_0 = swap_path_obj[key];
@@ -94,23 +87,23 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
 
         await entity.save();
 
-        // if (isKUSD_KSM) {
-        //   const entity = new VtokenSwapRatio("kUSD_KSM");
-        //
-        //   entity.block_height = blockNumber;
-        //   entity.block_timestamp = event.block.timestamp;
-        //   entity.event_id = event.idx;
-        //   entity.asset_0 = swap_path_obj[key];
-        //   entity.asset_1 = swap_path_obj[key + 1];
-        //   entity.asset_0_name = asset0.name;
-        //   entity.asset_1_name = asset1.name;
-        //   entity.balance_in = balances_obj[key];
-        //   entity.balance_out = balances_obj[key + 1];
-        //   entity.ratio = new BigNumber(balances_obj[key + 1].toString())
-        //     .div(balances_obj[key].toString())
-        //     .toString();
-        //   await entity.save();
-        // }
+        if (isKUSD_KSM) {
+          const entity = new VtokenSwapRatio("kUSD_KSM");
+
+          entity.block_height = blockNumber;
+          entity.block_timestamp = event.block.timestamp;
+          entity.event_id = event.idx;
+          entity.asset_0 = swap_path_obj[key];
+          entity.asset_1 = swap_path_obj[key + 1];
+          entity.asset_0_name = asset0.name;
+          entity.asset_1_name = asset1.name;
+          entity.balance_in = balances_obj[key];
+          entity.balance_out = balances_obj[key + 1];
+          entity.ratio = new BigNumber(balances_obj[key + 1].toString())
+            .div(balances_obj[key].toString())
+            .toString();
+          await entity.save();
+        }
 
         if (isVKSM_KSM) {
           const entity = new VtokenSwapRatio("vKSM_KSM");
@@ -147,9 +140,7 @@ export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
   } = event;
   const swap_path_obj = JSON.parse(swap_path.toString());
   const balances_obj = JSON.parse(balances.toString());
-  const blockNumber = (
-    event.extrinsic.block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
+  const blockNumber = event.block.block.header.number.toNumber();
 
   await Promise.all(
     new Array(swap_path_obj.length - 1).fill("").map(async (_, key) => {
@@ -173,17 +164,13 @@ export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
         });
 
         const entity = new VtokenMovrSwap(
-          blockNumber.toString() +
-            "-" +
-            event.idx.toString() +
-            "-" +
-            key.toString()
+          blockNumber + "-" + event.idx.toString() + "-" + key.toString()
         );
 
         entity.block_height = blockNumber;
         entity.block_timestamp = event.block.timestamp;
         entity.event_id = event.idx;
-        entity.extrinsic_id = event.extrinsic.idx;
+        entity.extrinsic_id = event.idx;
         entity.owner = owner.toString();
         entity.recipient = recipient.toString();
         entity.asset_0 = swap_path_obj[key];

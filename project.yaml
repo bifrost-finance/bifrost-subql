@@ -38,11 +38,13 @@ dataSources:
           filter:
             module: zenlinkProtocol
             method: AssetSwap
+            success: true
         - handler: handleVMOVRSwap
           kind: substrate/EventHandler
           filter:
             module: zenlinkProtocol
             method: AssetSwap
+            success: true
         - handler: handleCurrenciesTransferred
           kind: substrate/CallHandler
           filter:
