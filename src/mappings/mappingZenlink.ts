@@ -38,16 +38,14 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
   } = event;
   const swap_path_obj = JSON.parse(swap_path.toString());
   const balances_obj = JSON.parse(balances.toString());
-  const blockNumber = (
-    event.extrinsic.block.block.header.number as Compact<BlockNumber>
-  ).toBigInt();
+  const blockNumber = event.block.block.header.number.toNumber();
 
   await Promise.all(
     new Array(swap_path_obj.length - 1).fill("").map(async (_, key) => {
       const asset0 = getZenlinkTokenName(swap_path_obj[key].assetIndex);
       const asset1 = getZenlinkTokenName(swap_path_obj[key + 1].assetIndex);
       const token_price = await getPrice(
-        event.extrinsic.block,
+        event.block,
         asset0.coin_id || asset1.coin_id
       );
       const amount_balance = asset0.coin_id

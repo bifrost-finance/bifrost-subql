@@ -102,7 +102,7 @@ type ZenlinkInfo @entity {
 
 type ZenlinkLiquidityCalculation @entity {
   id: ID!
-  block_height: BigInt!
+  block_height: Int!
   block_timestamp: Date!
   event_id: Int
   extrinsic_id: Int
