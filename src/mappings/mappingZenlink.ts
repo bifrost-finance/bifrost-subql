@@ -62,9 +62,9 @@ export async function zenlinkAssetSwap(event: SubstrateEvent): Promise<void> {
       );
 
       entity.block_height = blockNumber;
-      entity.block_timestamp = event.extrinsic.block.timestamp;
+      entity.block_timestamp = event.block.timestamp;
       entity.event_id = event.idx;
-      entity.extrinsic_id = event.extrinsic.idx;
+      entity.extrinsic_id = event.idx;
       entity.owner = owner.toString();
       entity.recipient = recipient.toString();
       entity.asset_0 = swap_path_obj[key];
