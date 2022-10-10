@@ -35,6 +35,7 @@ dataSources:
           filter:
             module: zenlinkProtocol
             method: AssetSwap
+            success: true
         - handler: vsbond
           kind: substrate/BlockHandler
         - handler: handleVsBondAuctionOrderClinchd
