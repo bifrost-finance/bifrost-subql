@@ -188,3 +188,21 @@ type SlpInfo @entity {
     method: String!
     data: String!
 }
+
+type FarmingInfo @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    pool_infos: String!
+}
+
+type StakingErapaid @entity {
+    id: ID!
+    event_id: Int!
+    block_height: String!
+    block_timestamp: Date!
+    era_index: String
+    validator_payout: BigInt
+    number_collators:String!
+    candidate_info:String!
+}

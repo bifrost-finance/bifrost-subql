@@ -18,6 +18,8 @@ dataSources:
       handlers:
         - handler: vtokenMinting
           kind: substrate/BlockHandler
+        - handler: handleFarmingApy
+          kind: substrate/BlockHandler
         - handler: handleVtokenMintingMinted
           kind: substrate/EventHandler
           filter:
@@ -74,3 +76,8 @@ dataSources:
             method: LiquidityRemoved
         - handler: handleSlp
           kind: substrate/BlockHandler
+        - handler: handleStakingErapaid
+          kind: substrate/EventHandler
+          filter:
+            module: parachainStaking
+            method: NewRound
