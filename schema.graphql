@@ -130,3 +130,10 @@ type SlpInfo @entity {
     method: String!
     data: String!
 }
+
+type FarmingInfo @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    pool_infos: String!
+}
