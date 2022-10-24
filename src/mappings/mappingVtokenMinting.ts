@@ -11,6 +11,7 @@ import {
   VtokenRedeemedSuccess,
   VtokenSwapRatio,
   VtokenMintingRatio,
+  VtokenMintingGlmrRatio,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -64,6 +65,35 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     record.vdot_dot_ratio = swapVDOTDOTRecord?.ratio || "0";
 
     await record.save();
+
+    const vGLMRtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken2: "1",
+    });
+    const GLMRTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token2: "1",
+    });
+
+    const glmrRecord = new VtokenMintingGlmrRatio(blockNumber.toString());
+    const swapVGLMRGLMRRecord = await VtokenSwapRatio.get("vGLMR_GLMR");
+
+    glmrRecord.block_height = blockNumber;
+    glmrRecord.block_timestamp = block.timestamp;
+    glmrRecord.vglmr_balance = vGLMRtotalIssuance
+      ? (vGLMRtotalIssuance as Balance).toBigInt()
+      : BigInt(0);
+    glmrRecord.glmr_balance = GLMRTokenPool
+      ? (GLMRTokenPool as Balance).toBigInt()
+      : BigInt(0);
+    glmrRecord.ratio =
+      GLMRTokenPool?.toString() === "0" ||
+      vGLMRtotalIssuance?.toString() === "0"
+        ? "0"
+        : new BigNumber(vGLMRtotalIssuance?.toString())
+            .div(GLMRTokenPool?.toString())
+            .toString();
+    glmrRecord.vglmr_glmr_ratio = swapVGLMRGLMRRecord?.ratio || "0";
+
+    await glmrRecord.save();
   }
   return;
 }

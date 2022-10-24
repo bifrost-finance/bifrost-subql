@@ -29,6 +29,15 @@ type VtokenMintingRatio @entity {
     vdot_dot_ratio:String!
 }
 
+type VtokenMintingGlmrRatio @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    glmr_balance: BigInt!
+    vglmr_balance: BigInt!
+    ratio: String!
+    vglmr_glmr_ratio:String!
+}
 
 type VtokenMintingMinted @entity {
     id: ID!
@@ -73,6 +82,20 @@ type VtokenTransfer @entity {
     ratio:String!
 }
 
+type VtokenGlmrTransfer @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    from_account: String
+    to_account: String
+    currency: String
+    balance: BigInt
+    glmr_balance:BigInt
+    vglmr_balance: BigInt
+    ratio:String!
+}
+
+
 type VtokenSwap @entity  {
     id: ID!
     block_height: BigInt!
@@ -107,6 +130,25 @@ type VtokenSwapRatio @entity  {
     ratio:String!
 }
 
+type VtokenGlmrSwap @entity  {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    event_id: Int
+    extrinsic_id: Int
+    owner: String
+    recipient: String
+    asset_0: String
+    asset_1: String
+    asset_0_name: String
+    asset_1_name: String
+    balance_in: BigInt
+    balance_out: BigInt
+    glmr_balance:BigInt
+    vglmr_balance: BigInt
+    ratio:String!
+}
+
 type VtokenLiquidity @entity  {
     id: ID!
     block_height: BigInt!
@@ -123,6 +165,22 @@ type VtokenLiquidity @entity  {
     ratio:String!
 }
 
+type VtokenGlmrLiquidity @entity  {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    method: String
+    owner: String
+    asset_0: String
+    asset_1: String
+    balance_0: BigInt
+    balance_1: BigInt
+    balance_lp: BigInt
+    glmr_balance:BigInt
+    vglmr_balance: BigInt
+    ratio:String!
+}
+
 type SlpInfo @entity {
     id: ID!
     block_height: BigInt!
@@ -136,4 +194,15 @@ type FarmingInfo @entity {
     block_height: BigInt!
     block_timestamp: Date!
     pool_infos: String!
+}
+
+type StakingErapaid @entity {
+    id: ID!
+    event_id: Int!
+    block_height: String!
+    block_timestamp: Date!
+    era_index: String
+    validator_payout: BigInt
+    number_collators:String!
+    candidate_info:String!
 }

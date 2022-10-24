@@ -1,10 +1,10 @@
 import { SubstrateBlock, SubstrateEvent } from "@subql/types";
-import { BlockNumber } from "@polkadot/types/interfaces";
+import { BlockNumber, Balance } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
 import { isNull } from "lodash";
 
-import { SlpInfo, FarmingInfo } from "../types";
+import { SlpInfo, FarmingInfo, StakingErapaid } from "../types";
 
 export async function handleSlp(block: SubstrateBlock): Promise<void> {
   const blockNumber = (
@@ -66,4 +66,29 @@ export async function handleFarmingApy(block: SubstrateBlock): Promise<void> {
 
     await record.save();
   }
+}
+
+export async function handleStakingErapaid(
+  event: SubstrateEvent
+): Promise<void> {
+  const {
+    event: {
+      data: [blockNumber, index, number_collators, validator_payout],
+    },
+  } = event;
+
+  const record = new StakingErapaid(`${blockNumber}-${event.idx.toString()}`);
+  const candidateInfo = (
+    await api.query.parachainStaking.candidateInfo.entries()
+  ).toString();
+
+  record.event_id = event.idx;
+  record.block_height = blockNumber.toString();
+  record.block_timestamp = event.block.timestamp;
+  record.era_index = index.toString();
+  record.validator_payout = (validator_payout as Balance)?.toBigInt();
+  record.number_collators = number_collators.toString();
+  record.candidate_info = candidateInfo;
+
+  await record.save();
 }

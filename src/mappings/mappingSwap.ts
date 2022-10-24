@@ -1,7 +1,7 @@
 import { SubstrateEvent } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
-import { VtokenSwap, VtokenSwapRatio } from "../types";
+import { VtokenSwap, VtokenSwapRatio, VtokenGlmrSwap } from "../types";
 
 import BigNumber from "bignumber.js";
 
@@ -15,6 +15,10 @@ function getZenlinkTokenName(assetIndex: number): {
       return { name: "DOT" };
     case 2304:
       return { name: "vDOT" };
+    case 2049:
+      return { name: "GLMR" };
+    case 2035:
+      return { name: "vGLMR" };
     default:
       return {};
   }
@@ -98,6 +102,94 @@ export async function handleVDOTSwap(event: SubstrateEvent): Promise<void> {
           entity.balance_out = balances_obj[key + 1];
           entity.ratio = entity.ratio =
             asset0.name === "DOT"
+              ? new BigNumber(balances_obj[key + 1].toString())
+                  .div(balances_obj[key].toString())
+                  .toString()
+              : new BigNumber(balances_obj[key].toString())
+                  .div(balances_obj[key + 1].toString())
+                  .toString();
+          await entity.save();
+        }
+      }
+    })
+  );
+}
+
+export async function handleVGLMRSwap(event: SubstrateEvent): Promise<void> {
+  const {
+    event: {
+      data: [owner, recipient, swap_path, balances],
+    },
+  } = event;
+  const swap_path_obj = JSON.parse(swap_path.toString());
+  const balances_obj = JSON.parse(balances.toString());
+  const blockNumber = (
+    event.extrinsic.block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
+
+  await Promise.all(
+    new Array(swap_path_obj.length - 1).fill("").map(async (_, key) => {
+      const asset0 = getZenlinkTokenName(swap_path_obj[key].assetIndex);
+      const asset1 = getZenlinkTokenName(swap_path_obj[key + 1].assetIndex);
+
+      const isVGLMR_GLMR =
+        (asset0.name === "vKSM" && asset1.name === "KSM") ||
+        (asset0.name === "GLMR" && asset1.name === "vKSM");
+
+      if (isVGLMR_GLMR) {
+        const vGLMRtotalIssuance = await api.query.tokens?.totalIssuance({
+          vToken2: "1",
+        });
+        const GLMRTokenPool = await api.query.vtokenMinting?.tokenPool({
+          Token2: "1",
+        });
+
+        const entity = new VtokenGlmrSwap(
+          blockNumber + "-" + event.idx.toString() + "-" + key.toString()
+        );
+
+        entity.block_height = blockNumber;
+        entity.block_timestamp = event.block.timestamp;
+        entity.event_id = event.idx;
+        entity.extrinsic_id = event.idx;
+        entity.owner = owner.toString();
+        entity.recipient = recipient.toString();
+        entity.asset_0 = swap_path_obj[key];
+        entity.asset_1 = swap_path_obj[key + 1];
+        entity.asset_0_name = asset0.name;
+        entity.asset_1_name = asset1.name;
+        entity.balance_in = balances_obj[key];
+        entity.balance_out = balances_obj[key + 1];
+        entity.vglmr_balance = vGLMRtotalIssuance
+          ? (vGLMRtotalIssuance as Balance).toBigInt()
+          : BigInt(0);
+        entity.glmr_balance = GLMRTokenPool
+          ? (GLMRTokenPool as Balance).toBigInt()
+          : BigInt(0);
+        entity.ratio =
+          GLMRTokenPool?.toString() === "0" ||
+          vGLMRtotalIssuance?.toString() === "0"
+            ? "0"
+            : new BigNumber(vGLMRtotalIssuance?.toString())
+                .div(GLMRTokenPool?.toString())
+                .toString();
+
+        await entity.save();
+
+        if (isVGLMR_GLMR) {
+          const entity = new VtokenSwapRatio("VGLMR_GLMR");
+
+          entity.block_height = blockNumber;
+          entity.block_timestamp = event.block.timestamp;
+          entity.event_id = event.idx;
+          entity.asset_0 = swap_path_obj[key];
+          entity.asset_1 = swap_path_obj[key + 1];
+          entity.asset_0_name = asset0.name;
+          entity.asset_1_name = asset1.name;
+          entity.balance_in = balances_obj[key];
+          entity.balance_out = balances_obj[key + 1];
+          entity.ratio = entity.ratio =
+            asset0.name === "GLMR"
               ? new BigNumber(balances_obj[key + 1].toString())
                   .div(balances_obj[key].toString())
                   .toString()

@@ -3,7 +3,7 @@ import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
 
-import { VtokenTransfer } from "../types";
+import { VtokenTransfer, VtokenGlmrTransfer } from "../types";
 
 export async function handleCurrenciesTransferred(
   extrinsic: SubstrateExtrinsic
@@ -55,6 +55,39 @@ export async function handleCurrenciesTransferred(
           ? "0"
           : new BigNumber(vDOTtotalIssuance?.toString())
               .div(DOTTokenPool?.toString())
+              .toString();
+      await record.save();
+    }
+
+    if (currency.toString() === '{"vToken":"1"}') {
+      const vGLMRTotalIssuance = await api.query.tokens?.totalIssuance({
+        vToken2: "1",
+      });
+      const GLMRTokenPool = await api.query.vtokenMinting?.tokenPool({
+        Token2: "1",
+      });
+
+      const record = new VtokenGlmrTransfer(
+        blockNumber.toString() + "-" + transferEvent.idx.toString()
+      );
+      record.block_height = blockNumber;
+      record.block_timestamp = transferEvent.block.timestamp;
+      record.from_account = from.toString();
+      record.to_account = to.toString();
+      record.currency = currency.toString();
+      record.balance = (balance as Balance).toBigInt();
+      record.vglmr_balance = vGLMRTotalIssuance
+        ? (vGLMRTotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+      record.glmr_balance = GLMRTokenPool
+        ? (GLMRTokenPool as Balance).toBigInt()
+        : BigInt(0);
+      record.ratio =
+        GLMRTokenPool?.toString() === "0" ||
+        vGLMRTotalIssuance?.toString() === "0"
+          ? "0"
+          : new BigNumber(vGLMRTotalIssuance?.toString())
+              .div(GLMRTokenPool?.toString())
               .toString();
       await record.save();
     }
