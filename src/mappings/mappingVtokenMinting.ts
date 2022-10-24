@@ -20,7 +20,7 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
   ).toBigInt();
   const vtokenMintingEvents = block.events.filter(
     (e) => e.event.section === "vtokenMinting"
-  ) as SubstrateEvent[];
+  ) as unknown as SubstrateEvent[];
 
   for (let vtokenMintingEvent of vtokenMintingEvents) {
     const {
