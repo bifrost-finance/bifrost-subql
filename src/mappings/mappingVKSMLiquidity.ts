@@ -1,7 +1,11 @@
 import { SubstrateEvent } from "@subql/types";
 import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
-import { VtokenLiquidity, VtokenMovrLiquidity } from "../types";
+import {
+  VtokenLiquidity,
+  VtokenMovrLiquidity,
+  VtokenBncLiquidity,
+} from "../types";
 import BigNumber from "bignumber.js";
 
 function getZenlinkTokenName(assetIndex: number): {
@@ -10,8 +14,12 @@ function getZenlinkTokenName(assetIndex: number): {
   decimal?: number;
 } {
   switch (assetIndex) {
+    case 0:
+      return { name: "BNC" };
     case 260:
       return { name: "vKSM" };
+    case 257:
+      return { name: "vBNC" };
     case 266:
       return { name: "vMOVR" };
     case 516:
@@ -115,6 +123,43 @@ export async function handleVtokenLiquidity(
 
       await entity.save();
     }
+
+    if (asset0?.name === "vBNC" || asset1?.name === "vBNC") {
+      const vBNCtotalIssuance = await api.query.tokens?.totalIssuance({
+        vToken: "BNC",
+      });
+      const BNCTokenPool = await api.query.vtokenMinting?.tokenPool({
+        Native: "BNC",
+      });
+
+      const entity = new VtokenBncLiquidity(
+        blockNumber.toString() + "-" + event.idx.toString()
+      );
+      entity.block_height = blockNumber;
+      entity.block_timestamp = event.block.timestamp;
+      entity.method = method.toString();
+      entity.owner = owner.toString();
+      entity.asset_0 = asset0.name;
+      entity.asset_1 = asset1.name;
+      entity.balance_0 = (balance_0 as Balance).toBigInt();
+      entity.balance_1 = (balance_1 as Balance).toBigInt();
+      entity.balance_lp = (balance_lp as Balance).toBigInt();
+      entity.vbnc_balance = vBNCtotalIssuance
+        ? (vBNCtotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+      entity.bnc_balance = BNCTokenPool
+        ? (BNCTokenPool as Balance).toBigInt()
+        : BigInt(0);
+      entity.ratio =
+        BNCTokenPool?.toString() === "0" ||
+        vBNCtotalIssuance?.toString() === "0"
+          ? "0"
+          : new BigNumber(vBNCtotalIssuance?.toString())
+              .div(BNCTokenPool?.toString())
+              .toString();
+
+      await entity.save();
+    }
   } else {
     const [
       owner,
@@ -203,6 +248,43 @@ export async function handleVtokenLiquidity(
           ? "0"
           : new BigNumber(vMOVRtotalIssuance?.toString())
               .div(MOVRTokenPool?.toString())
+              .toString();
+
+      await entity.save();
+    }
+
+    if (asset0?.name === "vMOVR" || asset1?.name === "vMOVR") {
+      const vBNCtotalIssuance = await api.query.tokens?.totalIssuance({
+        vToken: "BNC",
+      });
+      const BNCTokenPool = await api.query.vtokenMinting?.tokenPool({
+        Native: "BNC",
+      });
+
+      const entity = new VtokenBncLiquidity(
+        blockNumber.toString() + "-" + event.idx.toString()
+      );
+      entity.block_height = blockNumber;
+      entity.block_timestamp = event.block.timestamp;
+      entity.method = method.toString();
+      entity.owner = owner.toString();
+      entity.asset_0 = asset0.name;
+      entity.asset_1 = asset1.name;
+      entity.balance_0 = (balance_0 as Balance).toBigInt();
+      entity.balance_1 = (balance_1 as Balance).toBigInt();
+      entity.balance_lp = (balance_lp as Balance).toBigInt();
+      entity.vbnc_balance = vBNCtotalIssuance
+        ? (vBNCtotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+      entity.bnc_balance = BNCTokenPool
+        ? (BNCTokenPool as Balance).toBigInt()
+        : BigInt(0);
+      entity.ratio =
+        BNCTokenPool?.toString() === "0" ||
+        vBNCtotalIssuance?.toString() === "0"
+          ? "0"
+          : new BigNumber(vBNCtotalIssuance?.toString())
+              .div(BNCTokenPool?.toString())
               .toString();
 
       await entity.save();

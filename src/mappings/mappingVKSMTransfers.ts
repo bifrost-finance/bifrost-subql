@@ -3,7 +3,11 @@ import { Balance, BlockNumber } from "@polkadot/types/interfaces";
 import { Compact } from "@polkadot/types";
 import BigNumber from "bignumber.js";
 
-import { VtokenTransfer, VtokenMovrTransfer } from "../types";
+import {
+  VtokenTransfer,
+  VtokenMovrTransfer,
+  VtokenBncTransfer,
+} from "../types";
 
 export async function handleCurrenciesTransferred(
   extrinsic: SubstrateExtrinsic
@@ -88,6 +92,39 @@ export async function handleCurrenciesTransferred(
           ? "0"
           : new BigNumber(vMOVRTotalIssuance?.toString())
               .div(MOVRTokenPool?.toString())
+              .toString();
+      await record.save();
+    }
+
+    if (currency.toString() === '{"vToken":"BNC"}') {
+      const vBNCTotalIssuance = await api.query.tokens?.totalIssuance({
+        vToken: "BNC",
+      });
+      const BNCTokenPool = await api.query.vtokenMinting?.tokenPool({
+        Native: "BNC",
+      });
+
+      const record = new VtokenBncTransfer(
+        blockNumber.toString() + "-" + transferEvent.idx.toString()
+      );
+      record.block_height = blockNumber;
+      record.block_timestamp = transferEvent.block.timestamp;
+      record.from_account = from.toString();
+      record.to_account = to.toString();
+      record.currency = currency.toString();
+      record.balance = (balance as Balance).toBigInt();
+      record.vbnc_balance = vBNCTotalIssuance
+        ? (vBNCTotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+      record.bnc_balance = BNCTokenPool
+        ? (BNCTokenPool as Balance).toBigInt()
+        : BigInt(0);
+      record.ratio =
+        BNCTokenPool?.toString() === "0" ||
+        vBNCTotalIssuance?.toString() === "0"
+          ? "0"
+          : new BigNumber(vBNCTotalIssuance?.toString())
+              .div(BNCTokenPool?.toString())
               .toString();
       await record.save();
     }

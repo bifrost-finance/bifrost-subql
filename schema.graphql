@@ -41,6 +41,16 @@ type VtokenMintingMovrRatio @entity {
     kusd_movr_ratio:String!
 }
 
+type VtokenMintingBncRatio @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    bnc_balance: BigInt!
+    vbnc_balance: BigInt!
+    ratio: String!
+    vbnc_bnc_ratio:String!
+}
+
 type VtokenMintingMinted @entity {
     id: ID!
     block_height: BigInt!
@@ -97,6 +107,19 @@ type VtokenMovrTransfer @entity {
     ratio:String!
 }
 
+type VtokenBncTransfer @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    from_account: String
+    to_account: String
+    currency: String
+    balance: BigInt
+    bnc_balance:BigInt
+    vbnc_balance: BigInt
+    ratio:String!
+}
+
 type VtokenSwap @entity  {
     id: ID!
     block_height: Int!
@@ -132,6 +155,25 @@ type VtokenMovrSwap @entity  {
     balance_out: BigInt
     movr_balance:BigInt
     vmovr_balance: BigInt
+    ratio:String!
+}
+
+type VtokenBncSwap @entity  {
+    id: ID!
+    block_height: Int!
+    block_timestamp: Date!
+    event_id: Int
+    extrinsic_id: Int
+    owner: String
+    recipient: String
+    asset_0: String
+    asset_1: String
+    asset_0_name: String
+    asset_1_name: String
+    balance_in: BigInt
+    balance_out: BigInt
+    bnc_balance:BigInt
+    vbnc_balance: BigInt
     ratio:String!
 }
 
@@ -178,6 +220,22 @@ type VtokenMovrLiquidity @entity  {
     balance_lp: BigInt
     movr_balance:BigInt
     vmovr_balance: BigInt
+    ratio:String!
+}
+
+type VtokenBncLiquidity @entity  {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    method: String
+    owner: String
+    asset_0: String
+    asset_1: String
+    balance_0: BigInt
+    balance_1: BigInt
+    balance_lp: BigInt
+    bnc_balance:BigInt
+    vbnc_balance: BigInt
     ratio:String!
 }
 

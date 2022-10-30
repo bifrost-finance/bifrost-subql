@@ -12,6 +12,7 @@ import {
   VtokenMintingRebondedByUnlockId,
   VtokenRedeemedSuccess,
   VtokenMintingMovrRatio,
+  VtokenMintingBncRatio,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -47,7 +48,6 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
 
     const record = new VtokenMintingRatio(blockNumber.toString());
     const swapVKSMKSMRecord = await VtokenSwapRatio.get("vKSM_KSM");
-    const swapVUSDKSMRecord = await VtokenSwapRatio.get("kUSD_KSM");
 
     record.block_height = blockNumber;
     record.block_timestamp = block.timestamp;
@@ -64,7 +64,7 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
             .div(KSMTokenPool?.toString())
             .toString();
     record.vksm_ksm_ratio = swapVKSMKSMRecord?.ratio || "0";
-    record.kusd_ksm_ratio = swapVUSDKSMRecord?.ratio || "0";
+    record.kusd_ksm_ratio = "0";
 
     await record.save();
 
@@ -77,7 +77,6 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
 
     const movrRecord = new VtokenMintingMovrRatio(blockNumber.toString());
     const swapVMOVRMOVRRecord = await VtokenSwapRatio.get("vMOVR_MOVR");
-    const swapVUSDMOVRRecord = await VtokenSwapRatio.get("kUSD_MOVR");
 
     movrRecord.block_height = blockNumber;
     movrRecord.block_timestamp = block.timestamp;
@@ -95,7 +94,35 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
             .div(MOVRTokenPool?.toString())
             .toString();
     movrRecord.vmovr_movr_ratio = swapVMOVRMOVRRecord?.ratio || "0";
-    movrRecord.kusd_movr_ratio = swapVUSDMOVRRecord?.ratio || "0";
+    movrRecord.kusd_movr_ratio = "0";
+
+    await movrRecord.save();
+
+    const vBNCtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken: "BNC",
+    });
+    const BNCTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Native: "BNC",
+    });
+
+    const bncRecord = new VtokenMintingBncRatio(blockNumber.toString());
+    const swapBncRecord = await VtokenSwapRatio.get("vBNC_BNC");
+
+    bncRecord.block_height = blockNumber;
+    bncRecord.block_timestamp = block.timestamp;
+    bncRecord.vbnc_balance = vBNCtotalIssuance
+      ? (vBNCtotalIssuance as Balance).toBigInt()
+      : BigInt(0);
+    bncRecord.bnc_balance = BNCTokenPool
+      ? (BNCTokenPool as Balance).toBigInt()
+      : BigInt(0);
+    bncRecord.ratio =
+      BNCTokenPool?.toString() === "0" || vBNCtotalIssuance?.toString() === "0"
+        ? "0"
+        : new BigNumber(vBNCtotalIssuance?.toString())
+            .div(BNCTokenPool?.toString())
+            .toString();
+    bncRecord.vbnc_bnc_ratio = swapBncRecord?.ratio || "0";
 
     await movrRecord.save();
   }
