@@ -104,7 +104,7 @@ export async function handleVKSMSwap(event: SubstrateEvent): Promise<void> {
           entity.asset_1_name = asset1.name;
           entity.balance_in = balances_obj[key];
           entity.balance_out = balances_obj[key + 1];
-          entity.ratio = entity.ratio =
+          entity.ratio =
             asset0.name === "KSM"
               ? new BigNumber(balances_obj[key + 1].toString())
                   .div(balances_obj[key].toString())
@@ -190,7 +190,7 @@ export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
           entity.asset_1_name = asset1.name;
           entity.balance_in = balances_obj[key];
           entity.balance_out = balances_obj[key + 1];
-          entity.ratio = entity.ratio =
+          entity.ratio =
             asset0.name === "MOVR"
               ? new BigNumber(balances_obj[key + 1].toString())
                   .div(balances_obj[key].toString())
@@ -255,8 +255,10 @@ export async function handleVBNCSwap(event: SubstrateEvent): Promise<void> {
           ? (BNCTokenPool as Balance).toBigInt()
           : BigInt(0);
         entity.ratio =
-          BNCTokenPool?.toString() === "0" ||
-          vBNCtotalIssuance?.toString() === "0"
+          BNCTokenPool?.toString() &&
+          vBNCtotalIssuance?.toString() &&
+          (BNCTokenPool?.toString() === "0" ||
+            vBNCtotalIssuance?.toString() === "0")
             ? "0"
             : new BigNumber(vBNCtotalIssuance?.toString())
                 .div(BNCTokenPool?.toString())
@@ -276,7 +278,7 @@ export async function handleVBNCSwap(event: SubstrateEvent): Promise<void> {
           entity.asset_1_name = asset1.name;
           entity.balance_in = balances_obj[key];
           entity.balance_out = balances_obj[key + 1];
-          entity.ratio = entity.ratio =
+          entity.ratio =
             asset0.name === "BNC"
               ? new BigNumber(balances_obj[key + 1].toString())
                   .div(balances_obj[key].toString())
