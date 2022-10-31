@@ -151,10 +151,8 @@ export async function handleVtokenLiquidity(
         ? (BNCTokenPool as Balance).toBigInt()
         : BigInt(0);
       entity.ratio =
-        BNCTokenPool?.toString() &&
-        vBNCtotalIssuance?.toString() &&
-        (BNCTokenPool?.toString() === "0" ||
-          vBNCtotalIssuance?.toString() === "0")
+        BNCTokenPool?.toString() === "0" ||
+        vBNCtotalIssuance?.toString() === "0"
           ? "0"
           : new BigNumber(vBNCtotalIssuance?.toString())
               .div(BNCTokenPool?.toString())
@@ -282,10 +280,8 @@ export async function handleVtokenLiquidity(
         ? (BNCTokenPool as Balance).toBigInt()
         : BigInt(0);
       entity.ratio =
-        BNCTokenPool?.toString() &&
-        vBNCtotalIssuance?.toString() &&
-        (BNCTokenPool?.toString() === "0" ||
-          vBNCtotalIssuance?.toString() === "0")
+        BNCTokenPool?.toString() === "0" ||
+        vBNCtotalIssuance?.toString() === "0"
           ? "0"
           : new BigNumber(vBNCtotalIssuance?.toString())
               .div(BNCTokenPool?.toString())
