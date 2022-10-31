@@ -47,7 +47,7 @@ type VtokenMintingBncRatio @entity {
     block_timestamp: Date!
     bnc_balance: BigInt!
     vbnc_balance: BigInt!
-    ratio: String!
+    ratio: String
     vbnc_bnc_ratio:String!
 }
 
@@ -117,7 +117,7 @@ type VtokenBncTransfer @entity {
     balance: BigInt
     bnc_balance:BigInt
     vbnc_balance: BigInt
-    ratio:String!
+    ratio:String
 }
 
 type VtokenSwap @entity  {
@@ -174,7 +174,7 @@ type VtokenBncSwap @entity  {
     balance_out: BigInt
     bnc_balance:BigInt
     vbnc_balance: BigInt
-    ratio:String!
+    ratio:String
 }
 
 type VtokenSwapRatio @entity  {
@@ -236,7 +236,7 @@ type VtokenBncLiquidity @entity  {
     balance_lp: BigInt
     bnc_balance:BigInt
     vbnc_balance: BigInt
-    ratio:String!
+    ratio:String
 }
 
 type SlpInfo @entity {
