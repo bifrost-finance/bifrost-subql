@@ -13,7 +13,7 @@ export async function zenlink(block: SubstrateBlock): Promise<void> {
 
   const zenlinkEvents = block.events.filter(
     (e) => e.event.section === "zenlinkProtocol"
-  ) as SubstrateEvent[];
+  ) as unknown as SubstrateEvent[];
   for (let zenlinkEvent of zenlinkEvents) {
     const {
       event: { data, section, method },

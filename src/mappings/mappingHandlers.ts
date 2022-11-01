@@ -195,7 +195,7 @@ export async function democracy(block: SubstrateBlock): Promise<void> {
   const blockNumber = block.block.header.number.toNumber();
   const democracyEvents = block.events.filter(
     (e) => e.event.section === "democracy"
-  ) as SubstrateEvent[];
+  ) as unknown as SubstrateEvent[];
   for (let democracyEvent of democracyEvents) {
     const {
       event: { data, section, method },
@@ -219,7 +219,7 @@ export async function council(block: SubstrateBlock): Promise<void> {
   const blockNumber = block.block.header.number.toNumber();
   const councilEvents = block.events.filter(
     (e) => e.event.section === "council"
-  ) as SubstrateEvent[];
+  ) as unknown as SubstrateEvent[];
   for (let councilEvent of councilEvents) {
     const {
       event: { data, section, method },

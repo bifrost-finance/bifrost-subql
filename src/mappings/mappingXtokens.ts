@@ -25,7 +25,7 @@ export async function handleXtokensTransferredMultiAssets(
       data: [account, multiassets, multiasset, multilocation],
     },
   } = event;
-  let assets = JSON.parse(JSON.stringify(multiassets))
+  let assets = JSON.parse(JSON.stringify(multiassets));
   let list = [];
   for (let i = 0; i < assets.length; i++) {
     const record = new XtokensTransferred(
@@ -41,8 +41,8 @@ export async function handleXtokensTransferredMultiAssets(
     record.fungible = BigInt(assets[i].fun.fungible);
     record.assets_id = JSON.stringify(assets[i].id);
     list.push(record.save());
-  };
-  await Promise.all(list)
+  }
+  await Promise.all(list);
 }
 
 export async function handleXtokensTransferred(
@@ -423,24 +423,24 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   }
 
   const vsKSM = (
-    (await api.query.tokens.totalIssuance({ vsToken: "KSM" }).catch((e) => {
-      console.log(e);
-    })) as Balance
+    (await api.query.tokens.totalIssuance({
+      vsToken: "KSM",
+    })) as unknown as Balance
   ).toBigInt();
   const vsDOT = (
-    (await api.query.tokens.totalIssuance({ vsToken: "DOT" }).catch((e) => {
-      console.log(e);
-    })) as Balance
+    (await api.query.tokens.totalIssuance({
+      vsToken: "DOT",
+    })) as unknown as Balance
   ).toBigInt();
   const vksm = (
-    (await api.query.tokens?.totalIssuance({ vToken: "KSM" }).catch((e) => {
-      console.log(e);
-    })) as Balance
+    (await api.query.tokens?.totalIssuance({
+      vToken: "KSM",
+    })) as unknown as Balance
   ).toBigInt();
   const vmovr = (
-    (await api.query.tokens?.totalIssuance({ vToken: "MOVR" }).catch((e) => {
-      console.log(e);
-    })) as Balance
+    (await api.query.tokens?.totalIssuance({
+      vToken: "MOVR",
+    })) as unknown as Balance
   ).toBigInt();
 
   const record = new TokensTotalIssuance(block.block.header.hash.toString());
