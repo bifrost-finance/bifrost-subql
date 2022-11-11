@@ -142,7 +142,6 @@ type SalpContributed @entity {
   id: ID!
   block_height: Int!
   event_id: Int!
-  extrinsic_id: Int!
   extrinsic_hash: String
   block_timestamp: Date!
   account: String
@@ -194,7 +193,6 @@ type SalpContribution @entity {
   block_height: Int!
   block_timestamp: Date!
   event_id: Int
-  extrinsic_id: Int
   extrinsic_hash: String
   method: String!
   account: String
@@ -206,7 +204,6 @@ type SalpContribution @entity {
 type SalpRefunded @entity {
   id: ID!
   event_id: Int!
-  extrinsic_id: Int!
   block_height: Int!
   block_timestamp: Date!
   method: String
@@ -218,7 +215,6 @@ type SalpRefunded @entity {
 type SalpFailed @entity {
   id: ID!
   event_id: Int!
-  extrinsic_id: Int!
   block_height: Int!
   block_timestamp: Date!
   para_id: Int
@@ -290,7 +286,6 @@ type SalpLiteIssued @entity {
   id: ID!
   block_height: Int!
   event_id: Int!
-  extrinsic_id: Int!
   block_timestamp: Date!
   account: String
   para_id: Int
@@ -302,7 +297,6 @@ type SalpLiteRedeemed @entity {
   id: ID!
   block_height: Int!
   event_id: Int
-  extrinsic_id: Int
   block_timestamp: Date
   account: String
   para_id: Int

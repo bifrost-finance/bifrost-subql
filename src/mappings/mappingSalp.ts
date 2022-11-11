@@ -119,8 +119,8 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
       record.block_height = blockNumber;
       record.block_timestamp = block.timestamp;
       record.event_id = salpEvent.idx;
-      record.extrinsic_id = salpEvent.extrinsic.idx;
-      record.extrinsic_hash = salpEvent.extrinsic.extrinsic.hash.toString();
+      // record.extrinsic_id = salpEvent.extrinsic.idx;
+      // record.extrinsic_hash = salpEvent.extrinsic.extrinsic.hash.toString();
       record.method = method.toString();
       record.account = accountIdOf;
       record.para_id = paraId;
@@ -138,8 +138,8 @@ export async function handleSalpContributed(event: SubstrateEvent): Promise<void
   const record = new SalpContributed(blockNumber.toString() + '-' + event.idx.toString());
   record.block_height = blockNumber;
   record.event_id = event.idx;
-  record.extrinsic_id = event.extrinsic.idx;
-  record.extrinsic_hash = event.extrinsic.extrinsic.hash.toString();
+  // record.extrinsic_id = event.extrinsic.idx;
+  // record.extrinsic_hash = event.extrinsic.extrinsic.hash.toString();
   record.block_timestamp = event.block.timestamp;
   record.account = account.toString();
   record.para_id = (para_id as ParaId).toNumber();
@@ -155,7 +155,7 @@ export async function handleSalpRefunded(event: SubstrateEvent): Promise<void> {
   const record = new SalpRefunded(blockNumber.toString() + '-' + event.idx.toString());
   record.block_height = blockNumber;
   record.event_id = event.idx;
-  record.extrinsic_id = event.extrinsic.idx;
+  // record.extrinsic_id = event.extrinsic.idx;
   record.block_timestamp = event.block.timestamp;
   record.account = account.toString();
   record.para_id = (para_id as ParaId).toNumber();
@@ -171,7 +171,7 @@ export async function handleSalpFailed(event: SubstrateEvent): Promise<void> {
   const record = new SalpFailed(blockNumber.toString() + '-' + event.idx.toString());
   record.block_height = blockNumber;
   record.event_id = event.idx;
-  record.extrinsic_id = event.extrinsic.idx;
+  // record.extrinsic_id = event.extrinsic.idx;
   record.block_timestamp = event.block.timestamp;
   record.para_id = (para_id as ParaId).toNumber();
   await record.save();
