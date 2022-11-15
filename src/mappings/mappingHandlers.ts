@@ -21,7 +21,7 @@ const Tokens = [
   {
     id: "vGLMR",
     coin_id: "moonbeam",
-    currency: { VToken2: 0 },
+    currency: { VToken2: 1 },
     decimal: 18,
     token: "GLMR",
   },
