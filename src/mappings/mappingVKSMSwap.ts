@@ -26,7 +26,7 @@ function getZenlinkTokenName(assetIndex: number): {
     case 516:
       return { name: "KSM" };
     case 522:
-      return { name: "KSM" };
+      return { name: "MOVR" };
     case 770:
       return { name: "kUSD" };
     default:
@@ -179,7 +179,7 @@ export async function handleVMOVRSwap(event: SubstrateEvent): Promise<void> {
         await entity.save();
 
         if (isVMOVR_MOVR) {
-          const entity = new VtokenSwapRatio("VMOVR_MOVR");
+          const entity = new VtokenSwapRatio("vMOVR_MOVR");
 
           entity.block_height = blockNumber;
           entity.block_timestamp = event.block.timestamp;
@@ -265,7 +265,7 @@ export async function handleVBNCSwap(event: SubstrateEvent): Promise<void> {
         await entity.save();
 
         if (isVBNC_BNC) {
-          const entity = new VtokenSwapRatio("VBNC_BNC");
+          const entity = new VtokenSwapRatio("vBNC_BNC");
 
           entity.block_height = blockNumber;
           entity.block_timestamp = event.block.timestamp;
