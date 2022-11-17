@@ -17,7 +17,7 @@ function getZenlinkTokenName(assetIndex: number): {
       return { name: "vDOT" };
     case 2049:
       return { name: "GLMR" };
-    case 2035:
+    case 2305:
       return { name: "vGLMR" };
     default:
       return {};
