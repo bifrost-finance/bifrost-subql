@@ -133,8 +133,8 @@ export async function handleVGLMRSwap(event: SubstrateEvent): Promise<void> {
       const asset1 = getZenlinkTokenName(swap_path_obj[key + 1].assetIndex);
 
       const isVGLMR_GLMR =
-        (asset0.name === "vKSM" && asset1.name === "KSM") ||
-        (asset0.name === "GLMR" && asset1.name === "vKSM");
+        (asset0?.name === "GLMR" && asset1?.name === "vGLMR") ||
+        (asset0?.name === "vGLMR" && asset1?.name === "GLMR");
 
       if (isVGLMR_GLMR) {
         const vGLMRtotalIssuance = await api.query.tokens?.totalIssuance({
@@ -177,7 +177,7 @@ export async function handleVGLMRSwap(event: SubstrateEvent): Promise<void> {
         await entity.save();
 
         if (isVGLMR_GLMR) {
-          const entity = new VtokenSwapRatio("VGLMR_GLMR");
+          const entity = new VtokenSwapRatio("vGLMR_GLMR");
 
           entity.block_height = blockNumber;
           entity.block_timestamp = event.block.timestamp;

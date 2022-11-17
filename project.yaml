@@ -47,6 +47,11 @@ dataSources:
           filter:
             module: zenlinkProtocol
             method: AssetSwap
+        - handler: handleVGLMRSwap
+            kind: substrate/EventHandler
+            filter:
+              module: zenlinkProtocol
+              method: AssetSwap
         - handler: handleCurrenciesTransferred
           kind: substrate/CallHandler
           filter:
