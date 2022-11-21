@@ -103,6 +103,8 @@ function getZenlinkTokenName(assetIndex: number): {
   switch (assetIndex) {
     case 0:
       return { name: "BNC", coin_id: "bifrost-native-coin", decimal: 12 };
+    case 257:
+      return { name: "vBNC", coin_id: "bifrost-native-coin", decimal: 12 };
     case 260:
       return { name: "vKSM", coin_id: "kusama", decimal: 12 };
     case 515:

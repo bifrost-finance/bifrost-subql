@@ -29,7 +29,14 @@ const Tokens = [
   {
     id: "vMOVR",
     coin_id: "moonriver",
-    currency: { vToken: "vMOVR" },
+    currency: { vToken: "MOVR" },
+    decimal: 18,
+    token: "MOVR",
+  },
+  {
+    id: "vBNC",
+    coin_id: "bifrost-native-coin",
+    currency: { native: "BNC" },
     decimal: 18,
     token: "MOVR",
   },
