@@ -117,6 +117,8 @@ function getZenlinkTokenName(assetIndex: number): {
       return { name: "ZLK", coin_id: "zenlink-network-token", decimal: 18 };
     case 521:
       return { name: "RMRK", coin_id: "rmrk", decimal: 10 };
+    case 522:
+      return { name: "MOVR", coin_id: "moonriver", decimal: 18 };
     case 770:
       return { name: "kUSD", coin_id: "tether", decimal: 12 };
     case 1027:
