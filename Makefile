@@ -1,7 +1,7 @@
-IMAGE=harbor.liebi.com/slp/polkadot-subql:v1.1
+IMAGE=harbor.liebi.com/slp/polkadot-monitor:v1.4
 
 deploy:
 	docker build -f Dockerfile -t ${IMAGE} .
 	docker push ${IMAGE}
-	kubectl set image deploy -n slp polkadot-suql polkadot-suql=${IMAGE}
-	kubectl rollout restart deploy  -n slp polkadot-suql 
+	kubectl set image deploy -n slp bifrost-polkadot-subql bifrost-polkadot-subql=${IMAGE}
+	kubectl rollout restart deploy  -n slp bifrost-polkadot-subql
