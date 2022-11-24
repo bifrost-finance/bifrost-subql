@@ -415,7 +415,7 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
     })) as Balance
   )?.toBigInt();
   const vGLMR = (
-    (await api.query.tokens?.totalIssuance({ VToken2: 0 }).catch((e) => {
+    (await api.query.tokens?.totalIssuance({ VToken2: 1 }).catch((e) => {
       console.log(e);
     })) as Balance
   )?.toBigInt();
