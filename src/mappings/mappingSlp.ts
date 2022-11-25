@@ -78,17 +78,21 @@ export async function handleStakingErapaid(
   } = event;
 
   const record = new StakingErapaid(`${blockNumber}-${event.idx.toString()}`);
-  const candidateInfo = (
-    await api.query.parachainStaking.candidateInfo.entries()
-  ).toString();
 
+  const total = (await api.query.parachainStaking.total()).toString();
+  const rewardPerRound = 180000000000000;
+  const apy = new BigNumber(rewardPerRound)
+    .div(total)
+    .multipliedBy(12 * 365)
+    .toString();
   record.event_id = event.idx;
   record.block_height = blockNumber.toString();
   record.block_timestamp = event.block.timestamp;
   record.era_index = index.toString();
   record.validator_payout = (validator_payout as Balance)?.toBigInt();
   record.number_collators = number_collators.toString();
-  record.candidate_info = candidateInfo;
+  record.candidate_info = "";
+  record.apy = apy;
 
   await record.save();
 }

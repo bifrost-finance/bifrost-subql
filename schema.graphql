@@ -262,5 +262,6 @@ type StakingErapaid @entity {
     era_index: String
     validator_payout: BigInt
     number_collators:String!
-    candidate_info:String!
+    candidate_info:String
+    apy:String
 }
