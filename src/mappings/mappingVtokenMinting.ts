@@ -124,7 +124,7 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
             .toString();
     bncRecord.vbnc_bnc_ratio = swapBncRecord?.ratio || "0";
 
-    await movrRecord.save();
+    await bncRecord.save();
   }
   return;
 }
