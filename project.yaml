@@ -25,6 +25,8 @@ dataSources:
       handlers:
         - handler: vtokenMinting
           kind: substrate/BlockHandler
+        - handler: staking
+          kind: substrate/BlockHandler
         - handler: handleFarmingApy
           kind: substrate/BlockHandler
         - handler: handleVtokenMintingMinted

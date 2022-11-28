@@ -265,3 +265,11 @@ type StakingErapaid @entity {
     candidate_info:String
     apy:String
 }
+
+type StakingInfo @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    method: String!
+    data: String!
+}
