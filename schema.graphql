@@ -263,6 +263,8 @@ type StakingErapaid @entity {
     validator_payout: BigInt
     number_collators:String!
     candidate_info:String
+    awarded:String
+    total:String
     apy:String
 }
 
