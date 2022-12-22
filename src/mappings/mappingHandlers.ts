@@ -36,9 +36,9 @@ const Tokens = [
   {
     id: "vBNC",
     coin_id: "bifrost-native-coin",
-    currency: { native: "BNC" },
-    decimal: 18,
-    token: "MOVR",
+    currency: { vToken: "BNC" },
+    decimal: 12,
+    token: "BNC",
   },
 ];
 
@@ -84,10 +84,14 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       record.block_timestamp = block.timestamp;
       record.currency = JSON.stringify(token.currency);
       let token_total_issuance;
-      if (token.id === "vKSM" || token.id === "vMOVR") {
-        token_total_issuance = await api.query.vtokenMinting?.tokenPool({
-          token: token.token,
-        });
+      if (token.id === "vKSM" || token.id === "vMOVR" || token.id === "vBNC") {
+        token_total_issuance = await api.query.vtokenMinting?.tokenPool(
+          token.id === "vBNC"
+            ? { Native: "BNC" }
+            : {
+                token: token.token,
+              }
+        );
       } else {
         token_total_issuance = await api.query.tokens.totalIssuance(
           token.currency
