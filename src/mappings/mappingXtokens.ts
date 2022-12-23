@@ -442,6 +442,11 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
       vToken: "MOVR",
     })) as unknown as Balance
   ).toBigInt();
+  const vbnc = (
+    (await api.query.tokens?.totalIssuance({
+      vToken: "BNC",
+    })) as unknown as Balance
+  ).toBigInt();
 
   const record = new TokensTotalIssuance(block.block.header.hash.toString());
   record.block_height = blockNumber;
@@ -450,5 +455,6 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   record.vsdot = vsDOT;
   record.vksm = vksm;
   record.vmovr = vmovr;
+  record.vbnc = vbnc;
   await record.save();
 }
