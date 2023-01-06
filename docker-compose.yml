@@ -13,7 +13,7 @@ services:
       POSTGRES_PASSWORD: postgres
 
   subquery-node:
-    image: onfinality/subql-node:v1.10.2
+    image: onfinality/subql-node:latest
     depends_on:
       - "postgres"
     restart: always
