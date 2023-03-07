@@ -12,6 +12,7 @@ import {
   VtokenSwapRatio,
   VtokenMintingRatio,
   VtokenMintingGlmrRatio,
+  VtokenMintingFilRatio
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -94,6 +95,35 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     glmrRecord.vglmr_glmr_ratio = swapVGLMRGLMRRecord?.ratio || "0";
 
     await glmrRecord.save();
+
+    const vFILtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken2: "1",
+    });
+    const FILTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token2: "1",
+    });
+
+    const filRecord = new VtokenMintingGlmrRatio(blockNumber.toString());
+    const swapVFILFILRecord = await VtokenSwapRatio.get("vFIL_FIL");
+
+    filRecord.block_height = blockNumber;
+    filRecord.block_timestamp = block.timestamp;
+    filRecord.vfil_balance = vFILtotalIssuance
+        ? (vFILtotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+    filRecord.fil_balance = FILTokenPool
+        ? (FILTokenPool as Balance).toBigInt()
+        : BigInt(0);
+    filRecord.ratio =
+        FILTokenPool?.toString() === "0" ||
+        vFILtotalIssuance?.toString() === "0"
+            ? "0"
+            : new BigNumber(vFILtotalIssuance?.toString())
+                .div(FILTokenPool?.toString())
+                .toString();
+    filRecord.vfil_fil_ratio = swapVFILFILRecord?.ratio || "0";
+
+    await filRecord.save();
   }
   return;
 }

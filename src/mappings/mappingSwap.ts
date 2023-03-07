@@ -19,6 +19,10 @@ function getZenlinkTokenName(assetIndex: number): {
       return { name: "GLMR" };
     case 2305:
       return { name: "vGLMR" };
+    case 2052:
+      return { name: "FIL" };
+    case 2308:
+      return { name: "vFIL" };
     default:
       return {};
   }
@@ -54,10 +58,10 @@ export async function handleVDOTSwap(event: SubstrateEvent): Promise<void> {
 
         const entity = new VtokenSwap(
           blockNumber.toString() +
-            "-" +
-            event.idx.toString() +
-            "-" +
-            key.toString()
+          "-" +
+          event.idx.toString() +
+          "-" +
+          key.toString()
         );
 
         entity.block_height = blockNumber;
@@ -80,11 +84,11 @@ export async function handleVDOTSwap(event: SubstrateEvent): Promise<void> {
           : BigInt(0);
         entity.ratio =
           DOTTokenPool?.toString() === "0" ||
-          vDOTtotalIssuance?.toString() === "0"
+            vDOTtotalIssuance?.toString() === "0"
             ? "0"
             : new BigNumber(vDOTtotalIssuance?.toString())
-                .div(DOTTokenPool?.toString())
-                .toString();
+              .div(DOTTokenPool?.toString())
+              .toString();
 
         await entity.save();
 
@@ -103,11 +107,11 @@ export async function handleVDOTSwap(event: SubstrateEvent): Promise<void> {
           entity.ratio = entity.ratio =
             asset0.name === "DOT"
               ? new BigNumber(balances_obj[key + 1].toString())
-                  .div(balances_obj[key].toString())
-                  .toString()
+                .div(balances_obj[key].toString())
+                .toString()
               : new BigNumber(balances_obj[key].toString())
-                  .div(balances_obj[key + 1].toString())
-                  .toString();
+                .div(balances_obj[key + 1].toString())
+                .toString();
           await entity.save();
         }
       }
@@ -168,11 +172,11 @@ export async function handleVGLMRSwap(event: SubstrateEvent): Promise<void> {
           : BigInt(0);
         entity.ratio =
           GLMRTokenPool?.toString() === "0" ||
-          vGLMRtotalIssuance?.toString() === "0"
+            vGLMRtotalIssuance?.toString() === "0"
             ? "0"
             : new BigNumber(vGLMRtotalIssuance?.toString())
-                .div(GLMRTokenPool?.toString())
-                .toString();
+              .div(GLMRTokenPool?.toString())
+              .toString();
 
         await entity.save();
 
@@ -191,13 +195,61 @@ export async function handleVGLMRSwap(event: SubstrateEvent): Promise<void> {
           entity.ratio = entity.ratio =
             asset0.name === "GLMR"
               ? new BigNumber(balances_obj[key + 1].toString())
-                  .div(balances_obj[key].toString())
-                  .toString()
+                .div(balances_obj[key].toString())
+                .toString()
               : new BigNumber(balances_obj[key].toString())
-                  .div(balances_obj[key + 1].toString())
-                  .toString();
+                .div(balances_obj[key + 1].toString())
+                .toString();
           await entity.save();
         }
+      }
+    })
+  );
+}
+
+export async function handleVFILSwap(event: SubstrateEvent): Promise<void> {
+  const {
+    event: {
+      data: [owner, recipient, swap_path, balances],
+    },
+  } = event;
+  const swap_path_obj = JSON.parse(swap_path.toString());
+  const balances_obj = JSON.parse(balances.toString());
+  const blockNumber = (
+    event.extrinsic.block.block.header.number as Compact<BlockNumber>
+  ).toBigInt();
+
+  await Promise.all(
+    new Array(swap_path_obj.length - 1).fill("").map(async (_, key) => {
+      const asset0 = getZenlinkTokenName(swap_path_obj[key].assetIndex);
+      const asset1 = getZenlinkTokenName(swap_path_obj[key + 1].assetIndex);
+
+      const isVFIL_FIL =
+        (asset0?.name === "FIL" && asset1?.name === "vFIL") ||
+        (asset0?.name === "vFIL" && asset1?.name === "FIL");
+
+
+      if (isVFIL_FIL) {
+        const entity = new VtokenSwapRatio("vFIL_FIL");
+
+        entity.block_height = blockNumber;
+        entity.block_timestamp = event.block.timestamp;
+        entity.event_id = event.idx;
+        entity.asset_0 = swap_path_obj[key];
+        entity.asset_1 = swap_path_obj[key + 1];
+        entity.asset_0_name = asset0.name;
+        entity.asset_1_name = asset1.name;
+        entity.balance_in = balances_obj[key];
+        entity.balance_out = balances_obj[key + 1];
+        entity.ratio = entity.ratio =
+          asset0.name === "FIL"
+            ? new BigNumber(balances_obj[key + 1].toString())
+              .div(balances_obj[key].toString())
+              .toString()
+            : new BigNumber(balances_obj[key].toString())
+              .div(balances_obj[key + 1].toString())
+              .toString();
+        await entity.save();
       }
     })
   );
