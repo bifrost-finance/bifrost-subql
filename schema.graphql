@@ -341,6 +341,7 @@ type TokensTotalIssuance @entity {
   vksm: BigInt
   vmovr: BigInt
   vbnc: BigInt
+  vpha: BigInt
 }
 
 type DemocracyInfo @entity {

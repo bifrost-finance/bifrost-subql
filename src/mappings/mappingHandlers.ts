@@ -34,6 +34,13 @@ const Tokens = [
     token: "MOVR",
   },
   {
+    id: "vPHA",
+    coin_id: "pha",
+    currency: { vToken: "PHA" },
+    decimal: 12,
+    token: "PHA",
+  },
+  {
     id: "vBNC",
     coin_id: "bifrost-native-coin",
     currency: { vToken: "BNC" },
@@ -84,13 +91,13 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       record.block_timestamp = block.timestamp;
       record.currency = JSON.stringify(token.currency);
       let token_total_issuance;
-      if (token.id === "vKSM" || token.id === "vMOVR" || token.id === "vBNC") {
+      if (['vBNC', 'vPHA', 'vMOVR', 'vKSM'].includes(token.id)) {
         token_total_issuance = await api.query.vtokenMinting?.tokenPool(
           token.id === "vBNC"
             ? { Native: "BNC" }
             : {
-                token: token.token,
-              }
+              token: token.token,
+            }
         );
       } else {
         token_total_issuance = await api.query.tokens.totalIssuance(

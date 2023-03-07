@@ -442,6 +442,11 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
       vToken: "MOVR",
     })) as unknown as Balance
   ).toBigInt();
+  const vpha = (
+      (await api.query.tokens?.totalIssuance({
+        vToken: "PHA",
+      })) as unknown as Balance
+  ).toBigInt();
   const vbnc = (
     (await api.query.tokens?.totalIssuance({
       vToken: "BNC",
@@ -456,5 +461,6 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   record.vksm = vksm;
   record.vmovr = vmovr;
   record.vbnc = vbnc;
+  record.vpha = vpha
   await record.save();
 }
