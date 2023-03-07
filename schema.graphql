@@ -275,6 +275,7 @@ type TokensTotalIssuance @entity {
   vsdot: BigInt
   vdot: BigInt
   vglmr: BigInt
+  vfil: BigInt
 }
 
 type DemocracyInfo @entity {

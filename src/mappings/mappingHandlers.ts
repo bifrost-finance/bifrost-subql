@@ -25,6 +25,13 @@ const Tokens = [
     decimal: 18,
     token: "GLMR",
   },
+  {
+    id: "vFIL",
+    coin_id: "filecoin",
+    currency: { VToken2: 4 },
+    decimal: 18,
+    token: "FIL",
+  },
 ];
 
 const DexTokens = [
@@ -66,7 +73,7 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       record.block_timestamp = block.timestamp;
       record.currency = JSON.stringify(token.currency);
       let token_total_issuance;
-      if (token.id === "vDOT" || token.id === "vGLMR") {
+      if (['vGLMR', 'vDOT', 'vFIL'].includes(token.id)) {
         token_total_issuance = await api.query.vtokenMinting?.tokenPool(
           assetTypeFormat(token.token)
         );
