@@ -103,7 +103,7 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
       Token2: "1",
     });
 
-    const filRecord = new VtokenMintingGlmrRatio(blockNumber.toString());
+    const filRecord = new VtokenMintingFilRatio(blockNumber.toString());
     const swapVFILFILRecord = await VtokenSwapRatio.get("vFIL_FIL");
 
     filRecord.block_height = blockNumber;
