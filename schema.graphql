@@ -41,6 +41,17 @@ type VtokenMintingMovrRatio @entity {
     kusd_movr_ratio:String!
 }
 
+type VtokenMintingPhaRatio @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    pha_balance: BigInt!
+    vpha_balance: BigInt!
+    ratio: String!
+    vpha_pha_ratio:String!
+    kusd_movr_ratio:String!
+}
+
 type VtokenMintingBncRatio @entity {
     id: ID!
     block_height: BigInt!

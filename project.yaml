@@ -56,6 +56,12 @@ dataSources:
             module: zenlinkProtocol
             method: AssetSwap
             success: true
+        - handler: handleVPHASwap
+          kind: substrate/EventHandler
+          filter:
+            module: zenlinkProtocol
+            method: AssetSwap
+            success: true
         - handler: handleVBNCSwap
           kind: substrate/EventHandler
           filter:

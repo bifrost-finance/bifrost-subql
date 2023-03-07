@@ -13,6 +13,7 @@ import {
   VtokenRedeemedSuccess,
   VtokenMintingMovrRatio,
   VtokenMintingBncRatio,
+  VtokenMintingPhaRatio,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -125,6 +126,36 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     bncRecord.vbnc_bnc_ratio = swapBncRecord?.ratio || "0";
 
     await bncRecord.save();
+
+    const vPHAtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken: "PHA",
+    });
+    const PHATokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token: "PHA",
+    });
+
+    const phaRecord = new VtokenMintingPhaRatio(blockNumber.toString());
+    const swapVPHAPHARecord = await VtokenSwapRatio.get("vPHA_PHA");
+
+    phaRecord.block_height = blockNumber;
+    phaRecord.block_timestamp = block.timestamp;
+    phaRecord.vpha_balance = vPHAtotalIssuance
+        ? (vPHAtotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+    phaRecord.pha_balance = PHATokenPool
+        ? (PHATokenPool as Balance).toBigInt()
+        : BigInt(0);
+    phaRecord.ratio =
+        PHATokenPool?.toString() === "0" ||
+        vPHAtotalIssuance?.toString() === "0"
+            ? "0"
+            : new BigNumber(vPHAtotalIssuance?.toString())
+                .div(PHATokenPool?.toString())
+                .toString();
+    phaRecord.vpha_pha_ratio = swapVPHAPHARecord?.ratio || "0";
+    phaRecord.kusd_movr_ratio = "0";
+
+    await phaRecord.save();
   }
   return;
 }
