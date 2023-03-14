@@ -1,4 +1,4 @@
-IMAGE=harbor.liebi.com/slp/bifrost-subql:v1.12
+IMAGE=harbor.liebi.com/slp/bifrost-subql:v1.5
 
 deploy:
 	docker build -f Dockerfile -t ${IMAGE} .

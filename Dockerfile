@@ -1,4 +1,4 @@
-FROM onfinality/subql-node:v1.10.2
+FROM onfinality/subql-node:latest
 WORKDIR /app
 COPY . .
 RUN  yarn install && yarn codegen && yarn build
