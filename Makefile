@@ -1,4 +1,4 @@
-IMAGE=harbor.liebi.com/slp/polkadot-subql:v1.1
+IMAGE=harbor.liebi.com/slp/polkadot-subql:v1.5
 
 deploy:
 	docker build -f Dockerfile -t ${IMAGE} .
