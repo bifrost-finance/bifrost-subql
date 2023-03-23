@@ -91,6 +91,10 @@ function getZenlinkTokenName(assetIndex: number): {
       return { name: "vGLMR", coin_id: "moonbeam", decimal: 18 };
     case 2305:
       return { name: "GLMR", coin_id: "moonbeam", decimal: 18 };
+    case 2308:
+      return { name: "vFIL", coin_id: "filecoin", decimal: 18 };
+    case 2052:
+      return { name: "FIL", coin_id: "filecoin", decimal: 18 };
     default:
       return {};
   }

@@ -1,4 +1,4 @@
-IMAGE=harbor.liebi.com/slp/polkadot-monitor:v1.4
+IMAGE=harbor.liebi.com/slp/polkadot-monitor:v1.5
 
 deploy:
 	docker build -f Dockerfile -t ${IMAGE} .
