@@ -122,6 +122,8 @@ function assetTypeFormat(asset) {
       return { token2: "0" };
     case "GLMR":
       return { token2: "1" };
+    case "FIL":
+      return { token2: "4" };
     case "KAR":
     case "ZLK":
     case "RMRK":
@@ -134,6 +136,8 @@ function assetTypeFormat(asset) {
       return { vToken2: "0" };
     case "vGLMR":
       return { vToken2: "1" };
+    case "vFIL":
+      return { vToken2: "4" };
     case "vsDOT":
       return { vsToken2: "0" };
     default:
