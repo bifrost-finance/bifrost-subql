@@ -88,7 +88,7 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
         method === "Issued"
       ) {
         balanceOf = (data[2] as BalanceOf)?.toBigInt();
-        message_id = (data[3] as MessageId).toString();
+        message_id = (data[3] as MessageId)?.toString();
       } else if (method === "Refunded") {
         balanceOf = (data[4] as BalanceOf)?.toBigInt();
       } else if (method === "Redeemed") {
