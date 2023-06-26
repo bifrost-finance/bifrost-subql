@@ -49,6 +49,16 @@ type VtokenMintingFilRatio @entity {
     vfil_fil_ratio:String!
 }
 
+type VtokenMintingAstrRatio @entity {
+    id: ID!
+    block_height: BigInt!
+    block_timestamp: Date!
+    astr_balance: BigInt!
+    vastr_balance: BigInt!
+    ratio: String!
+    vastr_astr_ratio:String!
+}
+
 type VtokenMintingMinted @entity {
     id: ID!
     block_height: BigInt!

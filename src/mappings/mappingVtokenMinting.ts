@@ -13,6 +13,7 @@ import {
   VtokenMintingRatio,
   VtokenMintingGlmrRatio,
   VtokenMintingFilRatio,
+  VtokenMintingAstrRatio,
 } from "../types";
 
 export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
@@ -123,6 +124,34 @@ export async function vtokenMinting(block: SubstrateBlock): Promise<void> {
     filRecord.vfil_fil_ratio = swapVFILFILRecord?.ratio || "0";
 
     await filRecord.save();
+
+    const vASTRtotalIssuance = await api.query.tokens?.totalIssuance({
+      vToken2: "3",
+    });
+    const ASTRTokenPool = await api.query.vtokenMinting?.tokenPool({
+      Token2: "3",
+    });
+
+    const astrRecord = new VtokenMintingAstrRatio(blockNumber.toString());
+    const swapVASTRASTRRecord = await VtokenSwapRatio.get("vASTR_ASTR");
+
+    astrRecord.block_height = blockNumber;
+    astrRecord.block_timestamp = block.timestamp;
+    astrRecord.vastr_balance = vASTRtotalIssuance
+        ? (vASTRtotalIssuance as Balance).toBigInt()
+        : BigInt(0);
+    astrRecord.astr_balance = ASTRTokenPool
+        ? (ASTRTokenPool as Balance).toBigInt()
+        : BigInt(0);
+    astrRecord.ratio =
+        ASTRTokenPool?.toString() === "0" || vASTRtotalIssuance?.toString() === "0"
+            ? "0"
+            : new BigNumber(vASTRtotalIssuance?.toString())
+                .div(ASTRTokenPool?.toString())
+                .toString();
+    astrRecord.vastr_astr_ratio = swapVASTRASTRRecord?.ratio || "0";
+
+    await astrRecord.save();
   }
   return;
 }
