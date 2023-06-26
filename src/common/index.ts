@@ -95,6 +95,10 @@ function getZenlinkTokenName(assetIndex: number): {
       return { name: "vFIL", coin_id: "filecoin", decimal: 18 };
     case 2052:
       return { name: "FIL", coin_id: "filecoin", decimal: 18 };
+    case 2307:
+      return { name: "vASTR", coin_id: "astar", decimal: 18 };
+    case 2051:
+      return { name: "ASTR", coin_id: "astar", decimal: 18 };
     default:
       return {};
   }
@@ -124,6 +128,8 @@ function assetTypeFormat(asset) {
       return { token2: "1" };
     case "FIL":
       return { token2: "4" };
+    case "ASTR":
+      return { token2: "3" };
     case "KAR":
     case "ZLK":
     case "RMRK":
@@ -136,6 +142,8 @@ function assetTypeFormat(asset) {
       return { vToken2: "0" };
     case "vGLMR":
       return { vToken2: "1" };
+    case "vASTR":
+      return { vToken2: "3" };
     case "vFIL":
       return { vToken2: "4" };
     case "vsDOT":
