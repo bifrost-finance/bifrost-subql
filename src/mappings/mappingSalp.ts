@@ -114,7 +114,7 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
       accountIdOf = data[0].toString();
       paraId = (data[1] as ParaId).toNumber();
       balanceOf = (data[2] as BalanceOf).toBigInt();
-      message_id = (data[3] as MessageId).toString();
+      message_id = data[3] ? (data[3] as MessageId).toString() : null;
       const record = new SalpContribution(blockNumber.toString() + '-' + salpEvent.idx.toString());
       record.block_height = blockNumber;
       record.block_timestamp = block.timestamp;
@@ -144,7 +144,7 @@ export async function handleSalpContributed(event: SubstrateEvent): Promise<void
   record.account = account.toString();
   record.para_id = (para_id as ParaId).toNumber();
   record.balance = (balance as Balance).toBigInt();
-  record.message_id = (message_id as MessageId).toString();
+  record.message_id = message_id ? (message_id as MessageId).toString() : null;
   await record.save();
 }
 
