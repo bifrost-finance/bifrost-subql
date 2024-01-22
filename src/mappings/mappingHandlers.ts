@@ -38,6 +38,13 @@ const Tokens = [
     currency: { VToken2: 3 },
     decimal: 18,
     token: "ASTR",
+  }, 
+  {
+      id: "vMANTA",
+      coin_id: "manta",
+      currency: { VToken2: 8 },
+      decimal: 18,
+      token: "MANTA",
   },
 ];
 
@@ -80,7 +87,7 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
       record.block_timestamp = block.timestamp;
       record.currency = JSON.stringify(token.currency);
       let token_total_issuance;
-      if (['vGLMR', 'vDOT', 'vFIL','vASTR' ].includes(token.id)) {
+      if (['vGLMR', 'vDOT', 'vFIL','vASTR','vMANTA' ].includes(token.id)) {
         token_total_issuance = await api.query.vtokenMinting?.tokenPool(
           assetTypeFormat(token.token)
         );

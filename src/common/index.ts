@@ -130,6 +130,8 @@ function assetTypeFormat(asset) {
       return { token2: "4" };
     case "ASTR":
       return { token2: "3" };
+    case "MANTA":
+      return { token2: "8" };
     case "KAR":
     case "ZLK":
     case "RMRK":
@@ -144,6 +146,8 @@ function assetTypeFormat(asset) {
       return { vToken2: "1" };
     case "vASTR":
       return { vToken2: "3" };
+    case "vASTR":
+      return { vToken2: "8" };
     case "vFIL":
       return { vToken2: "4" };
     case "vsDOT":

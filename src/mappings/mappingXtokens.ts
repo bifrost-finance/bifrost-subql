@@ -429,6 +429,11 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
         console.log(e);
       })) as Balance
   )?.toBigInt();
+  const vMANTA = (
+      (await api.query.tokens?.totalIssuance({ VToken2: 8 }).catch((e) => {
+        console.log(e);
+      })) as Balance
+  )?.toBigInt();
 
   const record = new TokensTotalIssuance(block.block.header.hash.toString());
   record.block_height = blockNumber;
@@ -438,5 +443,6 @@ export async function tokens(block: SubstrateBlock): Promise<void> {
   record.vglmr = vGLMR;
   record.vfil = vFIL;
   record.vastr = vASTR;
+  record.vmanta = vMANTA;
   await record.save();
 }
