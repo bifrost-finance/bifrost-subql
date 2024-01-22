@@ -41,7 +41,7 @@ const Tokens = [
   }, 
   {
       id: "vMANTA",
-      coin_id: "manta",
+      coin_id: "manta-network",
       currency: { VToken2: 8 },
       decimal: 18,
       token: "MANTA",
