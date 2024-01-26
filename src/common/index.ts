@@ -4,7 +4,14 @@ import adapter from "axios/lib/adapters/http";
 import BigNumber from "bignumber.js";
 const axios = axiosOriginal.create({ adapter });
 
-let prices = [];
+let prices = [
+{date:"26-1-2024",coin_id:"kusama",cny:"254.78262529537113",usd:"35.93244934072877"},
+{date:"26-1-2024",coin_id:"manta-network",cny:"21.01737355195555",usd:"2.9641177829740095"},
+{date:"26-1-2024",coin_id:"moonbeam",cny:"2.5082616818988326",usd:"0.3537446311876055"},
+{date:"26-1-2024",coin_id:"astar",cny:"1.2147779129779321",usd:"0.1713223017767091"},
+{date:"26-1-2024",coin_id:"polkadot",cny:"45.63197286724048",usd:"6.435558749222969"},
+{date:"26-1-2024",coin_id:"filecoin",cny:"35.25664586054181",usd:"4.972307824520048"}
+];
 
 export interface Price {
   date: string;
