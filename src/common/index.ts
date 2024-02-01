@@ -16,6 +16,8 @@ let prices = [
 {date:"29-1-2024",coin_id:"polkadot",cny:"48.42124300286082",usd:"6.823103122153361"},
 {date:"30-1-2024",coin_id:"polkadot",cny:"50.155973796961746",usd:"7.069698188309496"},
 {date:"31-1-2024",coin_id:"polkadot",cny:"48.64931456194139",usd:"6.848061621027475"},
+{date:"1-2-2024",coin_id:"kusama",cny:"268.54505666383113",usd:"37.81792094970158"},
+{date:"1-2-2024",coin_id:"polkadot",cny:"47.21717271601138",usd:"6.649369485426186"},
 ];
 
 export interface Price {
