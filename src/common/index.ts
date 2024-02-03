@@ -1,4 +1,5 @@
 import { SubstrateEvent, SubstrateBlock } from "@subql/types";
+import { Tokens } from "../mappings/mappingHandlers";
 import axiosOriginal from "axios";
 import adapter from "axios/lib/adapters/http";
 import BigNumber from "bignumber.js";
@@ -33,34 +34,44 @@ async function getPrice(
   block: SubstrateBlock,
   coin_id: string
 ): Promise<Price> {
-  const date = `${block.timestamp.getDate()}-${
-    block.timestamp.getMonth() + 1
-  }-${block.timestamp.getFullYear()}`;
+  const date = `${block.timestamp.getDate()}-${block.timestamp.getMonth() + 1
+    }-${block.timestamp.getFullYear()}`;
   const price = prices.filter(
     (price) => price.date == date && price.coin_id == coin_id
   );
   let yesterday = new Date(block.timestamp);
   yesterday.setDate(block.timestamp.getDate() - 1);
-  const yesterday_date = `${yesterday.getDate()}-${
-    yesterday.getMonth() + 1
-  }-${yesterday.getFullYear()}`;
+  const yesterday_date = `${yesterday.getDate()}-${yesterday.getMonth() + 1
+    }-${yesterday.getFullYear()}`;
   const price2 = prices.filter(
     (price) => price.date == yesterday_date && price.coin_id == coin_id
   );
   if (price.length === 0) {
     logger.info(`Request:${date} ${coin_id}`);
-    const url =
-      "https://api.coingecko.com/api/v3/coins/" +
-      coin_id +
-      "/history?date=" +
-      date;
-    const result = await axios.get(url);
     let p = {
       date: date,
       coin_id: coin_id,
       cny: "0",
       usd: "0",
     };
+    let now = new Date();
+    let now_date = `${now.getDate()}-${now.getMonth() + 1
+      }-${now.getFullYear()}`;
+    let token_info = Tokens.filter(i => i.coin_id == coin_id);
+    if (date === now_date && token_info.length != 0) {
+      const url =
+        "https://api.bifrost.app/api/dapp/prices";
+      const result = await axios.get(url);
+      p.usd = result.data.prices[token_info[0].token.toLowerCase()].toString();
+      prices.push(p);
+      return p as Price;
+    }
+    const url =
+      "https://api.coingecko.com/api/v3/coins/" +
+      coin_id +
+      "/history?date=" +
+      date;
+    const result = await axios.get(url);
     if (result.data.market_data) {
       // If today's price exists, update usd and cny fields.
       p.cny = result.data.market_data.current_price.cny;

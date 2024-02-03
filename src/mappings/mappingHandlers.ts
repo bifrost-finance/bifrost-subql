@@ -4,12 +4,13 @@ import { getPrice, assetTypeFormat } from "../common";
 import { Tvl, Extrinsic, DemocracyInfo, CouncilInfo } from "../types";
 import BigNumber from "bignumber.js";
 
-const Tokens = [
+export const Tokens = [
   {
     id: "vsDOT",
     coin_id: "polkadot",
     currency: { VSToken2: 0 },
     decimal: 10,
+    token: "DOT",
   },
   {
     id: "vDOT",
@@ -79,7 +80,7 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
   await Promise.all(
     Tokens.map(async (token) => {
       const token_price = await getPrice(block, token.coin_id);
-      if (token_price.cny === "0") {
+      if (token_price.usd === "0") {
         return;
       }
       let record = new Tvl(blockNumber.toString() + "-" + token.id);
@@ -114,7 +115,7 @@ export async function handleBlock(block: SubstrateBlock): Promise<void> {
   await Promise.all(
     DexTokens.map(async (token) => {
       const token_price = await getPrice(block, token.coin_id);
-      if (token_price.cny === "0") {
+      if (token_price.usd === "0") {
         return;
       }
       let record = new Tvl(blockNumber.toString() + "-" + token.id);
