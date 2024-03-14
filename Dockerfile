@@ -1,8 +1,13 @@
-FROM onfinality/subql-node:v3.3.0
+FROM node:18 as builder
+
 WORKDIR /app
-COPY . .
-RUN  yarn install && yarn codegen && yarn build
+COPY . ./
 
-# TODO: remove depedences
+RUN yarn
+RUN yarn codegen
+RUN yarn build
 
-Entrypoint  ["/sbin/tini","--","/usr/local/lib/node_modules/@subql/node/bin/run"]
+FROM onfinality/subql-node:v3.3.0
+
+COPY --from=builder /app/ /app/
+
