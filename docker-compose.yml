@@ -6,14 +6,14 @@ services:
       context: .
       dockerfile: ./docker/pg-Dockerfile
     ports:
-      - 5432:5432
+      - 35432:5432
     volumes:
       - .data/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
 
   subquery-node:
-    image: onfinality/subql-node:latest
+    image: onfinality/subql-node:v3.3.0
     depends_on:
       - "postgres"
     restart: always
@@ -27,3 +27,6 @@ services:
       - ./:/app
     command:
       - -f=/app
+      - --disable-historical
+      - --unsafe
+      - --batch-size=3
