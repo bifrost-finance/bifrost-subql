@@ -173,60 +173,6 @@ export async function handleVtokenMintingMinted(
     },
   } = event;
 
-
-  // Prepare the slack message
-  const message = {
-    text: `Bifrost Polkadot VtokenMinting Minted Event`,
-    attachments: [
-      {
-        color: '#36a64f',
-        title: `Explorer the ${blockNumber} subscan`,
-        title_link: `https://bifrost.subscan.io/block/${blockNumber}`,
-        fields: [
-          {
-            title: 'Minted Block Height:',
-            value: ` *${blockNumber.toString()}*`,
-            short: true
-          },
-          {
-            title: 'Token ID:',
-            value: `*${token}*`,
-            short: true
-          },
-          {
-            title: 'Account:',
-            value: `*${account}*`,
-            short: false
-          },
-          {
-            title: 'Token Amount:',
-            value: `*${balance_dot}*`,
-            short: true
-          },
-          {
-            title: 'vToken Amount:',
-            value: `*${balance_vdot}*`,
-            short: true
-          }
-        ]
-      }
-    ]
-  };
-  // const webhookUrl = "https://hooks.slack.com/services/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"
-
-  const webhookUrl = "https://hooks.slack.com/services/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"
-  // Send the message to Slack
-  await axios.post(webhookUrl, message);
-  // const response = await fetch(webhookUrl, {
-  //   method: 'POST',
-  //   body: JSON.stringify(message),
-  //   headers: {'Content-Type': 'application/json'}
-  // });
-
-  // if (!response.ok) {
-  //   throw new Error(`Failed to post message to Slack, status: ${response.status}`);
-  // }
-
   const record = new VtokenMintingMinted(
     blockNumber.toString() + "-" + event.idx.toString()
   );
@@ -279,50 +225,6 @@ export async function handleVtokenMintingRedeemed(
       data: [account, token, balanceDOT, balancevDOT],
     },
   } = event;
-
-  // Prepare the slack message
-  const message = {
-    text: `Bifrost Polkadot VtokenMinting Redeemed Event`,
-    attachments: [
-      {
-        color: '#36a64f',
-        title: `Explorer the ${blockNumber} subscan`,
-        title_link: `https://bifrost.subscan.io/block/${blockNumber}`,
-        fields: [
-          {
-            title: 'Redeemed Block Height:',
-            value: ` *${blockNumber.toString()}*`,
-            short: true
-          },
-          {
-            title: 'Token ID:',
-            value: `*${token}*`,
-            short: true
-          },
-          {
-            title: 'Account:',
-            value: `*${account}*`,
-            short: false
-          },
-          {
-            title: 'Token Amount:',
-            value: `*${balanceDOT}*`,
-            short: true
-          },
-          {
-            title: 'vToken Amount:',
-            value: `*${balancevDOT}*`,
-            short: true
-          }
-        ]
-      }
-    ]
-  };
-  // const webhookUrl = "https://hooks.slack.com/services/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"
-
-  const webhookUrl = "https://hooks.slack.com/services/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"
-  // Send the message to Slack
-  await axios.post(webhookUrl, message);
 
   const record = new VtokenMintingRedeemed(
     blockNumber.toString() + "-" + event.idx.toString()

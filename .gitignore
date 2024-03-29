@@ -54,3 +54,4 @@ src/types
 .kusama
 .polkadot
 test
+.env*
