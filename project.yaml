@@ -13,92 +13,25 @@ repository: "https://github.com/bifrost-finance/bifrost-subql.git"
 schema:
   file: ./schema.graphql
 network:
-  chainId: "0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed"
-  endpoint: "wss://bifrost-rpc.liebi.com/ws"
+#  chainId: "0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed"
+#  endpoint: "wss://bifrost-parachain.api.onfinality.io/public-ws"
+  chainId: "0x5e40ebe7e3fa1408a5ff66fee32d9a145d86791f927e085ab72e72c8740b1c68"
+  endpoint: "wss://bifrost.bifrost-staking-test.liebi.com/ws"
   chaintypes:
     file: ./dist/chaintypes.js
 dataSources:
   - kind: substrate/Runtime
-    startBlock: 2800510
+    startBlock: 1
     mapping:
       file: ./dist/index.js
       handlers:
-        - handler: vtokenMinting
-          kind: substrate/BlockHandler
-        - handler: staking
-          kind: substrate/BlockHandler
-        - handler: handleFarmingApy
-          kind: substrate/BlockHandler
-        - handler: handleVtokenMintingMinted
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMinting
-            method: Minted
-        - handler: handleVtokenMintingRedeemed
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMinting
-            method: Redeemed
-        - handler: handleVtokenMintingRebondedByUnlockId
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMinting
-            method: RebondedByUnlockId
-        - handler: handleVKSMSwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
-            success: true
-        - handler: handleVMOVRSwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
-            success: true
-        - handler: handleVPHASwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
-            success: true
-        - handler: handleVBNCSwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
-            success: true
-        - handler: handleCurrenciesTransferred
-          kind: substrate/CallHandler
-          filter:
-            module: currencies
-            method: transfer
-            success: true
-        - handler: handleCurrenciesTransferred
-          kind: substrate/CallHandler
-          filter:
-            module: tokens
-            method: transfer
-            success: true
-        - handler: handleVtokenRedeemedSuccess
-          kind: substrate/EventHandler
-          filter:
-            module: vtokenMinting
-            method: RedeemSuccess
-        - handler: handleVtokenLiquidity
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityAdded
-        - handler: handleVtokenLiquidity
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: LiquidityRemoved
-        - handler: handleSlp
-          kind: substrate/BlockHandler
         - handler: handleStakingErapaid
           kind: substrate/EventHandler
           filter:
             module: parachainStaking
             method: NewRound
+        - kind: substrate/EventHandler
+          handler: handleStakingReward
+          filter:
+            module: parachainStaking
+            method: Rewarded
