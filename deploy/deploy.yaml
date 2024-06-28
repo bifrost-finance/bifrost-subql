@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: bifrost-collator-subql
+    qcloud-app: bifrost-collator-subql
+  name: bifrost-collator-subql
+  namespace: slp
+spec:
+  selector:
+    matchLabels:
+      k8s-app: bifrost-collator-subql
+      qcloud-app: bifrost-collator-subql
+  template:
+    metadata:
+      labels:
+        k8s-app: bifrost-collator-subql
+        qcloud-app: bifrost-collator-subql
+    spec:
+      containers:
+      - args:
+        - -f=/app
+        - --db-schema=app
+        - --workers=4
+        - --batch-size=30
+        - --unfinalized-blocks=true
+        env:
+        - name: DB_DATABASE
+          value: slp_bifrost-collator_subql
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASS
+          value: Newhope@1
+        - name: DB_HOST
+          value: 172.19.64.11
+        - name: DB_PORT
+          value: "5432"
+        image: harbor.liebi.com/slp/bifrost-collator-subql:f3ada27
+        imagePullPolicy: Always
+        name: bifrost-collator-subql
+        volumeMounts:
+        - mountPath: /app/project.yaml
+          name: project-yaml
+          subPath: project.yaml
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
+          requests:
+            cpu: 125m
+            memory: 256Mi
+        securityContext:
+          privileged: false
+      imagePullSecrets:
+      - name: harbor
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: bifrost-collator-subql-project-yaml
+        name: project-yaml
