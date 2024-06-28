@@ -1,9 +1,11 @@
-specVersion: 0.0.1
+specVersion: 1.0.0
+version: 0.0.1
 description: ''
 repository: 'git@github.com:bifrost-finance/bifrost-subql.git'
 schema: ./schema.graphql
 network:
-  endpoint: 'wss://bifrost-rpc.liebi.com/ws'
+  endpoint: 'wss://bifrost.bifrost-staking-test.liebi.com/ws'
+  chainId: "0x5e40ebe7e3fa1408a5ff66fee32d9a145d86791f927e085ab72e72c8740b1c68"
   types: {
     "CallOf": "Call",
     "DispatchTime": {
@@ -3239,7 +3241,7 @@ network:
 dataSources:
   - name: main
     kind: substrate/Runtime
-    startBlock: 318500
+    startBlock: 1
     mapping:
       handlers:
         # mappingVtokenPool.ts:
