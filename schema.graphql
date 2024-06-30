@@ -1,11 +1,11 @@
 type StakingErapaid @entity {
     id: ID!
-    event_id: Int!
-    block_height: String!
-    block_timestamp: Date!
+    event_id: Int
+    block_height: String
+    block_timestamp: Date
     era_index: String
     validator_payout: BigInt
-    number_collators:String!
+    number_collators:String
     candidate_info:String
     awarded:String
     total:String

@@ -13,7 +13,6 @@ export async function handleStakingErapaid(
     },
   } = event;
 
-  const record = new StakingErapaid(`${blockNumber}-${event.idx.toString()}`);
   const candidateInfo =
     await api.query.parachainStaking.candidateInfo.entries();
   const awardedPts = await api.query.parachainStaking.awardedPts.entries();
@@ -25,6 +24,10 @@ export async function handleStakingErapaid(
     .div(total)
     .multipliedBy(12 * 365)
     .toString();
+  const record = StakingErapaid.create({
+    id: `${blockNumber}-${event.idx.toString()}`,
+  });
+
   record.event_id = event.idx;
   record.block_height = blockNumber.toString();
   record.block_timestamp = event.block.timestamp;
@@ -38,9 +41,9 @@ export async function handleStakingErapaid(
     }))
   );
   record.awarded = JSON.stringify(
-    awardedPts.map((item) => ({
-      account: item[0].toHuman()[1],
-      value: item[1].toString(),
+    awardedPts.map((item: any) => ({
+      account: item?.[0]?.toHuman()?.[1] || "",
+      value: item?.[1]?.toString() || "",
     }))
   );
   record.total = total;
@@ -51,7 +54,7 @@ export async function handleStakingErapaid(
 }
 
 export async function handleStakingReward(
-    event: SubstrateEvent
+  event: SubstrateEvent
 ): Promise<void> {
   const {
     event: {
@@ -64,7 +67,7 @@ export async function handleStakingReward(
     block_height: blockNumber,
     account: account.toString(),
     rewards: (rewards as Balance)?.toBigInt(),
-  })
+  });
 
   await record.save();
 }
