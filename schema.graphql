@@ -17,4 +17,5 @@ type StakingReward @entity {
     block_height: String!
     account: String!
     rewards: BigInt
+    block_timestamp:Date
 }

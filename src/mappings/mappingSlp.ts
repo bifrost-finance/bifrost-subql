@@ -67,6 +67,7 @@ export async function handleStakingReward(
     block_height: blockNumber,
     account: account.toString(),
     rewards: (rewards as Balance)?.toBigInt(),
+    block_timestamp: event.block.timestamp,
   });
 
   await record.save();
