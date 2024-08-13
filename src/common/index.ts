@@ -92,7 +92,7 @@ async function getPrice(
     let token_info = Tokens.filter(i => i.coin_id == coin_id);
     if (date === now_date && token_info.length != 0) {
       const url =
-        "https://api.bifrost.app/api/dapp/prices";
+        "https://dapi.bifrost.io/api/dapp/prices";
       const result = await axios.get(url);
       p.usd = result.data.prices[token_info[0].token.toLowerCase()].toString();
       prices.push(p);

@@ -7,7 +7,7 @@ schema:
   file: ./schema.graphql
 network:
   genesisHash: '0x9f28c6a68e0fc9646eff64935684f6eeeece527e37bbe1f213d22caa1d9d6bed'
-  endpoint: wss://bifrost-rpc.liebi.com/ws
+  endpoint: wss://hk.bifrost-rpc.liebi.com/ws
   chaintypes:
     file: ./types.json
 runner:
@@ -36,14 +36,6 @@ dataSources:
           kind: substrate/BlockHandler
         - handler: handleCallExtrinsic
           kind: substrate/CallHandler
-        - handler: zenlink
-          kind: substrate/BlockHandler
-        - handler: zenlinkAssetSwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
-            success: true
         - handler: vsbond
           kind: substrate/BlockHandler
         - handler: handleVsBondAuctionOrderClinchd
