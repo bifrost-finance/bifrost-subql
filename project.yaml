@@ -20,7 +20,7 @@ runner:
 dataSources:
   - name: substrate
     kind: substrate/Runtime
-    startBlock: 7196188
+    startBlock: 1635247
     mapping:
       file: ./dist/index.js
       handlers:
