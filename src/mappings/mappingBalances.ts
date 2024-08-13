@@ -3,7 +3,7 @@ import { BlockNumber, Balance, MessageId } from "@polkadot/types/interfaces";
 import { Compact } from '@polkadot/types';
 import type { ParaId } from '@polkadot/types/interfaces/parachains';
 import type { AccountIdOf, BalanceOf } from '@polkadot/types/interfaces/runtime';
-import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
+// import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
 import { TotalTransfer } from '../types/models';
 
 const NativeToken = JSON.stringify({ "native": "BNC" });

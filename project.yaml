@@ -1,4 +1,4 @@
-specVersion: 0.2.0
+specVersion: 1.0.0
 name: bifrost-subql
 version: 1.0.0
 description: ''
@@ -10,9 +10,17 @@ network:
   endpoint: wss://bifrost-rpc.liebi.com/ws
   chaintypes:
     file: ./types.json
+runner:
+  node:
+    name: "@subql/node"
+    version: ">=1.0.0"
+  query:
+    name: "@subql/query"
+    version: "*"
 dataSources:
-  - kind: substrate/Runtime
-    startBlock: 1635247
+  - name: substrate
+    kind: substrate/Runtime
+    startBlock: 7196188
     mapping:
       file: ./dist/index.js
       handlers:

@@ -6,7 +6,7 @@ import type {
   AccountIdOf,
   BalanceOf,
 } from "@polkadot/types/interfaces/runtime";
-import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
+// import { CurrencyId, TokenSymbol } from "@bifrost-finance/types/interfaces";
 import {
   XtokensTransferred,
   TotalTransfer,
@@ -65,7 +65,7 @@ export async function handleXtokensTransferred(
   record.extrinsic_id = event.extrinsic ? event.extrinsic.idx : null;
   record.block_timestamp = event.block.timestamp;
   record.account = account.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   record.multilocation = multilocation.toString();
   await record.save();
@@ -78,7 +78,7 @@ export async function handleXtokensTransferred(
   // record2.section = section.toString();
   // record2.method = method.toString();
   // record2.to = account.toString();
-  // record2.currency = (currency as CurrencyId).toString();
+  // record2.currency = (currency as any).toString();
   // record2.balance = (balance as Balance).toBigInt();
   // await record.save();
 }
@@ -105,7 +105,7 @@ export async function handleCurrenciesDeposited(
   record.section = section.toString();
   record.method = method.toString();
   record.to = account.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -132,7 +132,7 @@ export async function handleCurrenciesWithdrawn(
   record.section = section.toString();
   record.method = method.toString();
   record.from = account.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -160,7 +160,7 @@ export async function handleCurrenciesTransferred(
   record.method = method.toString();
   record.from = from.toString();
   record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -187,7 +187,7 @@ export async function handleCurrenciesBalanceUpdated(
   record.section = section.toString();
   record.method = method.toString();
   record.from = account.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -215,7 +215,7 @@ export async function handleTokensTransfer(
   record.method = method.toString();
   record.from = from.toString();
   record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -243,7 +243,7 @@ export async function handleTokensEndowed(
   record.method = method.toString();
   // record.from = from.toString();
   record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -271,7 +271,7 @@ export async function handleTokensDustLost(
   record.method = method.toString();
   record.from = from.toString();
   // record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -299,7 +299,7 @@ export async function handleTokensReserved(
   record.method = method.toString();
   record.from = from.toString();
   // record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -327,7 +327,7 @@ export async function handleTokensUnreserved(
   record.method = method.toString();
   // record.from = from.toString();
   record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -355,7 +355,7 @@ export async function handleTokensBalanceSet(
   record.method = method.toString();
   // record.from = from.toString();
   record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (free as Balance).toBigInt();
   await record.save();
 }
@@ -383,7 +383,7 @@ export async function handleTokenIssuerTransferred(
   record.method = method.toString();
   record.from = from.toString();
   record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }
@@ -411,7 +411,7 @@ export async function handleTokenIssuerIssued(
   record.method = method.toString();
   // record.from = from.toString();
   record.to = to.toString();
-  record.currency = (currency as CurrencyId).toString();
+  record.currency = (currency as any).toString();
   record.balance = (balance as Balance).toBigInt();
   await record.save();
 }

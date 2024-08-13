@@ -1,6 +1,6 @@
 import { SubstrateBlock } from "@subql/types";
 import { Balance, AccountData, AccountId } from "@polkadot/types/interfaces";
-import { CurrencyId } from "@bifrost-finance/types/interfaces";
+// import { CurrencyId } from "@bifrost-finance/types/interfaces";
 import { getDayStartUnix, get7DayStartUnix, tokenSplit } from "../common";
 import { MintPriceDayData } from "../types/models/MintPriceDayData";
 import { Apr } from "../types/models/Apr";
@@ -12,101 +12,101 @@ const vTokens = ["vDOT", "vKSM", "vETH"]; // "vEOS", "vIOST"
 const unit = BigInt(1000000000000);
 // const native_tokens = ["ASG", "aUSD", "DOT", "KSM", "ETH"];
 
-export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
-  if (block.block.header.number.toNumber() % 10 !== 0) {
-    return;
-  }
-  for (let i = 0; i < tokens.length; i++) {
-    const currency_id = tokens[i];
-    const [
-      currency_id_token,
-      currency_id_vtoken,
-      token_type,
-      native_currency_id,
-    ] = tokenSplit(currency_id);
-    let recordDailyMintPrice = await MintPriceDayData.get(
-      currency_id + "@" + getDayStartUnix(block)
-    );
-    if (recordDailyMintPrice === undefined) {
-      // 如果此块所处当日还未记录mintprice（说明此块是当日第一个块），则记录一下
-      const token_pool = (
-        (await api.query.vtokenMint.mintPool(
-          JSON.parse(native_currency_id) as CurrencyId
-        )) as unknown as Balance
-      ).toBigInt();
-      let recordMintPriceDayData = new MintPriceDayData(
-        currency_id + "@" + getDayStartUnix(block)
-      );
-      recordMintPriceDayData.pool = token_pool;
-      recordMintPriceDayData.currencyId = currency_id;
-      recordMintPriceDayData.time = block.timestamp;
-      recordMintPriceDayData.blockHeight = block.block.header.number.toBigInt();
-      if (token_type === "token") {
-        let vtoken = await MintPriceDayData.get(
-          currency_id_vtoken + "@" + getDayStartUnix(block)
-        );
-        if (vtoken === undefined || vtoken.pool === BigInt(0)) {
-          recordMintPriceDayData.price = BigInt(0);
-        } else {
-          recordMintPriceDayData.price =
-            (recordMintPriceDayData.pool * unit) / vtoken.pool;
-        }
-      } else if (token_type === "vToken") {
-        let token = await MintPriceDayData.get(
-          currency_id_token + "@" + getDayStartUnix(block)
-        );
-        if (token === undefined || recordMintPriceDayData.pool === BigInt(0)) {
-          recordMintPriceDayData.price = BigInt(0);
-        } else {
-          recordMintPriceDayData.price =
-            (token.pool * unit) / recordMintPriceDayData.pool;
-        }
-      }
-      await recordMintPriceDayData.save().catch((e) => {
-        console.log(e);
-      });
-    } else if (
-      recordDailyMintPrice.time.getTime() < block.timestamp.getTime()
-    ) {
-      const token_pool = (
-        (await api.query.vtokenMint.mintPool(
-          JSON.parse(native_currency_id) as CurrencyId
-        )) as unknown as Balance
-      ).toBigInt();
-      const recordDailyMintPrice = await MintPriceDayData.get(
-        currency_id + "@" + getDayStartUnix(block)
-      );
-      recordDailyMintPrice.pool = token_pool;
-      recordDailyMintPrice.currencyId = currency_id;
-      recordDailyMintPrice.time = block.timestamp;
-      recordDailyMintPrice.blockHeight = block.block.header.number.toBigInt();
-      if (token_type === "token") {
-        let vtoken = await MintPriceDayData.get(
-          currency_id_vtoken + "@" + getDayStartUnix(block)
-        );
-        if (vtoken === undefined || vtoken.pool === BigInt(0)) {
-          recordDailyMintPrice.price = BigInt(0);
-        } else {
-          recordDailyMintPrice.price =
-            (recordDailyMintPrice.pool * unit) / vtoken.pool;
-        }
-      } else if (token_type === "vToken") {
-        let token = await MintPriceDayData.get(
-          currency_id_token + "@" + getDayStartUnix(block)
-        );
-        if (token === undefined || recordDailyMintPrice.pool === BigInt(0)) {
-          recordDailyMintPrice.price = BigInt(0);
-        } else {
-          recordDailyMintPrice.price =
-            (token.pool * unit) / recordDailyMintPrice.pool;
-        }
-      }
-      await recordDailyMintPrice.save().catch((e) => {
-        console.log(e);
-      });
-    }
-  }
-}
+// export async function vtokenPoolBlock(block: SubstrateBlock): Promise<void> {
+//   if (block.block.header.number.toNumber() % 10 !== 0) {
+//     return;
+//   }
+//   for (let i = 0; i < tokens.length; i++) {
+//     const currency_id = tokens[i];
+//     const [
+//       currency_id_token,
+//       currency_id_vtoken,
+//       token_type,
+//       native_currency_id,
+//     ] = tokenSplit(currency_id);
+//     let recordDailyMintPrice = await MintPriceDayData.get(
+//       currency_id + "@" + getDayStartUnix(block)
+//     );
+//     if (recordDailyMintPrice === undefined) {
+//       // 如果此块所处当日还未记录mintprice（说明此块是当日第一个块），则记录一下
+//       const token_pool = (
+//         (await api.query.vtokenMint.mintPool(
+//           JSON.parse(native_currency_id) as CurrencyId
+//         )) as unknown as Balance
+//       ).toBigInt();
+//       let recordMintPriceDayData = new MintPriceDayData(
+//         currency_id + "@" + getDayStartUnix(block)
+//       );
+//       recordMintPriceDayData.pool = token_pool;
+//       recordMintPriceDayData.currencyId = currency_id;
+//       recordMintPriceDayData.time = block.timestamp;
+//       recordMintPriceDayData.blockHeight = block.block.header.number.toBigInt();
+//       if (token_type === "token") {
+//         let vtoken = await MintPriceDayData.get(
+//           currency_id_vtoken + "@" + getDayStartUnix(block)
+//         );
+//         if (vtoken === undefined || vtoken.pool === BigInt(0)) {
+//           recordMintPriceDayData.price = BigInt(0);
+//         } else {
+//           recordMintPriceDayData.price =
+//             (recordMintPriceDayData.pool * unit) / vtoken.pool;
+//         }
+//       } else if (token_type === "vToken") {
+//         let token = await MintPriceDayData.get(
+//           currency_id_token + "@" + getDayStartUnix(block)
+//         );
+//         if (token === undefined || recordMintPriceDayData.pool === BigInt(0)) {
+//           recordMintPriceDayData.price = BigInt(0);
+//         } else {
+//           recordMintPriceDayData.price =
+//             (token.pool * unit) / recordMintPriceDayData.pool;
+//         }
+//       }
+//       await recordMintPriceDayData.save().catch((e) => {
+//         console.log(e);
+//       });
+//     } else if (
+//       recordDailyMintPrice.time.getTime() < block.timestamp.getTime()
+//     ) {
+//       const token_pool = (
+//         (await api.query.vtokenMint.mintPool(
+//           JSON.parse(native_currency_id) as CurrencyId
+//         )) as unknown as Balance
+//       ).toBigInt();
+//       const recordDailyMintPrice = await MintPriceDayData.get(
+//         currency_id + "@" + getDayStartUnix(block)
+//       );
+//       recordDailyMintPrice.pool = token_pool;
+//       recordDailyMintPrice.currencyId = currency_id;
+//       recordDailyMintPrice.time = block.timestamp;
+//       recordDailyMintPrice.blockHeight = block.block.header.number.toBigInt();
+//       if (token_type === "token") {
+//         let vtoken = await MintPriceDayData.get(
+//           currency_id_vtoken + "@" + getDayStartUnix(block)
+//         );
+//         if (vtoken === undefined || vtoken.pool === BigInt(0)) {
+//           recordDailyMintPrice.price = BigInt(0);
+//         } else {
+//           recordDailyMintPrice.price =
+//             (recordDailyMintPrice.pool * unit) / vtoken.pool;
+//         }
+//       } else if (token_type === "vToken") {
+//         let token = await MintPriceDayData.get(
+//           currency_id_token + "@" + getDayStartUnix(block)
+//         );
+//         if (token === undefined || recordDailyMintPrice.pool === BigInt(0)) {
+//           recordDailyMintPrice.price = BigInt(0);
+//         } else {
+//           recordDailyMintPrice.price =
+//             (token.pool * unit) / recordDailyMintPrice.pool;
+//         }
+//       }
+//       await recordDailyMintPrice.save().catch((e) => {
+//         console.log(e);
+//       });
+//     }
+//   }
+// }
 
 export async function aprBlock(block: SubstrateBlock): Promise<void> {
   if (block.block.header.number.toNumber() % 10 !== 0) {
