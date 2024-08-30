@@ -2,7 +2,7 @@ type StarterEntity @entity {
 
   id: ID! #id is a required field
 
-  field1: Int!
+  field1: Int
 
   field2: String #filed2 is an optional field
 
@@ -94,16 +94,16 @@ type Revenue @entity{
 
 type ZenlinkInfo @entity {
   id: ID!
-  block_height: BigInt!
-  block_timestamp: Date!
-  method: String!
-  data: String!
+  block_height: BigInt
+  block_timestamp: Date
+  method: String
+  data: String
 }
 
 type ZenlinkLiquidityCalculation @entity {
   id: ID!
-  block_height: BigInt!
-  block_timestamp: Date!
+  block_height: BigInt
+  block_timestamp: Date
   event_id: Int
   extrinsic_id: Int
   owner: String
@@ -119,28 +119,28 @@ type ZenlinkLiquidityCalculation @entity {
 
 type VsbondInfo @entity {
   id: ID!
-  block_height: BigInt!
-  block_timestamp: Date!
-  method: String!
-  data: String!
+  block_height: BigInt
+  block_timestamp: Date
+  method: String
+  data: String
 }
 
 type SalpInfo @entity {
   id: ID!
-  blockHeight: BigInt!
-  method: String!
+  blockHeight: BigInt
+  method: String
   accountIdOf: String
   para_id: Int
   balanceOf: BigInt
-  data: String!
+  data: String
 }
 
 type SalpContributed @entity {
   id: ID!
-  block_height: Int!
-  event_id: Int!
-  extrinsic_id: Int!
-  block_timestamp: Date!
+  block_height: Int
+  event_id: Int
+  extrinsic_id: Int
+  block_timestamp: Date
   account: String
   para_id: Int
   balance: BigInt
@@ -149,9 +149,9 @@ type SalpContributed @entity {
 
 type SalpContribution @entity {
   id: ID!
-  block_height: Int!
-  block_timestamp: Date!
-  method: String!
+  block_height: Int
+  block_timestamp: Date
+  method: String
   account: String
   para_id: Int
   balance: BigInt
@@ -160,11 +160,11 @@ type SalpContribution @entity {
 
 type SalpRefunded @entity {
   id: ID!
-  event_id: Int!
-  extrinsic_id: Int!
-  block_height: Int!
-  block_timestamp: Date!
-  method: String!
+  event_id: Int
+  extrinsic_id: Int
+  block_height: Int
+  block_timestamp: Date
+  method: String
   account: String
   para_id: Int
   balance: BigInt
@@ -172,10 +172,10 @@ type SalpRefunded @entity {
 
 type XtokensTransferred @entity {
   id: ID!
-  event_id: Int!
+  event_id: Int
   extrinsic_id: Int
-  block_height: Int!
-  block_timestamp: Date!
+  block_height: Int
+  block_timestamp: Date
   account: String
   currency: String
   balance: BigInt
@@ -187,10 +187,10 @@ type XtokensTransferred @entity {
 
 # type CurrenciesDeposited @entity {
 #   id: ID!
-#   event_id: Int!
-#   extrinsic_id: Int!
-#   block_height: Int!
-#   block_timestamp: Date!
+#   event_id: Int
+#   extrinsic_id: Int
+#   block_height: Int
+#   block_timestamp: Date
 #   account: String
 #   currency: String
 #   balance: BigInt
@@ -198,10 +198,10 @@ type XtokensTransferred @entity {
 
 # type BalancesTransfer @entity {
 #   id: ID!
-#   event_id: Int!
+#   event_id: Int
 #   extrinsic_id: Int
-#   block_height: Int!
-#   block_timestamp: Date!
+#   block_height: Int
+#   block_timestamp: Date
 #   from: String
 #   to: String
 #   balance: BigInt
@@ -209,10 +209,10 @@ type XtokensTransferred @entity {
 
 type TotalTransfer @entity {
   id: ID!
-  event_id: Int!
+  event_id: Int
   extrinsic_id: Int
-  block_height: Int!
-  block_timestamp: Date!
+  block_height: Int
+  block_timestamp: Date
   section: String
   method: String
   from: String
@@ -224,10 +224,10 @@ type TotalTransfer @entity {
 
 type Vesting @entity {
   id: ID!
-  event_id: Int!
+  event_id: Int
   extrinsic_id: Int
-  block_height: Int!
-  block_timestamp: Date!
+  block_height: Int
+  block_timestamp: Date
   section: String
   method: String
   account: String
@@ -237,8 +237,8 @@ type Vesting @entity {
 
 type Tvl @entity {
   id: ID!
-  block_height: Int!
-  block_timestamp: Date!
+  block_height: Int
+  block_timestamp: Date
   currency: String
   usd: Float
   cny: Float
@@ -250,9 +250,9 @@ type Tvl @entity {
 
 type VsBondOrderClinchd @entity {
   id: ID!
-  block_height: Int!
-  block_timestamp: Date!
-  event_id: Int!
+  block_height: Int
+  block_timestamp: Date
+  event_id: Int
   extrinsic_id: Int
   currency: String
   total_price: BigInt
@@ -262,15 +262,15 @@ type VsBondOrderClinchd @entity {
 
 type Extrinsic @entity {
   id: ID!
-  block_hash: String!
-  block_height: Int!
+  block_hash: String
+  block_height: Int
   block_timestamp: Date
   origin: String
 }
 
 type TokensTotalIssuance @entity {
   id: ID!
-  block_height: Int!
+  block_height: Int
   block_timestamp: Date
   vsdot: BigInt
   vdot: BigInt
@@ -284,9 +284,9 @@ type DemocracyInfo @entity {
   id: ID!
   event_id: Int
   extrinsic_id: Int
-  block_height: Int!
+  block_height: Int
   block_timestamp: Date
-  method: String!
+  method: String
   data: String
 }
 
@@ -294,15 +294,15 @@ type CouncilInfo @entity {
   id: ID!
   event_id: Int
   extrinsic_id: Int
-  block_height: Int!
+  block_height: Int
   block_timestamp: Date
-  method: String!
+  method: String
   data: String
 }
 
 type CallExtrinsic @entity {
   id: ID!
-  block_height: BigInt!
+  block_height: BigInt
   block_timestamp: Date
-  account: String!
+  account: String
 }

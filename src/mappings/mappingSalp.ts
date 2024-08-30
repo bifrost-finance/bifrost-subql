@@ -47,7 +47,7 @@ export async function salp(block: SubstrateBlock): Promise<void> {
   let paraId;
   const salpEvents = block.events.filter(
     (e) => e.event.section === "salp" || e.event.section === "salpLite"
-  ) as SubstrateEvent[];
+  ) as any[];
   for (let salpEvent of salpEvents) {
     const {
       event: { data, section, method },
@@ -72,7 +72,7 @@ export async function salpContribution(block: SubstrateBlock): Promise<void> {
   ).toNumber();
   const salpEvents = block.events.filter(
     (e) => e.event.section === "salp" || e.event.section === "salpLite"
-  ) as SubstrateEvent[];
+  ) as any[];
   for (let salpEvent of salpEvents) {
     let accountIdOf, paraId, balanceOf, message_id;
     const {

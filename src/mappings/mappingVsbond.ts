@@ -11,7 +11,7 @@ export async function vsbond(block: SubstrateBlock): Promise<void> {
 
   const vsbondEvents = block.events.filter(
     (e) => e.event.section === "vsBondAuction"
-  ) as SubstrateEvent[];
+  ) as any[];
   for (let vsbondEvent of vsbondEvents) {
     const {
       event: { data, section, method },

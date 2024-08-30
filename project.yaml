@@ -1,4 +1,4 @@
-specVersion: 0.2.0
+specVersion: 1.0.0
 name: bifrost-subql
 version: 1.0.0
 description: ''
@@ -8,8 +8,13 @@ schema:
 network:
   endpoint: wss://hk.p.bifrost-rpc.liebi.com/ws
   genesisHash: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
-  chaintypes:
-    file: ./dist/chaintypes.js
+runner:
+  node:
+    name: "@subql/node"
+    version: ">=1.0.0"
+  query:
+    name: "@subql/query"
+    version: "*"
 dataSources:
   - kind: substrate/Runtime
     startBlock: 636000
@@ -28,13 +33,6 @@ dataSources:
           kind: substrate/BlockHandler
         - handler: handleCallExtrinsic
           kind: substrate/CallHandler
-        - handler: zenlink
-          kind: substrate/BlockHandler
-        - handler: zenlinkAssetSwap
-          kind: substrate/EventHandler
-          filter:
-            module: zenlinkProtocol
-            method: AssetSwap
         - handler: vsbond
           kind: substrate/BlockHandler
         - handler: handleVsBondAuctionOrderClinchd
