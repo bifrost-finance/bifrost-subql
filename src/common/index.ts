@@ -58,7 +58,7 @@ async function getPrice(
     let now_date = `${now.getDate()}-${now.getMonth() + 1
       }-${now.getFullYear()}`;
     let token_info = Tokens.filter(i => i.coin_id == coin_id);
-    if (date === now_date && token_info.length != 0) {
+    if (token_info.length != 0) {
       const url =
         "https://api.bifrost.app/api/dapp/prices";
       const result = await axios.get(url);
