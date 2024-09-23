@@ -6,7 +6,7 @@ repository: 'https://github.com/bifrost-finance/bifrost-subql.git'
 schema:
   file: ./schema.graphql
 network:
-  endpoint: wss://hk.p.bifrost-rpc.liebi.com/ws
+  endpoint: ws://172.19.64.39:29944
   genesisHash: '0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b'
 runner:
   node:
